@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Customer;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'customer_id',
     ];
 
     /**
@@ -41,4 +43,30 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+    }
+
+    public function scopeAccountCode($query, $accountCode)
+    {
+          return $query->whereHas('customer', function($q) use ($accountCode) {
+              $q->getAccountCode($accountCode);
+          });
+    }
+
+    public function scopeName($query, $name)
+    {
+        return $query->where('name', $name);
+    }
+
+    public function scopeId($query, $id)
+    {
+        return $query->where('id', $id);
+    }
+
+    public function profile() {
+        //switch($this->customer->plan())
+    }
 }

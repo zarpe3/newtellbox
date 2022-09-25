@@ -1,4 +1,40 @@
 <?php return array (
+  'beyondcode/laravel-websockets' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'BeyondCode\\LaravelWebSockets\\WebSocketsServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'WebSocketRouter' => 'BeyondCode\\LaravelWebSockets\\Facades\\WebSocketRouter',
+    ),
+  ),
+  'laracasts/utilities' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laracasts\\Utilities\\JavaScript\\JavaScriptServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'JavaScript' => 'Laracasts\\Utilities\\JavaScript\\JavaScriptFacade',
+    ),
+  ),
+  'laravel-frontend-presets/light-bootstrap' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'LaravelFrontendPresets\\LightBootstrapPreset\\LightBootstrapPresetServiceProvider',
+    ),
+  ),
+  'laravel/legacy-factories' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Illuminate\\Database\\Eloquent\\LegacyFactoryServiceProvider',
+    ),
+  ),
   'laravel/sail' => 
   array (
     'providers' => 
@@ -18,6 +54,25 @@
     'providers' => 
     array (
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    ),
+  ),
+  'laravel/ui' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Ui\\UiServiceProvider',
+    ),
+  ),
+  'laravelcollective/html' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Collective\\Html\\HtmlServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Form' => 'Collective\\Html\\FormFacade',
+      'Html' => 'Collective\\Html\\HtmlFacade',
     ),
   ),
   'nesbot/carbon' => 

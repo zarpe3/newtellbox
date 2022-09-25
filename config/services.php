@@ -30,5 +30,9 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
+    'asterisk' => [
+        'host' => 'webdec-dev03.webdec.com.br',
+        'ami_user' => 'tellbox',
+        'ami_pass' => '@@c0dc49ab2acaa'
+    ]
 ];
