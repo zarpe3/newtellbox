@@ -17,6 +17,11 @@
                                 </p>
                             </div>
                         </div>
+                        <div class="row align-items-center">
+                            <div class="col-8">
+                                
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-12 mt-2">

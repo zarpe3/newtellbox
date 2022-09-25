@@ -1,4 +1,5 @@
-@extends('layouts.app', ['activePage' => 'trunks', 'title' => 'Telbox Varejo', 'navName' => '', 'activeButton' => 'laravel'])
+
+@extends('layouts.app', ['activePage' => 'routes', 'title' => 'Telbox Varejo', 'navName' => '', 'activeButton' => 'laravel'])
 
 @section('content')
 <div id="app"></div>
@@ -37,17 +38,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($trunks as $trunkName => $trunk)
-                                    @foreach($trunk as $name => $prop)
-                                        <td>{{$prop['trunkName']}}</td>
-                                        <td>{{$prop['host']}}</td>
-                                        <td>
-                                            <a href="/trunks/<?php echo base64_encode($name); ?>"><i class="fa fa-edit"></i>
-                                            </a>
-                                            <a style="color: red;" v-on:click="remove('{{ base64_encode($name) }}')">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </td>
+                                @foreach($routes as route)
+                                      {{ dump($route) }} 
                                     @endforeach
                                 @endforeach
                             </tbody>
@@ -63,13 +55,6 @@
 
 @push('js')
 <script type="text/javascript">
-    $(document).ready(function () {
-        // Javascript method's body can be found in assets/js/demos.js
-        //demo.initDashboardPageCharts();
-
-        //demo.showNotification();
-
-    });
 </script>
-<script src="{{ asset('/js/trunks.js') }}"></script>
+<script src="{{ asset('/js/routes.js') }}"></script>
 @endpush
