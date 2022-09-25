@@ -12,13 +12,13 @@
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h3 class="mb-0">Troncos - Modo Básico</h3>
+                                <h3 class="mb-0">Rotas</h3>
                                 <p class="text-sm mb-0">
 
                                 </p>
                             </div>
                             <div class="col-4 text-right">
-                                <a href="/trunks/create" class="btn btn-sm btn-default">Adicionar Tronco</a>
+                                <a href="/routes/create" class="btn btn-sm btn-default">Adicionar Rota</a>
                             </div>
                         </div>
                     </div>
@@ -30,17 +30,26 @@
                         <!--        Here you can write extra buttons/actions for the toolbar              -->
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        <table id="trunks" class="table table-hover table-striped">
+                        <table id="routes" class="table table-hover table-striped">
                             <thead>
-                                <tr><th>Nome</th>
-                                    <th>Host</th>
+                                <tr>
+                                    <th>Nome</th>
                                     <th> - </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($routes as route)
-                                      {{ dump($route) }} 
-                                    @endforeach
+                                @foreach($routes as $route)
+                                    <tr>
+                                        <td> {{ $route['name'] }} </td>
+                                        <td class="d-flex">
+                                            <a href="/routes/{{ base64_encode(json_encode($route)) }}>">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a v-on:click="remove('{{ base64_encode(json_encode($route)) }} ')">
+                                                <i class="fa fa-trash" style="color: red"></i>
+                                            </a>
+                                        </td>
+                                    </tr>    
                                 @endforeach
                             </tbody>
                         </table>
