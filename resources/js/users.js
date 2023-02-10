@@ -2,7 +2,10 @@ const routes = new Vue({
     el: '#users',
     data: function () {
         return {
-            isActive: false
+            isActive: false,
+            name: '',
+            b64: '',
+
         }
     },
     mounted() {
@@ -16,5 +19,18 @@ const routes = new Vue({
             });
             ;
         },
+        dismiss: function() {
+            $('#confirmation').modal('hide');
+        },
+        modalRemove: function(b64) {
+            this.b64 = b64;
+            let data = JSON.parse(atob(b64));
+            this.name = data.name;
+            $('#confirmation').modal('show');
+        },
+        confirmRemove: function() {
+            this.remove(this.b64);
+        }
+
     }
 });

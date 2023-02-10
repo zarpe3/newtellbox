@@ -3,18 +3,17 @@
 namespace App\Actions;
 
 /**
- * Trait ModelActionBase
- * @package App\Http\Traits\Actions
+ * Trait ModelActionBase.
  */
-
-trait ActionBase {
+trait ActionBase
+{
     /** @var array */
     protected $data = [];
     protected $enviroment;
 
     /**
-     * @param array $data
      * @return mixed
+     *
      * @throws \Exception
      */
     public function execute(array $data = [])
@@ -25,13 +24,12 @@ trait ActionBase {
             $this->enviroment = 'prod';
         }
 
-
         return $this->init($data);
     }
 
     /**
-     * @param array $data
      * @return mixed
+     *
      * @throws \Exception
      */
     protected function init(array $data = [])
@@ -51,15 +49,12 @@ trait ActionBase {
 
     /**
      * Set the parameters used throughout the class from the data passed to it
-     * Override this to change how the parameters are set and add validation
-     *
-     * @param array $data
+     * Override this to change how the parameters are set and add validation.
      */
     abstract protected function setParameters(array $data): void;
 
     /**
-     * Main function - add the main logic for the class here
+     * Main function - add the main logic for the class here.
      */
     abstract protected function main();
-
 }

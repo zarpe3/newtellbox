@@ -18,6 +18,17 @@ class CustomerAction
         if ($this->data['action'] == 'addPlan') {
             return $this->addPlan();
         }
+
+        if ($this->data['action'] == 'updateVoicemailNotify') {
+            return $this->updateVoicemailNotify();
+        }
+    }
+
+    protected function updateVoicemailNotify()
+    {
+        $this->actionRecord->notify_voicemail = $this->data['notify_voicemail'];
+
+        return $this->actionRecord->save();
     }
 
     protected function addPlan()

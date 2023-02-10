@@ -43,5 +43,23 @@ class UserAction
                 ->get()
                 ->toArray();
         }
+
+        if ($this->data['action'] == 'UPDATE') {
+            $user = User::find($this->data['id']);
+
+            if ($user == null) {
+                return ['success' => false, 'message' => 'User not found'];
+            }
+
+            $user->name = $this->data['name'];
+
+            if ($user->password != $this->data['password']) {
+                $user->password = Hash::make($this->data['password']);
+            }
+
+            $user->save();
+
+            return ['success' => true, 'message' => 'User updated successfully'];
+        }
     }
 }

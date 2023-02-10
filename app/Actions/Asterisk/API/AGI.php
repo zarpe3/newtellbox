@@ -3,11 +3,15 @@
 namespace App\Actions\Asterisk\API;
 
 use App\Actions\ActionBase;
+use App\Actions\Asterisk\Inbound\GetInbound;
+use App\Actions\Asterisk\Queue\GetQueue;
 use App\Actions\CGrates\Connect;
-use App\Models\SipUsers;
 use App\Models\CDR;
+use App\Models\Customer;
 use App\Models\SipRoutes as OutboundRoute;
+use App\Models\SipUsers;
 use Illuminate\Support\Facades\Http;
+use Storage;
 
 class AGI
 {
@@ -33,6 +37,11 @@ class AGI
                 'billsec' => intval($this->data['billsec']),
                 'rating' => $this->data['rating'],
             ]);
+
+            if (isset($this->data['recording'])) {
+                Storage::disk('local')->makeDirectory('storage/app/'.$this->data['accountCode'], 0777);
+                $this->data['recording']->storeAs($this->data['accountCode'], $this->data['uniqueid'].'.wav');
+            }
         }
 
         if ($this->data['request'] == 'rating') {
@@ -56,7 +65,7 @@ class AGI
         if ($this->data['request'] == 'getExtens') {
             return response()->json([
                     'success' => true,
-                    'extens' => SipUsers::where('accountcode', $this->data['accountcode'])->get(['name']),
+                    'extens' => SipUsers::where('accountcode', $this->data['accountcode'])->get(['name', 'record']),
             ]);
         }
 
@@ -71,7 +80,8 @@ class AGI
                 ->get(['context_to'])
                 ->first();
 
-            $routes = OutboundRoute::where('ddd', $this->data['ddd'])
+            $routes = OutboundRoute::accountcode($this->data['accountcode'])
+                ->where('ddd', $this->data['ddd'])
                 ->where('name', $contextTo->context_to)
                 ->where('type', $type);
 
@@ -84,12 +94,77 @@ class AGI
 
             $trunkName = $routes->get(['trunk'])->first()->trunk;
             $response = $this->getTrunksByAccount($this->data['accountcode']);
+
             $trunk = $response['response'][$trunkName.'_'.$this->data['accountcode']];
 
             return response()->json([
                     'success' => true,
                     'trunk' => $trunk,
+                    //'trunkName' => $trunkName.'_'.$this->data['accountcode'],
+                    //'response' => $response['response'],
             ]);
+        }
+
+        if ($this->data['request'] == 'getInbound') {
+            try {
+                $customer = Customer::getAccountCode($this->data['accountcode'])->firstOrFail();
+
+                if (!$customer) {
+                    return response()->json([
+                        'success' => false,
+                    ]);
+                }
+
+                $inbound = (new GetInbound())->execute($customer, ['did' => $this->data['did']]);
+
+                if (count($inbound) > 0) {
+                    return response()->json([
+                        'success' => true,
+                        'inbound' => $inbound,
+                    ]);
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No DID found',
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        if ($this->data['request'] == 'getQueue') {
+            try {
+                $customer = Customer::getAccountCode($this->data['accountcode'])->firstOrFail();
+
+                if (!$customer) {
+                    return response()->json([
+                        'success' => false,
+                    ]);
+                }
+
+                $queue = (new GetQueue())->execute($customer, ['name' => $this->data['name']]);
+
+                if (is_object($queue)) {
+                    return response()->json([
+                        'success' => true,
+                        'queue' => $queue,
+                    ]);
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No Queue found',
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                ]);
+            }
         }
     }
 

@@ -74,6 +74,7 @@
                                 <th>DDD</th>
                                 <th>Tipo</th>
                                 <th>Tronco</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>

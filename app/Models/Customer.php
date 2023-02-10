@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
@@ -16,7 +17,8 @@ class Customer extends Model
         'name',
         'status',
         'accountcode',
-        'plan'
+        'plan',
+        'notify_voicemail',
     ];
 
     public function scopeGetAccountCode($query, $accountCode)
@@ -24,4 +26,13 @@ class Customer extends Model
         return $query->where('accountcode', $accountCode);
     }
 
+    /**
+     * Get all of the voicemails for the Customer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function voicemails(): HasMany
+    {
+        return $this->hasMany(Voicemail::class, 'customer_id', 'id');
+    }
 }

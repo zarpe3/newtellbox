@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Asterisk\DeleteTrunks;
 use App\Actions\Asterisk\GetTrunks;
 use App\Actions\Asterisk\UpdateTrunks;
-use Illuminate\Http\Request;
+use App\Http\Requests\TrunksRequest;
 use Auth;
+use Illuminate\Http\Request;
 
 class TrunksController extends Controller
 {
@@ -48,8 +50,10 @@ class TrunksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TrunksRequest $request)
     {
+        //$validated = $request->validated();
+
         $customer = Auth::user()->customer;
         (new UpdateTrunks())->execute($customer, [
             'request' => 'GET',
@@ -95,6 +99,7 @@ class TrunksController extends Controller
      */
     public function update(Request $request, $id)
     {
+        \Log::info($request->all());
         $customer = Auth::user()->customer;
         (new UpdateTrunks())->execute($customer, [
             'request' => 'GET',
@@ -111,15 +116,14 @@ class TrunksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($b64)
     {
-        $json = json_decode(base64_decode($id));
+        //dd($b64);
+        $name = base64_decode($b64);
         $customer = Auth::user()->customer;
-        (new ActionRouting())->execute($customer, [
-            'request' => 'DELETE',
-            'name' => $json->name,
+        $response = (new DeleteTrunks())->execute($customer, [
+            'trunkName' => $name,
         ]);
-
-        return response()->json(['success' => true]);
+        //return response()->json(['success' => true]);
     }
 }

@@ -3,6 +3,9 @@
     "/js/softphone.js": "/js/softphone.js",
     "/js/routes.js": "/js/routes.js",
     "/js/trunks.js": "/js/trunks.js",
+    "/js/inbounds.js": "/js/inbounds.js",
     "/js/users.js": "/js/users.js",
+    "/js/queue.js": "/js/queue.js",
+    "/js/voicemail.js": "/js/voicemail.js",
     "/css/app.css": "/css/app.css"
 }

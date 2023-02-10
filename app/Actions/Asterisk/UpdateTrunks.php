@@ -12,7 +12,8 @@ class UpdateTrunks
     public function setParameters(array $data): void
     {
         $this->data['trunk'] = [
-            'trunkName' => $data['trunk']['trunkName'],
+            'trunkName' => str_replace(' ', '_', $data['trunk']['trunkName']),
+            'username' => $data['trunk']['username'] ?? '',
             'port' => $data['trunk']['port'],
             'secret' => $data['trunk']['secret'],
             'qualify' => $data['trunk']['qualify'],
@@ -20,9 +21,11 @@ class UpdateTrunks
             'transport' => $data['trunk']['transport'],
             'code' => $data['trunk']['code'],
             'context' => 'inbound',
+            'accountcode' => $this->actionRecord->accountcode,
             'canreivinte' => 'yes',
             'type' => 'peer',
-            'insecure' => 'yes',
+            'insecure' => 'invite,port',
+            'callerid' => $data['trunk']['callerid'] ?? '',
             'nat' => 'force_rport,comedia',
             'allow' => 'all',
         ];
@@ -30,6 +33,8 @@ class UpdateTrunks
 
     protected function main()
     {
+        \Log::info(print_r($this->data, true));
+
         return Http::post('http://webdec-dev03.webdec.com.br/trunks/save', [
             'trunk' => $this->data['trunk'],
             'accountcode' => $this->actionRecord->accountcode,

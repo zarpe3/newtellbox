@@ -13,13 +13,13 @@
                     <div class="container">
                     </div>
                     <div class="row">
-                        <div class="col-md-5 pr-1">
+                        <div class="col-md-4 pr-1">
                             <div class="form-group">
                                 <label>Tronco</label>
                                 <input type="text" name="trunkName" class="form-control" placeholder="Tronco" value="{{$trunk['trunkName']}}">
                             </div>
                         </div>
-                        <div class="col-md-5 pr-1">
+                        <div class="col-md-4 pr-1">
                             <div class="form-group">
                                 <div class="form-group">
                                     <label>Host</label>
@@ -27,22 +27,34 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 px-1">
+                        <div class="col-md-4 pr-1">
                             <div class="form-group">
-                                <label>Password</label>
+                                <label>Username</label>
+                                <input type="text" name="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" placeholder="Username" value="{{@$trunk['username']}}">
+                            </div>
+                        </div>
+                        <div class="col-md-4 px-1">
+                            <div class="form-group">
+                                <label>Senha</label>
                                 <input type="password" name="secret" class="form-control" placeholder="" value="{{@$trunk['secret']}}">
                             </div>
                         </div>
-                        <div class="col-md-6 px-1">
+                        <div class="col-md-4 px-1">
                             <div class="form-group">
-                                <label>Code</label>
+                                <label>Código</label>
                                 <input type="text" name="code" class="form-control" placeholder="" value="{{@$trunk['code']}}">
                             </div>
                         </div>
                         <div class="col-md-4 px-1">
                             <div class="form-group">
+                                <label>Bina</label>
+                                <input type="text" name="callerid" class="form-control" placeholder="" value="{{@$trunk['callerid']}}">
+                            </div>
+                        </div>
+                        <div class="col-md-4 px-1">
+                            <div class="form-group">
                                 <label>Porta</label>
-                                <input type="number" name="port" class="form-control" placeholder="Port Number" value="{{$trunk['port']}}">
+                                <input type="number" name="port" class="form-control" placeholder="Port Number" value="{{@$trunk['port']}}">
                             </div>
                         </div>
                         <div class="col-md-4 pl-1">
@@ -61,7 +73,7 @@
                         </div>
                         <div class="col-md-4 pl-1">
                             <div class="form-group">
-                                <label for="qualify">Qualify</label>
+                                <label for="qualify">Qualificar</label>
                                 <select name="qualify" class="form-control">
                                     <option value='yes'>Sim</option>
                                     <option value='no'>Não</option>
@@ -70,7 +82,7 @@
                         </div>
                     </div>
                     <div class="text-left m-1">
-                        <button type="submit" class="btn btn-success">{{ __('Save') }}</button>
+                        <button type="submit" class="btn btn-success">{{ __('Salvar') }}</button>
                     </div>
                     <div class="clearfix"></div>
                     {{ Form::close() }}

@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
-class SipUsers extends Model {
-
+class SipUsers extends Model
+{
     protected $table = 'sip';
     public $timestamps = false;
 
@@ -61,7 +62,8 @@ class SipUsers extends Model {
         'rtcp_mux',
         'icesupport',
         'avpf',
-        'context_to'
+        'context_to',
+        'record',
     ];
 
     protected static function booted()
@@ -77,8 +79,8 @@ class SipUsers extends Model {
         });
     }
 
-    public function scopeAccountcode($query, $accountCode) {
+    public function scopeAccountcode($query, $accountCode)
+    {
         return $query->where('accountcode', $accountCode);
     }
-
 }

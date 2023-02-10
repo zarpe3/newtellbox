@@ -35,7 +35,7 @@ Tip 2: you can also add an image using data-image tag
                 </a>
                 <div class="collapse @if($activeButton =='reports') show @endif" id="reports">
                     <ul class="nav">
-                        <li class="nav-item @if($activePage == 'users') active @endif">
+                        <li class="nav-item @if($activePage == 'cdr') active @endif">
                             <a class="nav-link" href="{{route('cdr.index')}}" style="margin-left: 20%;">
                                 <!--<i class="nc-icon nc-circle-09"></i>-->
                                 - {{ __("CDR") }}
@@ -71,13 +71,31 @@ Tip 2: you can also add an image using data-image tag
                         <li class="nav-item @if($activePage == 'routes') active @endif">
                             <a class="nav-link" href="{{route('routes.index')}}" style="margin-left: 20%;">
                                 <!--<i class="nc-icon nc-circle-09"></i>-->
-                                - {{ __("Rotas") }}
+                                - {{ __("Rota de Saída") }}
+                            </a>
+                        </li>
+                        <li class="nav-item @if($activePage == 'inbound') active @endif">
+                            <a class="nav-link" href="{{route('inbound.index')}}" style="margin-left: 20%;">
+                                <!--<i class="nc-icon nc-circle-09"></i>-->
+                                - {{ __("Rota de Entrada") }}
                             </a>
                         </li>
                         <li class="nav-item @if($activePage == 'extens') active @endif">
                             <a class="nav-link" href="{{route('extens.index')}}" style="margin-left: 20%;">
                                 <!--<i class="nc-icon nc-circle-09"></i>-->
                                 - {{ __("Ramais") }}
+                            </a>
+                        </li>
+                        <li class="nav-item @if($activePage == 'queue') active @endif">
+                            <a class="nav-link" href="{{route('queue.index')}}" style="margin-left: 20%;">
+                                <!--<i class="nc-icon nc-circle-09"></i>-->
+                                - {{ __("Filas") }}
+                            </a>
+                        </li>
+                        <li class="nav-item @if($activePage == 'voicemail') active @endif">
+                            <a class="nav-link" href="{{route('voicemail.index')}}" style="margin-left: 20%;">
+                                <!--<i class="nc-icon nc-circle-09"></i>-->
+                                - {{ __("Voicemail") }}
                             </a>
                         </li>
                     </ul>

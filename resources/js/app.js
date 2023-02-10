@@ -25,6 +25,9 @@ Vue.component('exten', require('./components/Exten.vue').default);
 Vue.component('reception-console', require('./components/ReceptionConsole.vue').default);
 Vue.component('add-route', require('./components/Routes/Add.vue').default);
 Vue.component('edit-route', require('./components/Routes/Edit.vue').default);
+
+Vue.component('add-inbound', require('./components/Inbounds/Add.vue').default);
+Vue.component('edit-inbound', require('./components/Inbounds/Edit.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

@@ -37,6 +37,7 @@
                     </a>
                 </li>-->
                 <li class="nav-item dropdown">
+                    {{ Auth::user()->customer->name }} ( {{ Auth::user()->customer->accountcode }} )
                     <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="no-icon"><i class="fa fa-user"></i></span>
                     </a>

@@ -35,4 +35,11 @@ class ExtensController extends Controller
 
         return (new SIP())->execute($customer, ['request' => 'ADD', 'data' => $request->all()]);
     }
+
+    public function destroy($name)
+    {
+        $customer = Auth::user()->customer;
+
+        return (new SIP())->execute($customer, ['request' => 'DEL', 'name' => $name]);
+    }
 }

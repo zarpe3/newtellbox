@@ -7,7 +7,9 @@ var trunks = new Vue({
   el: '#trunks',
   data: function data() {
     return {
-      isActive: false
+      isActive: false,
+      trunkName: '',
+      b64: ''
     };
   },
   mounted: function mounted() {///console.log("to aqui no routes");
@@ -18,6 +20,17 @@ var trunks = new Vue({
         window.location = '/trunks';
       });
       ;
+    },
+    modalDelete: function modalDelete(b64) {
+      this.trunkName = atob(b64);
+      this.b64 = b64;
+      $('#confirmation').modal('show');
+    },
+    confirmRemove: function confirmRemove() {
+      this.remove(this.b64);
+    },
+    dismiss: function dismiss() {
+      $('#confirmation').modal('hide');
     }
   }
 });

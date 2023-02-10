@@ -79,6 +79,7 @@ lbd = {
             // reset all the additions that we made for the sidebar wrapper only if the screen is bigger than 991px
             $sidebar_wrapper.find('.navbar-form').remove();
             $sidebar_wrapper.find('.nav-mobile-menu').remove();
+            
 
             mobile_menu_initialized = false;
         }
@@ -124,8 +125,13 @@ lbd = {
                 // reset all the additions that we made for the sidebar wrapper only if the screen is bigger than 991px
                 $sidebar_wrapper.find('.navbar-form').remove();
                 $sidebar_wrapper.find('.nav-mobile-menu').remove();
-
+                ///$sidebar_wrapper.find('.nav-item .dropdown').remove(); //// remove that profile on the menu
                 mobile_menu_initialized = false;
+            }
+
+            if ($(window).width() > 850) {
+                console.log("removing nav-item dropdown menu")
+                $sidebar_wrapper.find('.nav-item .dropdown').remove(); //// remove that profile on the menu
             }
         }
 

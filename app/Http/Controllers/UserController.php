@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Customer\UserAction;
-use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -68,7 +68,35 @@ class UserController extends Controller
             return view('users.edit', ['success' => $success, 'message' => 'Usuario não encontrado']);
         }
 
-        return view('users.edit', ['success' => $success, 'user' => $user]);
+        return view('users.edit', ['success' => $success, 'responseUser' => $user]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name' => 'required',
+            'password' => 'required',
+        ]);
+
+        $success = true;
+
+        $customer = Auth::user()->customer;
+        $response = (new UserAction())->execute($customer, [
+            'action' => 'UPDATE',
+            'id' => $id,
+            'name' => $request->name,
+            'password' => $request->password,
+        ]);
+
+        $users = (new UserAction())->execute($customer, [
+            'action' => 'GET',
+        ]);
+
+        return view('users.index', [
+            'users' => $users,
+            'success' => $response['success'],
+            'message' => $response['message'],
+        ]);
     }
 
     public function destroy($id)

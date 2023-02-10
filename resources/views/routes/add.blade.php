@@ -40,7 +40,7 @@
                                 </div>
                                 <input type="hidden" id="infos" name="infos" value="" />
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-default mt-4">{{ __('Save') }}</button>
+                                    <button type="submit" class="btn btn-default mt-4">{{ __('Salvar') }}</button>
                                 </div>
                             </div>
                         </form>

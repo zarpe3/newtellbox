@@ -34,7 +34,7 @@
                             <thead>
                                 <tr>
                                     <th>Nome</th>
-                                    <th> - </th>
+                                    <th> Ações </th>
                                 </tr>
                             </thead>
                             <tbody>

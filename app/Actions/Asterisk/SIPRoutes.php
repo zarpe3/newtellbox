@@ -25,25 +25,25 @@ class SIPRoutes
 
         if ($this->data['request'] == 'GET_ROUTE_NAME') {
             return SipRouting::accountcode($this->actionRecord->accountcode)
-                ->name($this->data['name'])
+                ->name(str_replace(' ', '_', $this->data['name']))
                 ->get();
         }
 
         if ($this->data['request'] == 'DELETE') {
             return SipRouting::accountcode($this->actionRecord->accountcode)
-                ->name($this->data['name'])
+                ->name(str_replace(' ', '_', $this->data['name']))
                 ->delete();
         }
 
         if ($this->data['request'] == 'UPDATE') {
             SipRouting::accountcode($this->actionRecord->accountcode)
-                ->name($this->data['name'])
+                ->name(str_replace(' ', '_', $this->data['name']))
                 ->delete();
 
             $infos = json_decode(base64_decode($this->data['infos']));
             foreach ($infos as $route) {
                 $sipRoute = new SipRouting();
-                $sipRoute->name = $this->data['name'];
+                $sipRoute->name = str_replace(' ', '_', $this->data['name']);
                 $sipRoute->accountcode = $this->actionRecord->accountcode;
                 $sipRoute->ddd = $route->DDD;
                 $sipRoute->type = $route->type;
@@ -56,7 +56,7 @@ class SIPRoutes
             $infos = json_decode(base64_decode($this->data['infos']));
             foreach ($infos as $route) {
                 $sipRoute = new SipRouting();
-                $sipRoute->name = $this->data['name'];
+                $sipRoute->name = str_replace(' ', '_', $this->data['name']);
                 $sipRoute->accountcode = $this->actionRecord->accountcode;
                 $sipRoute->ddd = $route->DDD;
                 $sipRoute->type = $route->type;

@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Customer;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,7 +9,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -51,9 +51,9 @@ class User extends Authenticatable
 
     public function scopeAccountCode($query, $accountCode)
     {
-          return $query->whereHas('customer', function($q) use ($accountCode) {
-              $q->getAccountCode($accountCode);
-          });
+        return $query->whereHas('customer', function ($q) use ($accountCode) {
+            $q->getAccountCode($accountCode);
+        });
     }
 
     public function scopeName($query, $name)
@@ -66,7 +66,8 @@ class User extends Authenticatable
         return $query->where('id', $id);
     }
 
-    public function profile() {
+    public function profile()
+    {
         //switch($this->customer->plan())
     }
 }

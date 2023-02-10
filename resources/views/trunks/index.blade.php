@@ -28,27 +28,62 @@
                     <div class="toolbar">
                         <!--        Here you can write extra buttons/actions for the toolbar              -->
                     </div>
-                    <div class="card-body table-full-width table-responsive">
-                        <table id="trunks" class="table table-hover table-striped">
+                    <div id="trunks" class="card-body table-full-width table-responsive">
+
+                    <div class="modal fade modal-large modal-primary" id="confirmation" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header justify-content-center">
+                                    <div class="modal-profile">
+                                        <i class="fa fa-trash"></i>
+                                    </div>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <p>Você tem certeza de que deseja remover o tronco @{{ trunkName }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button 
+                                        type="button" 
+                                        v-on:click="dismiss()" 
+                                        class="btn btn-link btn-simple">Não
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        v-on:click="confirmRemove()" 
+                                        class="btn btn-link btn-simple" 
+                                        data-dismiss="modal">Sim
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                        <table class="table table-hover table-striped">
                             <thead>
                                 <tr><th>Nome</th>
                                     <th>Host</th>
-                                    <th> - </th>
+                                    <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($trunks as $trunkName => $trunk)
+                                    
                                     @foreach($trunk as $name => $prop)
+                                    <tr>
                                         <td>{{$prop['trunkName']}}</td>
                                         <td>{{$prop['host']}}</td>
                                         <td>
-                                            <a href="/trunks/<?php echo base64_encode($name); ?>"><i class="fa fa-edit"></i>
+                                            <a href="/trunks/{{ base64_encode($name) }}"><i class="fa fa-edit"></i>
                                             </a>
-                                            <a style="color: red;" v-on:click="remove('{{ base64_encode($name) }}')">
+                                            <a style="color: red;" v-on:click="modalDelete('{{ base64_encode($name) }}')">
                                                 <i class="fa fa-trash"></i>
                                             </a>
                                         </td>
+                                    </tr>
                                     @endforeach
+                                    
                                 @endforeach
                             </tbody>
                         </table>

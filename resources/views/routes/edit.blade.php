@@ -42,7 +42,7 @@
                                 </div>
                                 <input type="hidden" id="infos" name="infos" value="" />
                                 <div class="text-left m-1">
-                                    <button type="submit" class="btn btn-success">{{ __('Save') }}</button>
+                                    <button type="submit" class="btn btn-success">{{ __('Salvar') }}</button>
                                 </div>
                             </div>
                         {{ Form::close() }}

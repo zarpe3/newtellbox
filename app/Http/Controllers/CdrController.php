@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Customer\GetCDR;
+use App\Http\Requests\CdrRequest;
 use Auth;
 
 class CdrController extends Controller
@@ -16,9 +17,14 @@ class CdrController extends Controller
      */
     public function index()
     {
-        $customer = Auth::user()->customer;
-        $cdrs = (new GetCDR())->execute($customer, []);
+        return view('reports.cdr.index', ['cdrs' => [], 'request' => []]);
+    }
 
-        return view('reports.cdr.index', ['cdrs' => $cdrs]);
+    public function search(CdrRequest $request)
+    {
+        $customer = Auth::user()->customer;
+        $cdrs = (new GetCDR())->execute($customer, $request->all());
+
+        return view('reports.cdr.index', ['cdrs' => $cdrs, 'request' => $request->all()]);
     }
 }

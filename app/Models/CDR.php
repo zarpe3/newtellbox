@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class CDR extends Model
@@ -23,12 +24,11 @@ class CDR extends Model
         'rating',
         'billsec',
         'status',
-        'audio'
+        'audio',
     ];
 
     public function scopeAccountCode($query, $accountCode)
     {
         return $query->where('accountCode', $accountCode);
     }
-
 }

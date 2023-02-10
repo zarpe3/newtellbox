@@ -1,51 +1,93 @@
-@extends('layouts.app', ['activePage' => 'routes', 'title' => 'Telbox Varejo', 'navName' => 'Table List', 'activeButton' => 'laravel'])
+@extends('layouts.app', ['activePage' => 'trunks', 'title' => 'Telbox Varejo', 'navName' => 'Table List', 'activeButton' => 'laravel'])
 
 @section('content')
+
 <div id="app" class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card data-tables">
-
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h3 class="mb-0">Adicionar Rota</h3>
-                                <p class="text-sm mb-0">
-
-                                </p>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" style="width: 90%">
+                <div class="card-header">
+                    <h4 class="card-title">Adicionar Tronco modo básico</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{ route('trunks.store') }}" autocomplete="off">
+                    @csrf
+                    <div class="container">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 pr-1">
+                            <div class="form-group">
+                                <label>Tronco</label>
+                                <input type="text" name="trunkName" class="form-control{{ $errors->has('trunkName') ? ' is-invalid' : '' }}" placeholder="Tronco" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-4 pr-1">
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" name="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" placeholder="Username" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-4 pr-1">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>Host</label>
+                                    <input type="text" name="host" class="form-control{{ $errors->has('host') ? ' is-invalid' : '' }}" placeholder="Tronco" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 px-1">
+                            <div class="form-group">
+                                <label>Senha</label>
+                                <input type="password" name="secret" class="form-control" placeholder="" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-4 px-1">
+                            <div class="form-group">
+                                <label>Código</label>
+                                <input type="text" name="code" class="form-control" placeholder="" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-4 px-1">
+                            <div class="form-group">
+                                <label>Bina</label>
+                                <input type="text" name="callerid" class="form-control" placeholder="" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-4 px-1">
+                            <div class="form-group">
+                                <label>Porta</label>
+                                <input type="number" name="port" class="form-control" placeholder="Port Number" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-4 pl-1">
+                            <div class="form-group">
+                                <label for="transport">Transporte</label>
+                                <select name="transport" class="form-control">
+                                    <option value='udp'>UDP</option>
+                                    <option value='tcp'>TCP</option>
+                                    <option value='udp,tcp'>UDP,TCP</option>
+                                    <option value='tcp,udp'>TCP,UDP</option>
+                                    <option value='tls'>TLS</option>
+                                    <option value='tls,udp,tcp'>TLS,UDP,TCP</option>
+                                    <option value='ws,wss,udp'>ws,wss,udp</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 pl-1">
+                            <div class="form-group">
+                                <label for="qualify">Qualify</label>
+                                <select name="qualify" class="form-control">
+                                    <option value='yes'>Sim</option>
+                                    <option value='no'>Não</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-12 mt-2">
+                    <div class="text-left m-1">
+                        <button type="submit" class="btn btn-success">{{ __('Save') }}</button>
                     </div>
-
-                    <div class="toolbar">
-                        <!--        Here you can write extra buttons/actions for the toolbar              -->
-                    </div>
-                    <div class="card-body table-full-width table-responsive">
-                        <form method="post" action="{{ route('routes.store') }}" autocomplete="off">
-                            @csrf
-                            <h6 class="heading-small text-muted mb-4">{{ __('Criação de Rota') }}</h6>
-                            <div class="pl-lg-4">
-                                <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
-                                    <label class="form-control-label" for="input-name">
-                                        <i class="nc-icon nc-map-big"></i>{{ __(' Nome') }}
-                                    </label>
-                                    <input type="text" name="name" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Nome da rota') }}" value="" required autofocus>
-                                </div>
-                                <div class="form-group">
-                                    <add-route extradata="{{json_encode($trunks)}}"></add-route>
-                                </div>
-                                <input type="hidden" id="infos" name="infos" value="" />
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-default mt-4">{{ __('Save') }}</button>
-                                </div>
-                            </div>
-                        </form>
-
-                    </div>
+                    <div class="clearfix"></div>
+                    </form>
                 </div>
             </div>
         </div>

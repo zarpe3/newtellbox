@@ -127,6 +127,12 @@ lbd = {
 
                 mobile_menu_initialized = false;
             }
+
+            if ($(window).width() > 850) {
+                console.log("removing nav-item dropdown menu")
+                $sidebar_wrapper.find('.dropdown').remove(); //// remove that profile on the menu
+            }
+            
         }
 
         if (!toggle_initialized) {

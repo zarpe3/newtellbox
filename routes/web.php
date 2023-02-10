@@ -27,22 +27,35 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/extens', 'App\Http\Controllers\ExtensController');
 
     Route::resource('/routes', 'App\Http\Controllers\RoutesController');
+    Route::resource('/inbound', 'App\Http\Controllers\InboundController');
+    Route::resource('/queue', 'App\Http\Controllers\QueueController');
     Route::resource('/trunks', 'App\Http\Controllers\TrunksController');
     Route::resource('/trunks-advanced', 'App\Http\Controllers\TrunksAdvancedController');
     Route::resource('/reception', 'App\Http\Controllers\ReceptionConsoleController');
+    Route::post('/reception/hangup', 'App\Http\Controllers\ReceptionConsoleController@hangup');
+    Route::post('/reception/transfer/{number}', 'App\Http\Controllers\ReceptionConsoleController@transfer');
+    Route::post('/reception/spy/{number}', 'App\Http\Controllers\ReceptionConsoleController@spy');
+
+    Route::get('/voicemail', ['as' => 'voicemail.index', 'uses' => 'App\Http\Controllers\Asterisk\VoiceMailController@show']);
+    Route::post('/voicemail', ['as' => 'voicemail.update', 'uses' => 'App\Http\Controllers\Asterisk\VoiceMailController@update']);
 
     Route::group(['prefix' => 'report'], function () {
         Route::get('/cdr', ['as' => 'cdr.index', 'uses' => 'App\Http\Controllers\CdrController@index']);
+        Route::post('/cdr/search', ['as' => 'cdr.search', 'uses' => 'App\Http\Controllers\CdrController@search']);
     });
 
     Route::group(['prefix' => 'profile'], function () {
         Route::get('/', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
         Route::patch('/', ['as' => 'profile.update', 'uses' => 'App\Http\Controllers\ProfileController@update']);
-        Route::patch('/password', ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']);
+        Route::patch('/password', [
+                'as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password',
+        ]);
     });
 
     Route::group(['prefix' => 'customer'], function () {
-        Route::post('/plan', ['as' => 'customer.add.plan', 'uses' => 'App\Http\Controllers\CustomersController@addPlan']);
+        Route::post('/plan', [
+            'as' => 'customer.add.plan', 'uses' => 'App\Http\Controllers\CustomersController@addPlan',
+        ]);
     });
 
     Route::post('/me', 'App\Http\Controllers\UserController@me');

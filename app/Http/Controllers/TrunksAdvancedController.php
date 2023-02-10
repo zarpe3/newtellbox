@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class TrunksController extends Controller
+class TrunksAdvancedController extends Controller
 {
     /**
      * Display a listing of the users.

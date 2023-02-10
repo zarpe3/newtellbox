@@ -17,4 +17,7 @@ mix.js('resources/js/app.js', 'public/js')
 mix.js('resources/js/softphone.js', 'public/js');
 mix.js('resources/js/routes.js', 'public/js');
 mix.js('resources/js/trunks.js', 'public/js');
+mix.js('resources/js/inbounds.js', 'public/js');
 mix.js('resources/js/users.js', 'public/js');
+mix.js('resources/js/queue.js', 'public/js');
+mix.js('resources/js/voicemail.js', 'public/js');

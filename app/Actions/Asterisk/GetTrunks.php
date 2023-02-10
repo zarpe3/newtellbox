@@ -19,6 +19,7 @@ class GetTrunks
         $response = Http::post('http://webdec-dev03.webdec.com.br/trunks/list', [
           'accountcode' => $this->actionRecord->accountcode,
         ]);
+        //\Log::info($response->json());
 
         return $response->json();
     }

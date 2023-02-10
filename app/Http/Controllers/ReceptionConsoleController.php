@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Asterisk\SIP;
-use Illuminate\Http\Request;
+use App\Actions\Customer\ReceptionConsole;
 use Auth;
+use Illuminate\Http\Request;
 
 class ReceptionConsoleController extends Controller
 {
@@ -81,5 +82,37 @@ class ReceptionConsoleController extends Controller
      */
     public function destroy($id)
     {
+    }
+
+    public function hangup(Request $request)
+    {
+        $customer = Auth::user()->customer;
+
+        return (new ReceptionConsole())->execute($customer, [
+            'request' => 'HANGUP',
+            'channel' => $request->channel,
+        ]);
+    }
+
+    public function transfer(Request $request, $exten)
+    {
+        $customer = Auth::user()->customer;
+
+        return (new ReceptionConsole())->execute($customer, [
+            'request' => 'TRANSFER',
+            'channel' => $request->channel,
+            'exten' => $exten,
+        ]);
+    }
+
+    public function spy(Request $request, $exten)
+    {
+        $customer = Auth::user()->customer;
+
+        return (new ReceptionConsole())->execute($customer, [
+            'request' => 'SPY',
+            'channel' => $request->channel,
+            'exten' => $exten,
+        ]);
     }
 }

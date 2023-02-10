@@ -47,6 +47,10 @@ class SIP
 
             return response()->json(['success' => true]);
         }
+
+        if ($this->data['request'] == 'DEL') {
+            SipUsers::where('name', $this->data['name'])->delete();
+        }
     }
 
     private function defaultSipUsersValues($data)

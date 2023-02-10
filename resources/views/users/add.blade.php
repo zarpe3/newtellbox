@@ -48,7 +48,7 @@
                                     <input type="password" name="password" id="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ __('password do usuario') }}" value="" required autofocus>
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-default mt-4">{{ __('Save') }}</button>
+                                    <button type="submit" class="btn btn-default mt-4">{{ __('Salvar') }}</button>
                                 </div>
                             </div>
                         </form>
