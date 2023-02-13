@@ -12,7 +12,8 @@ var trunks = new Vue({
       b64: ''
     };
   },
-  mounted: function mounted() {///console.log("to aqui no routes");
+  mounted: function mounted() {
+    ///console.log("to aqui no routes");
   },
   methods: {
     remove: function remove(b64) {

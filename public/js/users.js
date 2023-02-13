@@ -12,7 +12,8 @@ var routes = new Vue({
       b64: ''
     };
   },
-  mounted: function mounted() {///console.log("to aqui no users");
+  mounted: function mounted() {
+    ///console.log("to aqui no users");
   },
   methods: {
     remove: function remove(b64) {

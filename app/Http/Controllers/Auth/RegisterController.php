@@ -98,17 +98,18 @@ class RegisterController extends Controller
     protected function createCustomer(array $data)
     {
         $accountCode = (new AvailableAccountCode())->execute();
+        if(env('ENABLE_CGRATES', true)){
+            $this->sendDataToCGRates(['method' => 'APIerSv1.SetRatingProfile','params'=> [
+                ["TPid" => "RatingProfile_VoiceCalls", "Overwrite" => true, "LoadId" => "API", "Tenant" => $accountCode, "Category" => "call", "Subject" => "*any", "RatingPlanActivations" => [
+                        ["ActivationTime" => "2014-01-14T00:00:00Z", "RatingPlanId" => "RatingPlan_VoiceCalls", "FallbackSubjects" => ""],
+                    ],
+                ]
+            ]]);
 
-        $this->sendDataToCGRates(['method' => 'APIerSv1.SetRatingProfile','params'=> [
-            ["TPid" => "RatingProfile_VoiceCalls", "Overwrite" => true, "LoadId" => "API", "Tenant" => $accountCode, "Category" => "call", "Subject" => "*any", "RatingPlanActivations" => [
-                    ["ActivationTime" => "2014-01-14T00:00:00Z", "RatingPlanId" => "RatingPlan_VoiceCalls", "FallbackSubjects" => ""],
-                ],
-            ]
-        ]]);
-
-        $this->sendDataToCGRates(["method" => "APIerSv1.LoadTariffPlanFromStorDb", "params" =>[
-            ["TPid" => "cgrates.org", "DryRun" => false,"Validate" => true, "APIOpts" => null, "Caching" => null]
-        ],"id" => 0]);
+            $this->sendDataToCGRates(["method" => "APIerSv1.LoadTariffPlanFromStorDb", "params" =>[
+                ["TPid" => "cgrates.org", "DryRun" => false,"Validate" => true, "APIOpts" => null, "Caching" => null]
+            ],"id" => 0]);
+        }
 
         return Customer::create([
             'name' => $data['name'],

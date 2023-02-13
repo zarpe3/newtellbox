@@ -11,7 +11,8 @@ var routes = new Vue({
       voicemails: false
     };
   },
-  mounted: function mounted() {///console.log("to aqui no voicemail");
+  mounted: function mounted() {
+    ///console.log("to aqui no voicemail");
   },
   methods: {
     showParams: function showParams() {

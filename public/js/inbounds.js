@@ -20,7 +20,6 @@ var inbounds = new Vue({
     changeType: function changeType() {
       this.destiny_type = document.getElementById("destiny_type").value;
       this.elements = [];
-
       if (this.destiny_type == 'ramal') {
         this.elements.push(this.extens.filter(function (exten) {
           return [{
@@ -29,7 +28,6 @@ var inbounds = new Vue({
           }];
         }));
       }
-
       console.log(this.elements);
     },
     remove: function remove(b64) {
