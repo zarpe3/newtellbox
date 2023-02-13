@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/getTrunk', 'App\Http\Controllers\Asterisk\AGIController@getTrunk');
     Route::post('/rating', 'App\Http\Controllers\Asterisk\AGIController@rating');
     Route::post('/cdr', 'App\Http\Controllers\Asterisk\AGIController@cdr');
+    Route::post('/mailing/import', 'App\Http\Controllers\MailingController@import');
 });
 
 Route::post('/voicemail', 'App\Http\Controllers\Asterisk\VoiceMailController@voicemail');
