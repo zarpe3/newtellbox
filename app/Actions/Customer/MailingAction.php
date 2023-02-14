@@ -3,6 +3,7 @@
 namespace App\Actions\Customer;
 
 use App\Actions\ModelActionBase;
+use App\Models\Mailing;
 
 class MailingAction
 {
@@ -15,35 +16,48 @@ class MailingAction
 
     protected function main()
     {
-        if ($this->data['action'] == 'import') {
-            try {
-                $args = [
-                    'file_path' => self::uploadFile($this->data['mailing']),
-                    'valid_cpf' => $this->data['valid_cpf']
-                ];
-                dispatch(function () use ($args) {
-                    try {
-                        \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\MailingImport([
-                            'valid_cpf' => $args['valid_cpf']
-                        ]), storage_path($args['file_path']));
-                        unlink(storage_path($args['file_path']));
-                    } catch (\Exception $exception) {
-                        \Log::error('MailingController.import', [
-                            'file_path' => storage_path($args['file_path']),
-                            'message' => $exception->getMessage()
-                        ]);
-                    }
-                })->onQueue('mailing');
-            } catch (\Exception $exception) {
+        switch ($this->data['action']) {
+            case 'getdata':
                 return [
-                    'status' => false,
-                    'error' => $exception->getMessage()
+                    'status' => true,
+                    'data' => Mailing::where(['user_id' => \Auth::id()])->get()
                 ];
-            }
-            
-            return [
-                'status' => true,
-            ];
+                break;
+            case 'import':
+                try {
+                    $args = [
+                        'file_path' => self::uploadFile($this->data['mailing']),
+                        'valid_cpf' => $this->data['valid_cpf']
+                    ];
+                    dispatch(function () use ($args) {
+                        try {
+                            \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\MailingImport([
+                                'valid_cpf' => $args['valid_cpf']
+                            ]), storage_path($args['file_path']));
+                            unlink(storage_path($args['file_path']));
+                        } catch (\Exception $exception) {
+                            \Log::error('MailingController.import', [
+                                'file_path' => storage_path($args['file_path']),
+                                'message' => $exception->getMessage()
+                            ]);
+                        }
+                    })->onQueue('mailing');
+                } catch (\Exception $exception) {
+                    return [
+                        'status' => false,
+                        'error' => $exception->getMessage()
+                    ];
+                }
+
+                return [
+                    'status' => true,
+                ];
+                break;
+            default:
+                return [
+                    'status' => true,
+                ];
+                break;
         }
     }
 

@@ -8,6 +8,18 @@ use Auth;
 
 class MailingController extends Controller
 {
+    public function index()
+    {
+        return view('mailing.index');
+    }
+    public function dataTable()
+    {
+        $customer = Auth::user()->customer;
+        $response = (new MailingAction())->execute($customer, [
+            'action' => 'getdata',
+        ]);
+        return $response;
+    }
     /**
      * Display a listing of the resource.
      *

@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Mailing;
 use App\Models\MailingError;
+use App\Models\MailingFollowUp;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
@@ -19,11 +20,23 @@ class MailingImport implements ToCollection
     */
     public function collection(Collection $collection)
     {
-        $import_id = self::uniqueCode(12);
+        
+        
         $line = 0;
         $collection = $collection->toArray();
         $header  = $collection[0];
         unset($collection[0]);
+        
+        $followUp = new MailingFollowUp();
+        $followUp->status = 'process_start';
+        $followUp->size = count($collection);
+        $followUp->success = 0;
+        $followUp->fail = 0;
+        $followUp->errors = 0;
+        $followUp->save();
+        
+        $import_id = $followUp->id;
+        $fail = 0;
         foreach (array_values($collection) as $row) {
             $phoneList = self::getOrderPhone($import_id, $line, $row, $header);
             $phoneError = !empty($phoneList['phoneError']) ? $phoneList['phoneError'] : [];
@@ -49,11 +62,13 @@ class MailingImport implements ToCollection
                     'user_id' => \Auth::id(),
                     'import_id' => $import_id,
                 ];
+            } else {
+                $fail++;
             }
 
             $line++;
         }
-
+        
         if (!empty($import)) {
             Mailing::insert($import);
         }
@@ -61,10 +76,12 @@ class MailingImport implements ToCollection
         if (!empty($importErro)) {
             MailingError::insert($importErro);
         }
-    }
-    private function uniqueCode($limit)
-    {
-        return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
+
+        $followUp->status = 'process_complete';
+        $followUp->success = count($import);
+        $followUp->fail = $fail;
+        $followUp->errors = count($importErro);
+        $followUp->save();
     }
     private function getOrderPhone($import_id, $line, $row, $header)
     {

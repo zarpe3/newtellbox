@@ -39,6 +39,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/voicemail', ['as' => 'voicemail.index', 'uses' => 'App\Http\Controllers\Asterisk\VoiceMailController@show']);
     Route::post('/voicemail', ['as' => 'voicemail.update', 'uses' => 'App\Http\Controllers\Asterisk\VoiceMailController@update']);
 
+    Route::resource('/mailing', 'App\Http\Controllers\MailingController');
+    Route::post('/mailing/data', 'App\Http\Controllers\MailingController@dataTable');
+
     Route::group(['prefix' => 'report'], function () {
         Route::get('/cdr', ['as' => 'cdr.index', 'uses' => 'App\Http\Controllers\CdrController@index']);
         Route::post('/cdr/search', ['as' => 'cdr.search', 'uses' => 'App\Http\Controllers\CdrController@search']);

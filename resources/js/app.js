@@ -22,6 +22,7 @@ window.Vue = require('vue').default;
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('trunk', require('./components/Trunk.vue').default);
 Vue.component('exten', require('./components/Exten.vue').default);
+Vue.component('mailing', require('./components/Mailing.vue').default);
 Vue.component('reception-console', require('./components/ReceptionConsole.vue').default);
 Vue.component('add-route', require('./components/Routes/Add.vue').default);
 Vue.component('edit-route', require('./components/Routes/Edit.vue').default);
