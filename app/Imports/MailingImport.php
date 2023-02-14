@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Imports;
+
 use App\Models\Mailing;
 use App\Models\MailingError;
 use Illuminate\Support\Collection;
@@ -9,7 +10,8 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 class MailingImport implements ToCollection
 {
     private $args;
-    public function __construct($args = []){
+    public function __construct($args = [])
+    {
         $this->args = $args;
     }
     /**
@@ -17,24 +19,24 @@ class MailingImport implements ToCollection
     */
     public function collection(Collection $collection)
     {
-        $import_id = self::unique_code(12);  
+        $import_id = self::uniqueCode(12);
         $line = 0;
         $collection = $collection->toArray();
         $header  = $collection[0];
         unset($collection[0]);
-        foreach (array_values($collection) as $row) 
-        {
-            $phoneList = self::GetOrderPhone($import_id, $line, $row, $header);
+        foreach (array_values($collection) as $row) {
+            $phoneList = self::getOrderPhone($import_id, $line, $row, $header);
             $phoneError = !empty($phoneList['phoneError']) ? $phoneList['phoneError'] : [];
             foreach ($phoneError as $key => $value) {
                 $importErro[] = $value;
             }
             
-            if(!empty($phoneList['phoneList'])){
-                $cpf = self::Validate($import_id,'cpf',['line' => $line, 'column' => 'cpf'], $row[6]);
-                if(!$cpf['status']){
+            if (!empty($phoneList['phoneList'])) {
+                $cpf = self::validate($import_id, 'cpf', ['line' => $line, 'column' => 'cpf'], $row[6]);
+                if (!$cpf['status']) {
                     $importErro[] = $cpf['message'];
                 }
+                
                 $import[] = [
                     'phone1' => $phoneList['phoneList'][0] ?? '',
                     'phone2' => $phoneList['phoneList'][1] ?? '',
@@ -48,29 +50,34 @@ class MailingImport implements ToCollection
                     'import_id' => $import_id,
                 ];
             }
+
             $line++;
         }
-        if(!empty($import)){
+
+        if (!empty($import)) {
             Mailing::insert($import);
-        }        
-        if(!empty($importErro)){
+        }
+
+        if (!empty($importErro)) {
             MailingError::insert($importErro);
         }
     }
-    private function unique_code($limit)
+    private function uniqueCode($limit)
     {
-      return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
+        return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
     }
-    private function GetOrderPhone($import_id, $line, $row, $header){
+    private function getOrderPhone($import_id, $line, $row, $header)
+    {
         $index = 0;
         foreach ($header as $key => $value) {
-            if (str_contains($value, 'phone')) { 
-                $phone = self::Validate($import_id,'phone',['line' => $line, 'column' => $value], $row[$index]);
+            if (str_contains($value, 'phone')) {
+                $phone = self::validate($import_id, 'phone', ['line' => $line, 'column' => $value], $row[$index]);
                 $phoneList[] = $phone['value'] ?? null;
                 $phoneError[] = $phone['message'] ?? null;
                 $index++;
             }
         }
+
         $phoneList = array_filter($phoneList);
         $phoneError = array_filter($phoneError);
         return [
@@ -78,11 +85,12 @@ class MailingImport implements ToCollection
             'phoneError' => $phoneError ?? [],
         ];
     }
-    private function Validate($import_id, $type, $data, $value){
-        $value = self::removerCaracteres($value);
+    private function validate($import_id, $type, $data, $value)
+    {
+        $value = self::removeCharacters($value);
         switch ($type) {
             case 'phone':
-                if(strlen($value) < 10 || empty(trim($value))){
+                if (strlen($value) < 10 || empty(trim($value))) {
                     return [
                         'status' => false,
                         'message' => [
@@ -94,10 +102,10 @@ class MailingImport implements ToCollection
                         ]
                     ];
                 }
-            break;
+                break;
             case 'cpf':
-                if($this->args['valid_cpf'] == '1'){
-                    if(!self::Cpf($value)){
+                if ($this->args['valid_cpf'] == '1') {
+                    if (!self::cpf($value)) {
                         return [
                             'status' => false,
                             'message' => [
@@ -111,49 +119,55 @@ class MailingImport implements ToCollection
                         ];
                     }
                 }
-            break;
+                break;
             default:
                 # code...
-            break;
+                break;
         }
+
         return [
             'status' => true,
             'value' => $value
         ];
     }
-    private function removerCaracteres($string = null)
+    private function removeCharacters($string = null)
     {
-        $lista_de_caracteres = [',', '.', ';', '<', '>', ':', '/', '|', '?', ']', '[', '}', '{', '(', ')', '=', '+', '-', '_', '"', '\'', '\\'];
-        if(is_null($string)){
+        $list = [',', '.', ';', '<', '>', ':', '/', '|', '?', ']', '[', '}', '{', '(', ')',
+            '=', '+', '-', '_', '"', '\'', '\\'];
+        
+        if (is_null($string)) {
             return null;
         }
-        return trim(str_replace($lista_de_caracteres, '', $string));
+
+        return trim(str_replace($list, '', $string));
     }
-    private function Cpf($cpf) {
- 
-	    // Extrai somente os números
-	    $cpf = preg_replace( '/[^0-9]/is', '', $cpf );
-	     
-	    // Verifica se foi informado todos os digitos corretamente
-	    if (strlen($cpf) != 11) {
-	        return false;
-	    }
+    private function cpf($cpf)
+    {
 
-	    // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
-	    if (preg_match('/(\d)\1{10}/', $cpf)) {
-	        return false;
-	    }
+        // Extract only the numbers
+        $cpf = preg_replace('/[^0-9]/is', '', $cpf);
+        // Check if all digits were entered correctly
+        if (strlen($cpf) != 11) {
+            return false;
+        }
 
-	    // Faz o calculo para validar o CPF
-	    for ($t = 9; $t < 11; $t++) {
-	        for ($d = 0, $c = 0; $c < $t; $c++) {
-	            $d += $cpf[$c] * (($t + 1) - $c);
-	        }
-	        $d = ((10 * $d) % 11) % 10;
-	        if ($cpf[$c] != $d) {
-	            return false;
-	        }
-	    }
-	    return true;
-	}
+        // Checks if a sequence of repeated digits was informed. Ex: 111.111.111-11
+        if (preg_match('/(\d)\1{10}/', $cpf)) {
+            return false;
+        }
+
+        // Faz o calculo para validar o CPF
+        for ($t = 9; $t < 11; $t++) {
+            for ($d = 0, $c = 0; $c < $t; $c++) {
+                $d += $cpf[$c] * (($t + 1) - $c);
+            }
+            
+            $d = ((10 * $d) % 11) % 10;
+            if ($cpf[$c] != $d) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
