@@ -156,7 +156,7 @@ class MailingImport implements ToCollection
             return false;
         }
 
-        // Faz o calculo para validar o CPF
+        // Do the calculation to validate the CPF
         for ($t = 9; $t < 11; $t++) {
             for ($d = 0, $c = 0; $c < $t; $c++) {
                 $d += $cpf[$c] * (($t + 1) - $c);
