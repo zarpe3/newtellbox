@@ -27,8 +27,8 @@ class MailingImport implements ToCollection
         $header  = $collection[0];
         unset($collection[0]);
         
-        $followUp = new MailingFollowUp();
-        $followUp->status = 'process_start';
+        $followUp = MailingFollowUp::find($this->args['import_id']);
+        $followUp->status = 'prcessando';
         $followUp->size = count($collection);
         $followUp->success = 0;
         $followUp->fail = 0;
@@ -77,7 +77,7 @@ class MailingImport implements ToCollection
             MailingError::insert($importErro);
         }
 
-        $followUp->status = 'process_complete';
+        $followUp->status = 'finalizado';
         $followUp->success = count($import);
         $followUp->fail = $fail;
         $followUp->errors = count($importErro);

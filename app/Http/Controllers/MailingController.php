@@ -32,6 +32,7 @@ class MailingController extends Controller
             'action' => 'import',
             'mailing' => $request->file('mailing'),
             'valid_cpf' =>  $request->valid_cpf ?? '1',
+            'campaign_name' => $request->campaign_name ?? 'padrão'
         ]);
         return $response;
     }
