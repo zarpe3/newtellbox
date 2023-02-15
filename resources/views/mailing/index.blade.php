@@ -1,7 +1,7 @@
-@extends('layouts.app', ['activePage' => 'trunks', 'title' => 'Telbox Varejo', 'navName' => 'Troncos', 'activeButton' => 'laravel'])
+@extends('layouts.app', ['activePage' => 'mailings', 'title' => 'Acompanhamento', 'navName' => 'Acompanhamento', 'activeButton' => 'mailings'])
 
 @section('content')
 <div id="app" class="content">
-   <mailing></mailing>
+   <follow-up></follow-up>
 </div>
 @endsection

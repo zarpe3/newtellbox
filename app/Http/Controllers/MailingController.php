@@ -12,6 +12,11 @@ class MailingController extends Controller
     {
         return view('mailing.index');
     }
+
+    public function create()
+    {
+        return view('mailing.add');
+    }
     public function dataTable()
     {
         $customer = Auth::user()->customer;

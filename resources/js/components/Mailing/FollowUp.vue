@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>vue run 3</h1>
+        <h1>vue FollowUp</h1>
     </div>
 </template>
 <script>

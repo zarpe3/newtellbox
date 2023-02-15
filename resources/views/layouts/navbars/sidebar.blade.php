@@ -98,10 +98,32 @@ Tip 2: you can also add an image using data-image tag
                                 - {{ __("Voicemail") }}
                             </a>
                         </li>
-                        <li class="nav-item @if($activePage == 'mailing') active @endif">
+                    </ul>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#mailings" aria-expanded="true">
+                    <i>
+                        <i class="fa fa-upload"></i>
+                    </i>
+                    <p>
+                        {{ __('Mailings') }}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse @if($activeButton =='mailings') show @endif" id="mailings">
+                    <ul class="nav">
+                        <li class="nav-item @if($activePage == 'users') active @endif">
+                            <a class="nav-link" href="{{route('mailing.create')}}" style="margin-left: 20%;">
+                                <!--<i class="nc-icon nc-circle-09"></i>-->
+                                - {{ __("Importação") }}
+                            </a>
+                        </li>
+                        <li class="nav-item @if($activePage == 'trunks') active @endif">
                             <a class="nav-link" href="{{route('mailing.index')}}" style="margin-left: 20%;">
                                 <!--<i class="nc-icon nc-circle-09"></i>-->
-                                - {{ __("Mailing") }}
+                                - {{ __("Acompanhamento") }}
                             </a>
                         </li>
                     </ul>
