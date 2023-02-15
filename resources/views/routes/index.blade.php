@@ -4,6 +4,15 @@
 @section('content')
 <div id="app"></div>
 <div class="content">
+    @if(isset($success) && $success === false)
+        @include('alerts.error_response')
+    @endif
+
+    @if(isset($success) && $success && $message != "")
+        @include('alerts.success_response')
+    @endif
+
+    @if(!isset($success) || $success)
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -58,7 +67,7 @@
             </div>
         </div>
     </div>
-
+@endif
 </div>
 @endsection
 

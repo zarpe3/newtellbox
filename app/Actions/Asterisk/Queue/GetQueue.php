@@ -62,7 +62,7 @@ class GetQueue
             return $response;
         });
 
-        if ($this->data['toArray']) {
+        if (isset($this->data['toArray']) && $this->data['toArray']) {
             return $queueResponse->toArray();
         }
 

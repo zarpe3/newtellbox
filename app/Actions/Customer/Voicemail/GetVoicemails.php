@@ -19,7 +19,7 @@ class GetVoicemails
         $voicemail = Voicemail::where('customer_id', $this->actionRecord->id);
 
         if (!$voicemail->exists()) {
-            throw new Exception('No Voicemails Found', 1);
+            return [];
         }
 
         return $voicemail->get()->transform(function ($voicemail) {

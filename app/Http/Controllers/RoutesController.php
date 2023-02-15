@@ -21,6 +21,18 @@ class RoutesController extends Controller
         $customer = Auth::user()->customer;
         $routes = (new ActionRouting())->execute($customer, ['request' => 'GET']);
 
+        $response = Http::post('http://webdec-dev03.webdec.com.br/trunks/list', [
+            'accountcode' => $customer->accountcode,
+        ])->json();
+
+        if (count($response['response']) == 0) {
+            return view('routes.index', [
+                'routes' => $routes,
+                'success' => false,
+                'message' => 'Você precisa primeiro cadastrar um tronco',
+            ]);
+        }
+
         return view('routes.index', ['routes' => $routes]);
     }
 
