@@ -37,6 +37,8 @@ class MailingImport implements ToCollection
         
         $import_id = $followUp->id;
         $fail = 0;
+        $import = [];
+        $importErro = [];
         foreach (array_values($collection) as $row) {
             $phoneList = self::getOrderPhone($import_id, $line, $row, $header);
             $phoneError = !empty($phoneList['phoneError']) ? $phoneList['phoneError'] : [];
@@ -64,6 +66,16 @@ class MailingImport implements ToCollection
                 ];
             } else {
                 $fail++;
+            }
+            
+            if (count($import) >= 1000) {
+                Mailing::insert($import);
+                $import = [];
+            }
+
+            if (count($importErro) >= 1000) {
+                MailingError::insert($importErro);
+                $importErro = [];
             }
 
             $line++;
