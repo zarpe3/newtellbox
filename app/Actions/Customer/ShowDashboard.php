@@ -23,6 +23,15 @@ class ShowDashboard
         $trunks = (new GetTrunks())->execute($this->actionRecord, []);
         $queues = (new GetQueue())->execute($this->actionRecord, ['toArray' => true]);
 
+        return $this->validateResponse($extens, $trunks, $queues);
+    }
+
+    private function validateResponse($extens, $trunks, $queues)
+    {
+        if (!$extens['success']) {
+            $extens['extens'] = [];
+        }
+
         return [
             'extens' => $extens['extens'],
             'trunks' => $trunks['response'],
