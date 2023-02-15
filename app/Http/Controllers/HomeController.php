@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Actions\CGrates\Connect;
+use App\Actions\Customer\ShowDashboard;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -38,7 +39,9 @@ class HomeController extends Controller
         }
 
         if ($request->route()->uri == 'home') {
-            return view('dashboard');
+            $dashboard = (new ShowDashboard())->execute($user->customer, []);
+
+            return view('dashboard', ['dashboard' => $dashboard]);
         }
 
         return view('welcome');

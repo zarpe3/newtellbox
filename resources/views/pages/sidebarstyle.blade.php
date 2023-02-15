@@ -1,5 +1,5 @@
 @if(auth()->user()->customer->plan != null)
-<div class="fixed-plugin" id="softphone">
+<div class="fixed-plugin" id="softphone" style="display: none;">
     <div
         class="dropdown show-dropdown"
         v-bind:class="{show: isActive}"

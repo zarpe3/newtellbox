@@ -101,12 +101,12 @@ Tip 2: you can also add an image using data-image tag
                     </ul>
                 </div>
             </li>
-            <li class="nav-item @if($activePage == 'notifications') active @endif">
+            <!--<li class="nav-item @if($activePage == 'notifications') active @endif">
                 <a class="nav-link" href="{{route('page.index', 'notifications')}}">
                     <i class="nc-icon nc-bell-55"></i>
                     <p>{{ __("Notificações") }}</p>
                 </a>
-            </li>
+            </li>-->
         </ul>
     </div>
 </div>

@@ -50,7 +50,7 @@
                         <div class="col-md-4 px-1">
                             <div class="form-group">
                                 <label>Bina</label>
-                                <input type="text" name="callerid" class="form-control" placeholder="" value="">
+                                <input type="text" name="bina" class="form-control" placeholder="" value="">
                             </div>
                         </div>
                         <div class="col-md-4 px-1">

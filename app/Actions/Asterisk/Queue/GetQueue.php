@@ -14,6 +14,7 @@ class GetQueue
         $this->data = [
             'id' => $data['id'] ?? null,
             'name' => $data['name'] ?? null,
+            'toArray' => $data['toArray'] ?? false,
         ];
     }
 
@@ -40,7 +41,7 @@ class GetQueue
             $queue->where('id', $this->data['id']);
         }
 
-        return $queue->get()->transform(function ($queue) {
+        $queueResponse = $queue->get()->transform(function ($queue) {
             $response = [
                 'id' => $queue->id,
                 'name' => str_replace($this->actionRecord->accountcode.'_', '', $queue->name),
@@ -60,5 +61,11 @@ class GetQueue
 
             return $response;
         });
+
+        if ($this->data['toArray']) {
+            return $queueResponse->toArray();
+        }
+
+        return $queueResponse;
     }
 }
