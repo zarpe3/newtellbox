@@ -18,9 +18,6 @@ Auth::routes();
 Route::get('/', 'App\Http\Controllers\HomeController@index');
 
 Route::get('/test', 'App\Http\Controllers\HomeController@test');
-Route::post('/upload-files', function(){
-    return [];
-});
 //// Logout
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('dashboard');
