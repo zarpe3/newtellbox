@@ -35,7 +35,7 @@ class MailingController extends Controller
         $customer = Auth::user()->customer;
         $response = (new MailingAction())->execute($customer, [
             'action' => 'import',
-            'mailing' => $request->file('mailing'),
+            'mailing' => $request->file('file'),
             'valid_cpf' =>  $request->valid_cpf ?? '1',
             'campaign_name' => $request->campaign_name ?? 'padrão'
         ]);

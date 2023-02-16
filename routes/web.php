@@ -61,6 +61,8 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::post('/me', 'App\Http\Controllers\UserController@me');
+
+    Route::post('/mailing/import', 'App\Http\Controllers\MailingController@import');
 });
 
 Route::group(['middleware' => 'auth'], function () {

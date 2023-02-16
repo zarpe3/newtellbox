@@ -48,8 +48,8 @@
               <td>{{ formatSize(file.speed) }}</td>
 
               <td v-if="file.error">{{ file.error }}</td>
-              <td v-else-if="file.success">success</td>
-              <td v-else-if="file.active">active</td>
+              <td v-else-if="file.success">Sucesso</td>
+              <td v-else-if="file.active">Ativo</td>
               <td v-else></td>
               <td>
                 <div class="btn-group">
@@ -62,7 +62,7 @@
       </div>
       <div class="example-foorer">
         <div class="btn-group">
-          <file-upload class="btn btn-primary" :post-action="postAction" :put-action="putAction"
+          <file-upload class="btn btn-primary" :post-action="postAction"
             :extensions="extensions" :accept="accept" :multiple="multiple" :directory="directory"
             :create-directory="createDirectory" :size="size || 0" :thread="thread < 1 ? 1 : (thread > 5 ? 5 : thread)"
             :headers="headers" :data="data" :drop="drop" :drop-directory="dropDirectory" :add-index="addIndex"
@@ -78,17 +78,10 @@
         </button>
         <button type="button" class="btn btn-danger" v-else @click.prevent="$refs.upload.active = false">
           <i class="fa fa-stop" aria-hidden="true"></i>
-          Stop Upload
+          Parar o Envio
         </button>
       </div>
     </div>
-
-
-
-
-
-
-
   </div>
 </template>
 <style>
@@ -179,17 +172,15 @@ export default {
   components: {
     FileUpload,
   },
-
+  props: ['config'],
   data() {
     return {
       files: [],
       accept: 'image/png,image/gif,image/jpeg,image/webp',
       extensions: 'gif,jpg,jpeg,png,webp',
-      // extensions: ['gif', 'jpg', 'jpeg','png', 'webp'],
-      // extensions: /\.(gif|jpe?g|png|webp)$/i,
-      minSize: 1024,
-      size: 1024 * 1024 * 10,
-      multiple: true,
+      minSize: 0,
+      size: 6400000000,
+      multiple: false,
       directory: false,
       drop: true,
       dropDirectory: true,
@@ -197,15 +188,11 @@ export default {
       addIndex: false,
       thread: 3,
       name: 'file',
-      postAction: '/upload/post',
-      putAction: '/upload/put',
+      postAction: '',
       headers: {
-        'X-Csrf-Token': 'xxxx',
+        'X-Csrf-Token': window.Laravel.csrfToken,
       },
-      data: {
-        '_csrf_token': 'xxxxxx',
-      },
-
+      data: {},
       autoCompress: 1024 * 1024,
       uploadAuto: false,
       isOption: false,
@@ -224,7 +211,16 @@ export default {
       }
     }
   },
-
+  mounted() {
+    if(this.$props.config !== undefined){
+      this.accept = this.$props.config.accept !== undefined ? this.$props.config.accept : 'image/png,image/gif,image/jpeg,image/webp'
+      this.extensions = this.$props.config.extensions !== undefined ? this.$props.config.extensions : 'gif,jpg,jpeg,png,webp'
+      this.minSize = this.$props.config.minSize !== undefined ? this.$props.config.minSize : 0
+      // this.size = this.$props.config.size !== undefined ? this.$props.config.size : 1024 * 1024 * 10
+      this.multiple = this.$props.config.multiple !== undefined ? this.$props.config.multiple : false
+      this.postAction = this.$props.config.postAction !== undefined ? this.$props.config.postAction : '/'
+    }
+  },
   watch: {
     'editFile.show'(newValue, oldValue) {
       // 关闭了 自动删除 error
@@ -272,23 +268,14 @@ export default {
     },
     inputFilter(newFile, oldFile, prevent) {
       if (newFile && !oldFile) {
-        // Before adding a file
-        // 添加文件前
-
-        // Filter system files or hide files
-        // 过滤系统文件 和隐藏文件
         if (/(\/|^)(Thumbs\.db|desktop\.ini|\..+)$/.test(newFile.name)) {
           return prevent()
         }
 
-        // Filter php html js file
-        // 过滤 php html js 文件
         if (/\.(php5?|html?|jsx?)$/i.test(newFile.name) && newFile.type !== "text/directory") {
           return prevent()
         }
 
-        // Automatic compression
-        // 自动压缩
         if (newFile.file && newFile.error === "" && newFile.type.substr(0, 6) === 'image/' && this.autoCompress > 0 && this.autoCompress < newFile.size) {
           newFile.error = 'compressing'
           const imageCompressor = new ImageCompressor(null, {
@@ -308,24 +295,19 @@ export default {
 
 
       if (newFile && newFile.error === "" && newFile.file && (!oldFile || newFile.file !== oldFile.file)) {
-        // Create a blob field
-        // 创建 blob 字段
+        console.log(newFile)
         newFile.blob = ''
         let URL = (window.URL || window.webkitURL)
         if (URL) {
           newFile.blob = URL.createObjectURL(newFile.file)
         }
 
-        // Thumbnails
-        // 缩略图
         newFile.thumb = ''
         if (newFile.blob && newFile.type.substr(0, 6) === 'image/') {
           newFile.thumb = newFile.blob
         }
       }
 
-      // image size
-      // image 尺寸
       if (newFile && newFile.error === '' && newFile.type.substr(0, 6) === "image/" && newFile.blob && (!oldFile || newFile.blob !== oldFile.blob)) {
         newFile.error = 'image parsing'
         let img = new Image();
@@ -362,6 +344,8 @@ export default {
         }
 
         if (newFile.success && !oldFile.success) {
+          console.log('dd')
+          console.log(newFile.response)
           // success
         }
       }

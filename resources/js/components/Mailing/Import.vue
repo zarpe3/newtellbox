@@ -26,7 +26,7 @@
                                     </label>
                                     <input type="text" name="name" id="input-name" class="form-control" placeholder="Nome da Campanha" value="" required autofocus>
                                 </div>
-                                <UploadFile></UploadFile>
+                                <UploadFile :config="config" ></UploadFile>
                             </div>
                         </form>
                     </div>
@@ -41,7 +41,13 @@ export default {
     components: { UploadFile},
     data() {
         return {
-            files: []
+            config: {
+                accept:'text/csv',
+                extensions: 'csv',
+                minSize: 100,
+                size: 64000, //3mb
+                postAction: `${window.Laravel.baseUrl}mailing/import`,
+            }
         }
     },
     mounted() {

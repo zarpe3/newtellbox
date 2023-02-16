@@ -2,6 +2,8 @@
 
 namespace App\Imports;
 
+set_time_limit(36000);
+
 use App\Models\Mailing;
 use App\Models\MailingError;
 use App\Models\MailingFollowUp;
@@ -39,19 +41,30 @@ class MailingImport implements ToCollection
         $fail = 0;
         $import = [];
         $importErro = [];
+        $countError = 0;
+        $countImport = 0;
+        
         foreach (array_values($collection) as $row) {
             $phoneList = self::getOrderPhone($import_id, $line, $row, $header);
-            $phoneError = !empty($phoneList['phoneError']) ? $phoneList['phoneError'] : [];
-            foreach ($phoneError as $key => $value) {
-                $importErro[] = $value;
+            $phoneError = !is_null($phoneList['phoneError']) ? $phoneList['phoneError'] : null;
+            
+            $cpf = self::validate($import_id, 'cpf', ['line' => $line, 'column' => 'cpf'], $row[6]);
+            if (!$cpf['status']) {
+                if (!is_null($phoneError)) {
+                    $phoneError['column'] = "{$phoneError['column']}{$cpf['message']['column']}";
+                    $phoneError['value'] = "{$phoneError['value']}{$cpf['message']['value']}";
+                    $phoneError['message'] = "{$phoneError['message']}{$cpf['message']['message']}";
+                } else {
+                    $phoneError['import_id'] = $cpf['message']['import_id'];
+                    $phoneError['line'] = $cpf['message']['line'];
+                    $phoneError['column'] = $cpf['message']['column'];
+                    $phoneError['value'] = $cpf['message']['value'];
+                    $phoneError['message'] = $cpf['message']['message'];
+                }
             }
+            $importErro[] = $phoneError;
             
             if (!empty($phoneList['phoneList'])) {
-                $cpf = self::validate($import_id, 'cpf', ['line' => $line, 'column' => 'cpf'], $row[6]);
-                if (!$cpf['status']) {
-                    $importErro[] = $cpf['message'];
-                }
-                
                 $import[] = [
                     'phone1' => $phoneList['phoneList'][0] ?? '',
                     'phone2' => $phoneList['phoneList'][1] ?? '',
@@ -69,49 +82,87 @@ class MailingImport implements ToCollection
             }
             
             if (count($import) >= 1000) {
+                $countImport = $countImport + 1000;
                 Mailing::insert($import);
                 $import = [];
             }
-
+            
+            $importErro = array_values(array_filter($importErro));
+            
             if (count($importErro) >= 1000) {
+                $countError = $countError + 1000;
                 MailingError::insert($importErro);
                 $importErro = [];
             }
-
+           
             $line++;
         }
+        
+        $importErro = array_values(array_filter($importErro));
         
         if (!empty($import)) {
             Mailing::insert($import);
         }
-
+        
         if (!empty($importErro)) {
             MailingError::insert($importErro);
         }
 
         $followUp->status = 'finalizado';
-        $followUp->success = count($import);
+        $followUp->success = count($import) + $countImport;
         $followUp->fail = $fail;
-        $followUp->errors = count($importErro);
+        $followUp->errors = count($importErro) + $countError;
         $followUp->save();
+    }
+    private function mergeErros($importErro)
+    {
+        $data = [];
+        
+        $column = '';
+        $message = '';
+        $valueString = '';
+        
+        foreach (array_filter($importErro) as $key => $value) {
+            $column .= "{$value['column']},";
+            $message .= "{$value['message']},";
+            $valueString .= "{$value['value']},";
+            $data[$value['line']]= [
+                'import_id' => $value['import_id'],
+                'line' => $value['line'],
+                'column' => $column,
+                'value' => $valueString,
+                'message' => $message,
+            ];
+        }
+        
+        return $data;
     }
     private function getOrderPhone($import_id, $line, $row, $header)
     {
         $index = 0;
+        $phoneList = [];
+        $phoneError = [];
         foreach ($header as $key => $value) {
             if (str_contains($value, 'phone')) {
                 $phone = self::validate($import_id, 'phone', ['line' => $line, 'column' => $value], $row[$index]);
-                $phoneList[] = $phone['value'] ?? null;
-                $phoneError[] = $phone['message'] ?? null;
+                $phoneList[] = $phone['value'] ?? '';
+                $phoneError[] = $phone['message'] ?? '';
                 $index++;
             }
         }
+        
+        
 
         $phoneList = array_filter($phoneList);
         $phoneError = array_filter($phoneError);
+        
+        if (!empty($phoneError)) {
+            $phoneError = array_values(self::mergeErros($phoneError));
+        }
+        
         return [
             'phoneList' => array_values($phoneList) ?? [],
-            'phoneError' => $phoneError ?? [],
+            'phoneError' => $phoneError[0] ?? null,
         ];
     }
     private function validate($import_id, $type, $data, $value)
@@ -126,7 +177,7 @@ class MailingImport implements ToCollection
                             'import_id' => $import_id,
                             'line' => $data['line'],
                             'column' => $data['column'],
-                            'value' => $value,
+                            'value' => '',
                             'message' => 'O telefone precisa ter mais de 10 digitos'
                         ]
                     ];
@@ -142,7 +193,7 @@ class MailingImport implements ToCollection
                                 'import_id' => $import_id,
                                 'line' => $data['line'],
                                 'column' => $data['column'],
-                                'value' => $value,
+                                'value' => !empty($value) ? $value : "",
                                 'message' => 'cpf inválido'
                             ]
                         ];

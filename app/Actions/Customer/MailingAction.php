@@ -56,6 +56,7 @@ class MailingAction
                             ]);
                         }
                     })->onQueue('mailing');
+                
                 } catch (\Exception $exception) {
                     $followUp->status = 'cancelado';
                     $followUp->cancelMessage = json_encode([
