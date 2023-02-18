@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Customer\MailingAction;
+use App\Models\MailingFollowUp;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -17,14 +18,7 @@ class MailingController extends Controller
     {
         return view('mailing.add');
     }
-    public function dataTable()
-    {
-        $customer = Auth::user()->customer;
-        $response = (new MailingAction())->execute($customer, [
-            'action' => 'getdata',
-        ]);
-        return $response;
-    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -40,5 +34,10 @@ class MailingController extends Controller
             'campaign_name' => $request->campaign_name ?? 'padrão'
         ]);
         return $response;
+    }
+
+    public function followUp(Request $request)
+    {
+        return MailingFollowUp::where(['user_id' => \Auth::id()])->orderBy('id','desc')->paginate();
     }
 }

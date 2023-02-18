@@ -10,10 +10,9 @@
             <tr>
               <th></th>
               <th>Nome</th>
-              <th>Largura</th>
-              <th>Altura</th>
+              <th v-if="isImage">Largura</th>
+              <th v-if="isImage">Altura</th>
               <th>Tamanho</th>
-              <th>Velocidade</th>
               <th>Estado</th>
               <th>Ação</th>
             </tr>
@@ -42,14 +41,13 @@
                     role="progressbar" :style="{ width: file.progress + '%' }">{{ file.progress }}%</div>
                 </div>
               </td>
-              <td>{{ file.width || 0 }}</td>
-              <td>{{ file.height || 0 }}</td>
+              <td v-if="isImage">{{ file.width || 0 }}</td>
+              <td v-if="isImage">{{ file.height || 0 }}</td>
               <td>{{ formatSize(file.size) }}</td>
-              <td>{{ formatSize(file.speed) }}</td>
-
-              <td v-if="file.error">{{ file.error }}</td>
-              <td v-else-if="file.success">Sucesso</td>
-              <td v-else-if="file.active">Ativo</td>
+              
+              <td v-if="file.error">{{ messageError(file.error) }}</td>
+              <td v-else-if="file.success">Arquivo enviado</td>
+              <td v-else-if="file.active">Enviando arquivo</td>
               <td v-else></td>
               <td>
                 <div class="btn-group">
@@ -65,7 +63,7 @@
           <file-upload class="btn btn-primary" :post-action="postAction"
             :extensions="extensions" :accept="accept" :multiple="multiple" :directory="directory"
             :create-directory="createDirectory" :size="size || 0" :thread="thread < 1 ? 1 : (thread > 5 ? 5 : thread)"
-            :headers="headers" :data="data" :drop="drop" :drop-directory="dropDirectory" :add-index="addIndex"
+            :headers="headers" :data="this.$parent.data" :drop="drop" :drop-directory="dropDirectory" :add-index="addIndex"
             v-model="files" @input-filter="inputFilter" @input-file="inputFile" ref="upload">
             <i class="fa fa-plus"></i>
             Selecionar
@@ -176,10 +174,12 @@ export default {
   data() {
     return {
       files: [],
+      required: [],
+      isImage: true,
       accept: 'image/png,image/gif,image/jpeg,image/webp',
       extensions: 'gif,jpg,jpeg,png,webp',
       minSize: 0,
-      size: 6400000000,
+      size: 1024 * 1024 * 1,
       multiple: false,
       directory: false,
       drop: true,
@@ -192,11 +192,10 @@ export default {
       headers: {
         'X-Csrf-Token': window.Laravel.csrfToken,
       },
-      data: {},
+      data: this.$parent.data,
       autoCompress: 1024 * 1024,
       uploadAuto: false,
       isOption: false,
-
       addData: {
         show: false,
         name: '',
@@ -204,30 +203,34 @@ export default {
         content: '',
       },
 
-
       editFile: {
         show: false,
         name: '',
-      }
+      },
+      customMessage: '',
     }
   },
   mounted() {
     if(this.$props.config !== undefined){
+      this.isImage = this.$props.config.isImage !== undefined ? this.$props.config.isImage : true
       this.accept = this.$props.config.accept !== undefined ? this.$props.config.accept : 'image/png,image/gif,image/jpeg,image/webp'
       this.extensions = this.$props.config.extensions !== undefined ? this.$props.config.extensions : 'gif,jpg,jpeg,png,webp'
       this.minSize = this.$props.config.minSize !== undefined ? this.$props.config.minSize : 0
-      // this.size = this.$props.config.size !== undefined ? this.$props.config.size : 1024 * 1024 * 10
+      this.size = this.$props.config.size !== undefined ? this.$props.config.size : 1024 * 1024 * 1
       this.multiple = this.$props.config.multiple !== undefined ? this.$props.config.multiple : false
       this.postAction = this.$props.config.postAction !== undefined ? this.$props.config.postAction : '/'
+      this.multiple = this.$props.config.multiple !== undefined ? this.$props.config.multiple : false
+      this.uploadAuto = this.$props.config.uploadAuto !== undefined ? this.$props.config.uploadAuto : false
+      this.required = this.$props.config.required !== undefined ? this.$props.config.required : []
     }
   },
   watch: {
+    
     'editFile.show'(newValue, oldValue) {
       // 关闭了 自动删除 error
       if (!newValue && oldValue) {
         this.$refs.upload.update(this.editFile.id, { error: this.editFile.error || '' })
       }
-
       if (newValue) {
         this.$nextTick( () => {
           if (!this.$refs.editImage) {
@@ -254,6 +257,25 @@ export default {
   },
 
   methods: {
+    messageError(error){
+      if(error.includes('.')){
+        error = string.split(".")[0];
+        return error[1];
+      }
+      switch (error) {
+        case 'size':
+            return `Somente arquvo até ${this.formatSize(this.size)}`;
+          break;
+        case 'extension':
+            return `Somente arquivo ${this.extensions}`;
+          break;
+        case 'custom':
+            return this.customMessage;
+          break;
+        default:
+          break;
+      }
+    },
     formatSize(size){
       if (size > 1024 * 1024 * 1024 * 1024) {
         return (size / 1024 / 1024 / 1024 / 1024).toFixed(2) + ' TB'
@@ -267,6 +289,7 @@ export default {
       return size.toString() + ' B'
     },
     inputFilter(newFile, oldFile, prevent) {
+      console.log(this.data)
       if (newFile && !oldFile) {
         if (/(\/|^)(Thumbs\.db|desktop\.ini|\..+)$/.test(newFile.name)) {
           return prevent()
@@ -323,12 +346,26 @@ export default {
 
     // add, update, remove File Event
     inputFile(newFile, oldFile) {
+      this.$parent.sendStatus()
+      
       if (newFile && oldFile) {
         // update
-
         if (newFile.active && !oldFile.active) {
           // beforeSend
-
+          if(this.$parent.required.length !== 0){
+            if(this.$parent.send === false){
+              let statusError = true
+              let messageError = ''
+              this.$parent.required.forEach(element => {
+                if(statusError && (element.value === undefined || element.value === '')){
+                  statusError = false
+                  messageError = element.message
+                }
+              });
+              this.customMessage = messageError
+              this.$refs.upload.update(newFile, { error: 'custom' })
+            }          
+          }
           // min size
           if (newFile.size >= 0 && this.minSize > 0 && newFile.size < this.minSize && newFile.type !== "text/directory") {
             this.$refs.upload.update(newFile, { error: 'size' })
@@ -344,23 +381,10 @@ export default {
         }
 
         if (newFile.success && !oldFile.success) {
-          console.log('dd')
           console.log(newFile.response)
           // success
         }
       }
-
-
-      if (!newFile && oldFile) {
-        // remove
-        if (oldFile.success && oldFile.response.id) {
-          // $.ajax({
-          //   type: 'DELETE',
-          //   url: '/upload/delete?id=' + oldFile.response.id,
-          // })
-        }
-      }
-
 
       // Automatically activate upload
       if (Boolean(newFile) !== Boolean(oldFile) || oldFile.error !== newFile.error) {
@@ -368,78 +392,8 @@ export default {
           this.$refs.upload.active = true
         }
       }
+      
     },
-
-
-    alert(message) {
-      alert(message)
-    },
-
-
-    onEditFileShow(file) {
-      this.editFile = { ...file, show: true }
-      this.$refs.upload.update(file, { error: 'edit' })
-    },
-
-    onEditorFile() {
-      if (!this.$refs.upload.features.html5) {
-        this.alert('Your browser does not support')
-        this.editFile.show = false
-        return
-      }
-
-      let data = {
-        name: this.editFile.name,
-        error: '',
-      }
-      if (this.editFile.cropper) {
-        let binStr = atob(this.editFile.cropper.getCroppedCanvas().toDataURL(this.editFile.type).split(',')[1])
-        let arr = new Uint8Array(binStr.length)
-        for (let i = 0; i < binStr.length; i++) {
-          arr[i] = binStr.charCodeAt(i)
-        }
-        data.file = new File([arr], data.name, { type: this.editFile.type })
-        data.size = data.file.size
-      }
-      this.$refs.upload.update(this.editFile.id, data)
-      this.editFile.error = ''
-      this.editFile.show = false
-    },
-
-    // add folder
-    onAddFolder() {
-      if (!this.$refs.upload.features.directory) {
-        this.alert('Your browser does not support')
-        return
-      }
-      let input = document.createElement('input')
-      input.style = "background: rgba(255, 255, 255, 0);overflow: hidden;position: fixed;width: 1px;height: 1px;z-index: -1;opacity: 0;"
-      input.type = 'file'
-      input.setAttribute('allowdirs', true)
-      input.setAttribute('directory', true)
-      input.setAttribute('webkitdirectory', true)
-      input.multiple = true
-      document.querySelector("body").appendChild(input)
-      input.click()
-      input.onchange = (e) => {
-        this.$refs.upload.addInputFile(input).then(function() {
-          document.querySelector("body").removeChild(input)
-        })
-      }
-    },
-
-    onAddData() {
-      this.addData.show = false
-      if (!this.$refs.upload.features.html5) {
-        this.alert('Your browser does not support')
-        return
-      }
-
-      let file = new window.File([this.addData.content], this.addData.name, {
-        type: this.addData.type,
-      })
-      this.$refs.upload.add(file)
-    }
   }
 }
 </script>
