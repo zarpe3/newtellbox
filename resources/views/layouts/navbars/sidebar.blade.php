@@ -92,6 +92,12 @@ Tip 2: you can also add an image using data-image tag
                                 - {{ __("Filas") }}
                             </a>
                         </li>
+                        <li class="nav-item @if($activePage == 'audios') active @endif">
+                            <a class="nav-link" href="{{route('audios.index')}}" style="margin-left: 20%;">
+                                <!--<i class="nc-icon nc-circle-09"></i>-->
+                                - {{ __("Audios") }}
+                            </a>
+                        </li> 
                         <li class="nav-item @if($activePage == 'voicemail') active @endif">
                             <a class="nav-link" href="{{route('voicemail.index')}}" style="margin-left: 20%;">
                                 <!--<i class="nc-icon nc-circle-09"></i>-->
@@ -130,11 +136,12 @@ Tip 2: you can also add an image using data-image tag
                 </div>
             </li>
             <li class="nav-item @if($activePage == 'notifications') active @endif">
+            <!--<li class="nav-item @if($activePage == 'notifications') active @endif">
                 <a class="nav-link" href="{{route('page.index', 'notifications')}}">
                     <i class="nc-icon nc-bell-55"></i>
                     <p>{{ __("Notificações") }}</p>
                 </a>
-            </li>
+            </li>-->
         </ul>
     </div>
 </div>

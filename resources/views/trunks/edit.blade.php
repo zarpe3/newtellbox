@@ -48,7 +48,7 @@
                         <div class="col-md-4 px-1">
                             <div class="form-group">
                                 <label>Bina</label>
-                                <input type="text" name="callerid" class="form-control" placeholder="" value="{{@$trunk['callerid']}}">
+                                <input type="text" name="bina" class="form-control" placeholder="" value="{{@$trunk['bina']}}">
                             </div>
                         </div>
                         <div class="col-md-4 px-1">

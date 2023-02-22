@@ -23,7 +23,7 @@ class QueueController extends Controller
         $queues = (new GetQueue())->execute($customer, []);
         $response = (new SIP())->execute($customer, ['request' => 'GET']);
 
-        if (count($response['extens']) == 0) {
+        if (!$response['success']) {
             $response['success'] = false;
             $response['msg'] = 'Você não possui ramais cadastrados';
         }
@@ -46,7 +46,7 @@ class QueueController extends Controller
         $customer = Auth::user()->customer;
         $response = (new SIP())->execute($customer, ['request' => 'GET']);
 
-        if (count($response['extens']) == 0) {
+        if (!$response['success']) {
             $response['success'] = false;
             $response['msg'] = 'Você não possui ramais cadastrados';
         }

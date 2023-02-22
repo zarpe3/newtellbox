@@ -25,7 +25,7 @@ class UpdateTrunks
             'canreivinte' => 'yes',
             'type' => 'peer',
             'insecure' => 'invite,port',
-            'callerid' => $data['trunk']['callerid'] ?? '',
+            'bina' => $data['trunk']['bina'] ?? '',
             'nat' => 'force_rport,comedia',
             'allow' => 'all',
         ];

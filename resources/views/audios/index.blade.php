@@ -1,5 +1,5 @@
 
-@extends('layouts.app', ['activePage' => 'routes', 'title' => 'Telbox Varejo', 'navName' => '', 'activeButton' => 'laravel'])
+@extends('layouts.app', ['activePage' => 'audios', 'title' => 'Telbox Varejo', 'navName' => '', 'activeButton' => 'laravel'])
 
 @section('content')
 <div id="app"></div>
@@ -21,13 +21,13 @@
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h3 class="mb-0">Rotas</h3>
+                                <h3 class="mb-0">Audios</h3>
                                 <p class="text-sm mb-0">
 
                                 </p>
                             </div>
                             <div class="col-4 text-right">
-                                <a href="/routes/create" class="btn btn-sm btn-default">Adicionar Rota</a>
+                                <a href="/audios/create" class="btn btn-sm btn-default">Adicionar Audio</a>
                             </div>
                         </div>
                     </div>
@@ -47,17 +47,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($routes as $route)
+                                @foreach($audios as $audio)
                                     <tr>
-                                        <td> {{ $route['name'] }} </td>
-                                        <td class="d-flex">
-                                            <a href="/routes/{{ base64_encode(json_encode($route)) }}>">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <a v-on:click="remove('{{ base64_encode(json_encode($route)) }} ')">
-                                                <i class="fa fa-trash" style="color: red"></i>
-                                            </a>
-                                        </td>
+                                        <td> {{ $audio['name'] }} </td>
                                     </tr>    
                                 @endforeach
                             </tbody>
@@ -74,5 +66,4 @@
 @push('js')
 <script type="text/javascript">
 </script>
-<script src="{{ asset('/js/routes.js') }}"></script>
 @endpush

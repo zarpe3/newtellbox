@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+
 use App\Actions\Customer\AvailableAccountCode;
 use App\Actions\CGrates\Connect;
 use App\Http\Controllers\Controller;
@@ -47,21 +48,19 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function customerValidator(array $data)
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users']
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         ]);
     }
 
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -76,7 +75,6 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
      * @return \App\Models\User
      */
     protected function create(array $data, Customer $customer)
@@ -92,28 +90,28 @@ class RegisterController extends Controller
     /**
      * Create a new company instance after a valid registration.
      *
-     * @param  array  $data
      * @return \App\Models\Customer
      */
     protected function createCustomer(array $data)
     {
         $accountCode = (new AvailableAccountCode())->execute();
 
-        $this->sendDataToCGRates(['method' => 'APIerSv1.SetRatingProfile','params'=> [
-            ["TPid" => "RatingProfile_VoiceCalls", "Overwrite" => true, "LoadId" => "API", "Tenant" => $accountCode, "Category" => "call", "Subject" => "*any", "RatingPlanActivations" => [
-                    ["ActivationTime" => "2014-01-14T00:00:00Z", "RatingPlanId" => "RatingPlan_VoiceCalls", "FallbackSubjects" => ""],
+        if (env('ENABLE_CGRATES', true)) {
+            $this->sendDataToCGRates(['method' => 'APIerSv1.SetRatingProfile', 'params' => [
+                ['TPid' => 'RatingProfile_VoiceCalls', 'Overwrite' => true, 'LoadId' => 'API', 'Tenant' => $accountCode, 'Category' => 'call', 'Subject' => '*any', 'RatingPlanActivations' => [
+                    ['ActivationTime' => '2014-01-14T00:00:00Z', 'RatingPlanId' => 'RatingPlan_VoiceCalls', 'FallbackSubjects' => ''],
                 ],
-            ]
-        ]]);
+                ],
+            ]]);
 
-        $this->sendDataToCGRates(["method" => "APIerSv1.LoadTariffPlanFromStorDb", "params" =>[
-            ["TPid" => "cgrates.org", "DryRun" => false,"Validate" => true, "APIOpts" => null, "Caching" => null]
-        ],"id" => 0]);
+            $this->sendDataToCGRates(['method' => 'APIerSv1.LoadTariffPlanFromStorDb', 'params' => [
+                ['TPid' => 'cgrates.org', 'DryRun' => false, 'Validate' => true, 'APIOpts' => null, 'Caching' => null],
+            ], 'id' => 0]);
+        }
 
         return Customer::create([
             'name' => $data['name'],
-            'accountcode' => $accountCode
+            'accountcode' => $accountCode,
         ]);
     }
-
 }

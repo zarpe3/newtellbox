@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/inbound', 'App\Http\Controllers\InboundController');
     Route::resource('/queue', 'App\Http\Controllers\QueueController');
     Route::resource('/trunks', 'App\Http\Controllers\TrunksController');
+    Route::resource('/audios', 'App\Http\Controllers\AudiosController');
     Route::resource('/trunks-advanced', 'App\Http\Controllers\TrunksAdvancedController');
     Route::resource('/reception', 'App\Http\Controllers\ReceptionConsoleController');
     Route::post('/reception/hangup', 'App\Http\Controllers\ReceptionConsoleController@hangup');

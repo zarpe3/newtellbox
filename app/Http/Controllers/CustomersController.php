@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Customer\CustomerAction;
+use App\Actions\Customer\ShowDashboard;
 use App\Http\Requests\CustomerPlanRequest;
-use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Http\Request;
 
 class CustomersController extends Controller
 {
@@ -38,7 +39,9 @@ class CustomersController extends Controller
         );
 
         if ($response) {
-            return view('dashboard');
+            $dashboard = (new ShowDashboard())->execute($customer, []);
+
+            return view('dashboard', ['dashboard' => $dashboard]);
         }
     }
 }
