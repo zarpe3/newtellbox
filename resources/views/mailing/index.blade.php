@@ -2,6 +2,6 @@
 
 @section('content')
 <div id="app" class="content">
-   <follow-up></follow-up>
+   <mailing-follow-up></mailing-follow-up>
 </div>
 @endsection

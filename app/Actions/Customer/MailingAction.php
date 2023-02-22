@@ -3,8 +3,6 @@
 namespace App\Actions\Customer;
 
 use App\Actions\ModelActionBase;
-use App\Models\Mailing;
-use App\Models\MailingFollowUp;
 
 class MailingAction
 {
@@ -21,10 +19,12 @@ class MailingAction
             case 'import':
                 $args = [
                     'file_path' => self::uploadFile($this->data['mailing']),
-                    'authId' => \Auth::id(),
+                    'user_id' => $this->data['user_id'],
+                    'customer_id' => $this->actionRecord->id,
                     'valid_cpf' => $this->data['valid_cpf'],
+                    'campaign_name' => $this->data['campaign_name']
                 ];
-                $args['followUp'] = self::startProcess($this->data, $args['file_path']);
+                $args['followUp'] = self::startProcess($args);
                 if ($args['followUp'] !== false) {
                     dispatch(function () use ($args) {
                         ini_set('memory_limit', '4095M');
@@ -56,7 +56,7 @@ class MailingAction
         unlink($file_path);
         
         $followUp = $args['followUp'];
-        $authId = $args['authId'];
+        $user_id = $args['user_id'];
         try {
             $line = 0;
             $header = $file[0];
@@ -115,7 +115,7 @@ class MailingAction
                         'name' => $row[5] ?? '',
                         'cpf' => $cpf['value'] ?? '',
                         'cod_crm' => $row[7] ?? '',
-                        'user_id' => $authId,
+                        'user_id' => $user_id,
                         'import_id' => $followUp->id,
                     ];
                 } else {
@@ -182,13 +182,14 @@ class MailingAction
         $file->storeAs('./', $uploadfile1, 'local');
         return "app/{$uploadfile1}";
     }
-    private function startProcess($data, $file)
+    private function startProcess($data)
     {
         try {
-            $followUp = new MailingFollowUp();
-            $followUp->user_id = \Auth::id();
-            $followUp->campaign_name = $data['campaign_name'];
-            $followUp->valid_cpf = $data['valid_cpf'];
+            $followUp = new \App\Models\MailingFollowUp();
+            $followUp->user_id = $data['user_id'] ?? null;
+            $followUp->customer_id = $data['customer_id'] ?? null;
+            $followUp->campaign_name = $data['campaign_name'] ?? 'padrão';
+            $followUp->valid_cpf = $data['valid_cpf'] ?? '1';
             $followUp->status = 'aguardando';
             $followUp->size = 0;
             $followUp->success = 0;
@@ -202,7 +203,7 @@ class MailingAction
         
         return $followUp ?? false;
     }
-    public static function mergeErros($importErro)
+    public static function mergeErrors($importErro)
     {
         $data = [];
         
@@ -238,14 +239,12 @@ class MailingAction
                 $index++;
             }
         }
-        
-        
 
         $phoneList = array_filter($phoneList);
         $phoneError = array_filter($phoneError);
         
         if (!empty($phoneError)) {
-            $phoneError = array_values(self::mergeErros($phoneError));
+            $phoneError = array_values(self::mergeErrors($phoneError));
         }
         
         return [

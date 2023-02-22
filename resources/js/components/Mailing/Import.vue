@@ -163,7 +163,7 @@ export default {
             accept: 'text/csv',
             extensions: 'csv',
             minSize: 100,
-            size: (1024 * 1024) * 10, //10mb
+            size: (1024 * 1024) * 15, //15mb
             multiple: false,
             directory: false,
             drop: true,
