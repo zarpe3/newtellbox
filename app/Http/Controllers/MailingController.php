@@ -38,6 +38,15 @@ class MailingController extends Controller
         return $response;
     }
 
+    public function exportError(Request $request)
+    {
+        $customer = Auth::user();
+        $response = (new MailingAction())->execute($customer->customer, [
+            'action' => 'export-error',
+        ]);
+        return $response;
+    }
+
     public function followUp(Request $request)
     {
         $customer = Auth::user();

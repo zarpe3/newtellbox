@@ -24,16 +24,19 @@ class MailingAction
                 ->paginate();
                 break;
             case 'import':
+                $now = time();
                 $response = (new StoreTmpFile())->execute($this->actionRecord, [
                     'file' => $this->data['mailing'],
-                    'newName' => time()
+                    'newName' => $now
                 ]);
                 $args = [
                     'file_path' => storage_path("app/{$response}"),
                     'user_id' => $this->data['user_id'],
                     'customer_id' => $this->actionRecord->id,
+                    'accountcode' => $this->actionRecord->accountcode,
                     'valid_cpf' => $this->data['valid_cpf'],
-                    'campaign_name' => $this->data['campaign_name']
+                    'campaign_name' => $this->data['campaign_name'],
+                    'now' => $now
                 ];
                 $args['followUp'] = self::startProcess($args);
                 if ($args['followUp'] !== false) {
@@ -140,29 +143,30 @@ class MailingAction
                 
                 if (count($importErro) >= 1000) {
                     $countError = $countError + 1000;
-                    \App\Models\MailingError::insert($importErro);
+                    $file_path_error = \App\Actions\Customer\MailingAction::mailingError($args, $importErro);
                     $importErro = [];
                 }
             
                 $line++;
             }
-
             $importErro = array_values(array_filter($importErro));
-            
+
             if (!empty($import)) {
                 \App\Models\Mailing::insert($import);
             }
             
             if (!empty($importErro)) {
-                \App\Models\MailingError::insert($importErro);
+                $file_path_error = \App\Actions\Customer\MailingAction::mailingError($args, $importErro);
             }
-
+            
             $followUp->status = 'finalizado';
             $followUp->success = count($import) + $countImport;
             $followUp->fail = $fail;
             $followUp->errors = count($importErro) + $countError;
+            $followUp->file_path_error = $file_path_error;
             $followUp->save();
         } catch (\Exception $exception) {
+            dd($exception);
             $followUp->status = 'cancelado';
             $followUp->cancelMessage = json_encode([
                 'file' => $exception->getFile(),
@@ -178,7 +182,26 @@ class MailingAction
 
         return true;
     }
+    public static function mailingError($args, $importErro)
+    {
+        $file_path = storage_path("app/{$args['accountcode']}/tmp/");
+        if (!file_exists($file_path)) {
+            mkdir($file_path, 0777, true);
+        }
 
+        $file_path = "{$file_path}{$args['now']}-error.csv";
+        $file_handle = fopen($file_path, 'w');
+        $file_handle = fopen($file_path, 'a+');
+        
+        foreach ($importErro as $line) {
+            $line = "{$line['line']},{$line['column']},{$line['value']},{$line['message']}";
+            fwrite($file_handle, $line . "\n");
+        }
+        
+        fclose($file_handle);
+
+        return $file_path;
+    }
     private function startProcess($data)
     {
         try {
@@ -194,6 +217,7 @@ class MailingAction
             $followUp->errors = 0;
             $followUp->cancelMessage = '';
             $followUp->file_path = $data['file_path'];
+            $followUp->file_path_error = '';
             $followUp->save();
         } catch (\Exception $exception) {
             unset($file);
