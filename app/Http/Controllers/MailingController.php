@@ -39,6 +39,10 @@ class MailingController extends Controller
 
     public function followUp(Request $request)
     {
-        return MailingFollowUp::where(['user_id' => \Auth::id()])->orderBy('id','desc')->paginate();
+        $customer = Auth::user();
+        $response = (new MailingAction())->execute($customer->customer, [
+            'action' => 'GET',
+        ]);
+        return $response;
     }
 }

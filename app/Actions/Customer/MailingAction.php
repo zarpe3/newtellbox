@@ -3,6 +3,7 @@
 namespace App\Actions\Customer;
 
 use App\Actions\ModelActionBase;
+use App\Models\MailingFollowUp;
 
 class MailingAction
 {
@@ -16,6 +17,11 @@ class MailingAction
     protected function main()
     {
         switch ($this->data['action']) {
+            case 'GET':
+                return MailingFollowUp::where(['customer_id' => $this->actionRecord->id])
+                ->latest()
+                ->paginate();
+                break;
             case 'import':
                 $args = [
                     'file_path' => self::uploadFile($this->data['mailing']),
