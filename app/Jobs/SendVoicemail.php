@@ -37,7 +37,6 @@ class SendVoicemail implements ShouldQueue
      */
     public function handle()
     {
-        dump($this->voicemail);
         $email = VoicemailUsers::where('mailbox', $this->voicemail['VM_MAILBOX'])->first()->email;
 
         Mail::to($email)->send(new MailVoicemail($this->voicemail));
