@@ -37,11 +37,11 @@ class MailingAction
                 ];
                 $args['followUp'] = self::startProcess($args);
                 if ($args['followUp'] !== false) {
-                    //dispatch(function () use ($args) {
+                    dispatch(function () use ($args) {
                         ini_set('memory_limit', '4095M');
                         set_time_limit(0);
                         \App\Actions\Customer\MailingAction::import($args);
-                    //})->onQueue('mailing');
+                    })->onQueue('mailing');
                     return [
                         'status' => true,
                     ];
@@ -182,7 +182,7 @@ class MailingAction
     private function startProcess($data)
     {
         try {
-            $followUp = new \App\Models\MailingFollowUp();
+            $followUp = new MailingFollowUp();
             $followUp->user_id = $data['user_id'] ?? null;
             $followUp->customer_id = $data['customer_id'] ?? null;
             $followUp->campaign_name = $data['campaign_name'] ?? 'padrão';
@@ -269,7 +269,7 @@ class MailingAction
                 }
                 break;
             case 'cpf':
-                if ($validate == '1'){
+                if ($validate == '1') {
                     if (!\App\Actions\Customer\MailingAction::cpf($value)) {
                         return [
                             'status' => false,
