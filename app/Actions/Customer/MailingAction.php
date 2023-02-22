@@ -2,6 +2,7 @@
 
 namespace App\Actions\Customer;
 
+use App\Actions\Customer\Files\StoreTmpFile;
 use App\Actions\ModelActionBase;
 use App\Models\MailingFollowUp;
 
@@ -23,8 +24,12 @@ class MailingAction
                 ->paginate();
                 break;
             case 'import':
+                $response = (new StoreTmpFile())->execute($this->actionRecord, [
+                    'file' => $this->data['mailing'],
+                    'newName' => time()
+                ]);
                 $args = [
-                    'file_path' => self::uploadFile($this->data['mailing']),
+                    'file_path' => storage_path("app/{$response}"),
                     'user_id' => $this->data['user_id'],
                     'customer_id' => $this->actionRecord->id,
                     'valid_cpf' => $this->data['valid_cpf'],
@@ -32,11 +37,11 @@ class MailingAction
                 ];
                 $args['followUp'] = self::startProcess($args);
                 if ($args['followUp'] !== false) {
-                    dispatch(function () use ($args) {
+                    //dispatch(function () use ($args) {
                         ini_set('memory_limit', '4095M');
                         set_time_limit(0);
                         \App\Actions\Customer\MailingAction::import($args);
-                    })->onQueue('mailing');
+                    //})->onQueue('mailing');
                     return [
                         'status' => true,
                     ];
@@ -56,13 +61,9 @@ class MailingAction
     }
     public static function import($args)
     {
-        $file_path = storage_path($args['file_path']);
-        $file = file($file_path);
-        
-        unlink($file_path);
-        
+        $file = file($args['file_path']);
         $followUp = $args['followUp'];
-        $user_id = $args['user_id'];
+        
         try {
             $line = 0;
             $header = $file[0];
@@ -121,7 +122,8 @@ class MailingAction
                         'name' => $row[5] ?? '',
                         'cpf' => $cpf['value'] ?? '',
                         'cod_crm' => $row[7] ?? '',
-                        'user_id' => $user_id,
+                        'user_id' => $args['user_id'],
+                        'customer_id' => $args['customer_id'],
                         'import_id' => $followUp->id,
                     ];
                 } else {
@@ -177,17 +179,6 @@ class MailingAction
         return true;
     }
 
-    private function uploadFile($file)
-    {
-        $uploaddir = "mailing";
-        $uploadfile1 = "{$uploaddir}/".time().".{$file->extension()}";
-        if (!file_exists($uploaddir)) {
-            \File::makeDirectory(storage_path("app/{$uploaddir}"), 0777, true, true);
-        }
-
-        $file->storeAs('./', $uploadfile1, 'local');
-        return "app/{$uploadfile1}";
-    }
     private function startProcess($data)
     {
         try {
@@ -202,6 +193,7 @@ class MailingAction
             $followUp->fail = 0;
             $followUp->errors = 0;
             $followUp->cancelMessage = '';
+            $followUp->file_path = $data['file_path'];
             $followUp->save();
         } catch (\Exception $exception) {
             unset($file);

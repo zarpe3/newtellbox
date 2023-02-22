@@ -30,6 +30,7 @@ class MailingController extends Controller
         $response = (new MailingAction())->execute($customer->customer, [
             'action' => 'import',
             'user_id' => $customer->id,
+            'customer_id' => $customer->customer->id,
             'mailing' => $request->file('file'),
             'valid_cpf' =>  $request->valid_cpf ?? '1',
             'campaign_name' => $request->campaign_name ?? 'padrão'
