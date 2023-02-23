@@ -52,6 +52,9 @@
                                         <a v-if="item.errors !== 0" :href="url + '?file_path_error=' + endpoint(item.file_path_error)">
                                             {{item.errors}}
                                         </a>
+                                        <span v-else>
+                                            0
+                                        </span>
                                     </td>
                                 </tr>                               
                             </tbody>
