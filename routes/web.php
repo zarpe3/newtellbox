@@ -62,6 +62,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('/mailing', 'App\Http\Controllers\MailingController');
     Route::post('/mailing/import', 'App\Http\Controllers\MailingController@import');
+    
+    Route::get('/mailing-export-error', 'App\Http\Controllers\MailingController@exportError');
     Route::get('/mailing-follow-up', 'App\Http\Controllers\MailingController@followUp');
 });
 

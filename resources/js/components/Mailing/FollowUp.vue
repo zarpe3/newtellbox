@@ -48,7 +48,11 @@
                                     <td>{{item.size}}</td>
                                     <td>{{item.success}}</td>
                                     <td>{{item.fail}}</td>
-                                    <td>{{item.errors}}</td>
+                                    <td>
+                                        <a v-if="item.errors !== 0" :href="url + '?file_path_error=' + endpoint(item.file_path_error)">
+                                            {{item.errors}}
+                                        </a>
+                                    </td>
                                 </tr>                               
                             </tbody>
                         </table>
@@ -78,6 +82,7 @@
         data() {
             return {
                 data : [],
+                url: `${window.Laravel.baseUrl}mailing-export-error`,
                 showNoRegister: false,
                 next_page_url: 1,
                 prev_page_url: null,
@@ -128,6 +133,9 @@
                 }).catch(err => {
                     console.log(err)
                 });
+            },
+            endpoint(path){
+                return btoa(path)
             }
         } 
     }

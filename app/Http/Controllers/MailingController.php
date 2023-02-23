@@ -6,9 +6,11 @@ use App\Actions\Customer\MailingAction;
 use App\Models\MailingFollowUp;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MailingController extends Controller
 {
+    
     public function index()
     {
         return view('mailing.index');
@@ -40,11 +42,7 @@ class MailingController extends Controller
 
     public function exportError(Request $request)
     {
-        $customer = Auth::user();
-        $response = (new MailingAction())->execute($customer->customer, [
-            'action' => 'export-error',
-        ]);
-        return $response;
+        return response()->download(base64_decode($request->file_path_error));
     }
 
     public function followUp(Request $request)
