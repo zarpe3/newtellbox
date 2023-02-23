@@ -6,7 +6,7 @@ use App\Models\MailingFollowUp;
 
 trait Mailing
 {
-    private static function import($args)
+    public static function import($args)
     {
         
         $file = file($args['file_path']);

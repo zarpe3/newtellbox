@@ -4,6 +4,7 @@ namespace App\Actions\Customer;
 
 use App\Actions\Customer\Files\StoreTmpFile;
 use App\Actions\ModelActionBase;
+use App\Jobs\MailingImport;
 use App\Models\MailingFollowUp;
 use App\Traits\Helper;
 use App\Traits\Mailing;
@@ -42,11 +43,7 @@ class MailingAction
                 ];
                 $args['followUp'] = self::startProcess($args);
                 if ($args['followUp'] !== false) {
-                    dispatch(function () use ($args) {
-                        ini_set('memory_limit', '4095M');
-                        set_time_limit(0);
-                        \App\Actions\Customer\MailingAction::import($args);
-                    })->onQueue('mailing');
+                    MailingImport::dispatch($args);
                     return [
                         'status' => true,
                     ];
