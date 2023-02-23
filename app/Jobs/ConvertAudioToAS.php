@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Actions\Customer\Audios\ConvertAudioToSLN;
+use App\Actions\Customer\Audios\SendAudioToAS;
 use App\Models\Customer;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -47,15 +48,16 @@ class ConvertAudioToAS implements ShouldQueue
                 throw new Exception('Not valid accountCode', 1);
             }
 
+            $customer = $customer->first();
             if ($storage->exists($this->file)) {
                 $filePath = storage_path('app/'.dirname($this->file));
                 $fileName = basename($this->file);
-                $audioSLN = (new ConvertAudioToSLN())->execute($customer->first(), [
+                $audioSLN = (new ConvertAudioToSLN())->execute($customer, [
                     'filePath' => $filePath,
                     'fileName' => $fileName,
                 ]);
 
-                //// send the audio to AS
+                (new SendAudioToAS())->execute($customer, ['audio' => $audioSLN]);
             }
         } catch (Exception $e) {
             dump($e->getMessage());

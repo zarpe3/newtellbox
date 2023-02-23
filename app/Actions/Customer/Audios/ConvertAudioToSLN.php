@@ -40,7 +40,7 @@ class ConvertAudioToSLN
             $process = Process::fromShellCommandline('rm -rf '.$file);
             $process->run();
 
-            return base_path($newFile);
+            return $newFile;
         } catch (Exception $e) {
             return '';
         }
