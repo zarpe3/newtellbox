@@ -32,7 +32,7 @@ class SaveAudio
                 'file' => $this->data['file'],
                 'newName' => $newName,
             ]);
-            ConvertAudioToAS::dispatch($tmpAudio, $this->actionRecord->accountcode);
+            ConvertAudioToAS::dispatch($tmpAudio, $this->actionRecord->accountcode)->delay(now()->addSeconds(3));
 
             return $tmpAudio;
         } catch (Exception $e) {

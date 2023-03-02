@@ -37,8 +37,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/reception/transfer/{number}', 'App\Http\Controllers\ReceptionConsoleController@transfer');
     Route::post('/reception/spy/{number}', 'App\Http\Controllers\ReceptionConsoleController@spy');
 
-    Route::get('/voicemail', ['as' => 'voicemail.index', 'uses' => 'App\Http\Controllers\Asterisk\VoiceMailController@show']);
-    Route::post('/voicemail', ['as' => 'voicemail.update', 'uses' => 'App\Http\Controllers\Asterisk\VoiceMailController@update']);
+    Route::get('/voicemail', [
+        'as' => 'voicemail.index', 'uses' => 'App\Http\Controllers\Asterisk\VoiceMailController@show', ]);
+    Route::post('/voicemail', [
+        'as' => 'voicemail.update', 'uses' => 'App\Http\Controllers\Asterisk\VoiceMailController@update', ]);
 
     Route::group(['prefix' => 'report'], function () {
         Route::get('/cdr', ['as' => 'cdr.index', 'uses' => 'App\Http\Controllers\CdrController@index']);

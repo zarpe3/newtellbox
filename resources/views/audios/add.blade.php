@@ -1,7 +1,16 @@
 @extends('layouts.app', ['activePage' => 'audios', 'title' => 'Telbox Varejo', 'navName' => 'Audios', 'activeButton' => 'laravel'])
 
 @section('content')
+
 <div id="app" class="content">
+@if(isset($message))
+@include('alerts.success_response')
+<script>
+    setTimeout(function(){
+        window.location ='/audios';
+    }, 5000);
+</script>
+@endif
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">

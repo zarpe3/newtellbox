@@ -34,7 +34,6 @@ class ConvertAudioToSLN
             //// ffmpeg -i “[input file]” -ar 8000 -ac 1 -acodec pcm_s16le -f s16le “[output file].sln”
             $command = 'ffmpeg -i '.$file.' -ar 8000 -ac 1 -acodec pcm_s16le -f s16le '.$newFile;
             $process = Process::fromShellCommandline($command);
-            $process->setTimeout(3600);
             $process->run();
 
             $process = Process::fromShellCommandline('rm -rf '.$file);
@@ -42,6 +41,8 @@ class ConvertAudioToSLN
 
             return $newFile;
         } catch (Exception $e) {
+            \Log::info($e->getMessage());
+
             return '';
         }
     }
