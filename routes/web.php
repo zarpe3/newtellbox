@@ -30,14 +30,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/inbound', 'App\Http\Controllers\InboundController');
     Route::resource('/queue', 'App\Http\Controllers\QueueController');
     Route::resource('/trunks', 'App\Http\Controllers\TrunksController');
+    Route::resource('/audios', 'App\Http\Controllers\AudiosController');
     Route::resource('/trunks-advanced', 'App\Http\Controllers\TrunksAdvancedController');
     Route::resource('/reception', 'App\Http\Controllers\ReceptionConsoleController');
     Route::post('/reception/hangup', 'App\Http\Controllers\ReceptionConsoleController@hangup');
     Route::post('/reception/transfer/{number}', 'App\Http\Controllers\ReceptionConsoleController@transfer');
     Route::post('/reception/spy/{number}', 'App\Http\Controllers\ReceptionConsoleController@spy');
 
-    Route::get('/voicemail', ['as' => 'voicemail.index', 'uses' => 'App\Http\Controllers\Asterisk\VoiceMailController@show']);
-    Route::post('/voicemail', ['as' => 'voicemail.update', 'uses' => 'App\Http\Controllers\Asterisk\VoiceMailController@update']);
+    Route::get('/voicemail', [
+        'as' => 'voicemail.index', 'uses' => 'App\Http\Controllers\Asterisk\VoiceMailController@show', ]);
+    Route::post('/voicemail', [
+        'as' => 'voicemail.update', 'uses' => 'App\Http\Controllers\Asterisk\VoiceMailController@update', ]);
 
     Route::group(['prefix' => 'report'], function () {
         Route::get('/cdr', ['as' => 'cdr.index', 'uses' => 'App\Http\Controllers\CdrController@index']);
