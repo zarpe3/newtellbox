@@ -97,6 +97,12 @@ Tip 2: you can also add an image using data-image tag
                                 <!--<i class="nc-icon nc-circle-09"></i>-->
                                 - {{ __("Audios") }}
                             </a>
+                        </li>
+                        <li class="nav-item @if($activePage == 'ivr') active @endif">
+                            <a class="nav-link" href="{{route('ivr.index')}}" style="margin-left: 20%;">
+                                <!--<i class="nc-icon nc-circle-09"></i>-->
+                                - {{ __("URA") }}
+                            </a>
                         </li> 
                         <li class="nav-item @if($activePage == 'voicemail') active @endif">
                             <a class="nav-link" href="{{route('voicemail.index')}}" style="margin-left: 20%;">

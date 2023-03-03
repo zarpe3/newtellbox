@@ -10,16 +10,18 @@ return new class () extends Migration {
      */
     public function up()
     {
-        $table->id();
-        $table->unsignedBigInteger('customer_id');
-        $table->string('name');
-        $table->string('duration', 20);
-        $table->integer('msg_num');
-        $table->string('dst', 40);
-        $table->string('src', 40);
-        $table->dateTime('created_at');
-        $table->dateTime('updated_at');
-        $table->string('audio');
+        Schema::create('voicemails', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('customer_id');
+            $table->string('name');
+            $table->string('duration', 20);
+            $table->integer('msg_num');
+            $table->string('dst', 40);
+            $table->string('src', 40);
+            $table->dateTime('created_at');
+            $table->dateTime('updated_at');
+            $table->string('audio');
+        });
     }
 
     /**

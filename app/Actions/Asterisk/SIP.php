@@ -12,12 +12,19 @@ class SIP
     public function setParameters(array $data): void
     {
         $this->data = $data;
+        $this->data['onlyExtens'] = $data['onlyExtens'] ?? false;
     }
 
     protected function main()
     {
         if ($this->data['request'] == 'GET') {
             if ($this->checkIfThereAreRoutes()) {
+                if ($this->data['onlyExtens']) {
+                    return SipUsers::accountcode($this->actionRecord->accountcode)
+                    ->get()
+                    ->toArray();
+                }
+
                 return [
                     'success' => true,
                     'msg' => '',
