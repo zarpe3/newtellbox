@@ -28,6 +28,8 @@ Vue.component('edit-route', require('./components/Routes/Edit.vue').default);
 
 Vue.component('add-inbound', require('./components/Inbounds/Add.vue').default);
 Vue.component('edit-inbound', require('./components/Inbounds/Edit.vue').default);
+
+Vue.component('ivr-options', require('./components/Ivr/Options.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
