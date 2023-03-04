@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/audios', 'App\Http\Controllers\AudiosController');
     Route::resource('/trunks-advanced', 'App\Http\Controllers\TrunksAdvancedController');
     Route::resource('/reception', 'App\Http\Controllers\ReceptionConsoleController');
+    Route::resource('/ivr', 'App\Http\Controllers\IVRController');
     Route::post('/reception/hangup', 'App\Http\Controllers\ReceptionConsoleController@hangup');
     Route::post('/reception/transfer/{number}', 'App\Http\Controllers\ReceptionConsoleController@transfer');
     Route::post('/reception/spy/{number}', 'App\Http\Controllers\ReceptionConsoleController@spy');

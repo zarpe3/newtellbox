@@ -22,3 +22,4 @@ mix.js('resources/js/users.js', 'public/js');
 mix.js('resources/js/queue.js', 'public/js');
 mix.js('resources/js/voicemail.js', 'public/js');
 mix.js('resources/js/audios.js', 'public/js');
+mix.js('resources/js/ivrs.js', 'public/js');
