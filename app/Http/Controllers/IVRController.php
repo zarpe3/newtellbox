@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Actions\Asterisk\Queue\GetQueue;
 use App\Actions\Asterisk\SIP;
 use App\Actions\Customer\Audios\ListAudios;
+use App\Actions\Customer\IVR\AddIVR;
+use App\Actions\Customer\IVR\DeleteIVR;
+use App\Actions\Customer\IVR\ListIVR;
+use App\Actions\Customer\IVR\UpdateIVR;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +21,8 @@ class IVRController extends Controller
      */
     public function index()
     {
-        $ivrs = [];
+        $customer = Auth::user()->customer;
+        $ivrs = (new ListIVR())->execute($customer, []);
 
         return view('ivr.index', ['ivrs' => $ivrs]);
     }
@@ -44,7 +49,10 @@ class IVRController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $customer = Auth::user()->customer;
+        (new AddIVR())->execute($customer, $request->all());
+
+        return redirect()->route('ivr.index');
     }
 
     /**
@@ -54,7 +62,7 @@ class IVRController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
     }
 
@@ -67,6 +75,18 @@ class IVRController extends Controller
      */
     public function edit($id)
     {
+        $customer = Auth::user()->customer;
+        $ivr = (new ListIVR())->execute($customer, ['id' => $id]);
+        $audios = (new ListAudios())->execute($customer, []);
+        $queues = (new GetQueue())->execute($customer, []);
+        $extens = (new SIP())->execute($customer, ['request' => 'GET', 'onlyExtens' => true]);
+
+        return view('ivr.edit', [
+            'ivr' => $ivr,
+            'audios' => $audios,
+            'queues' => $queues,
+            'extens' => $extens,
+        ]);
     }
 
     /**
@@ -78,6 +98,11 @@ class IVRController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $customer = Auth::user()->customer;
+        $request['id'] = $id;
+        (new UpdateIVR())->execute($customer, $request->all());
+
+        return redirect()->route('ivr.index');
     }
 
     /**
@@ -89,5 +114,8 @@ class IVRController extends Controller
      */
     public function destroy($id)
     {
+        $customer = Auth::user()->customer;
+
+        return (new DeleteIVR())->execute($customer, ['id' => $id]);
     }
 }

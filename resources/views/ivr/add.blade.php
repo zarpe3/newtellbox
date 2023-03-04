@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'audios', 'title' => 'Telbox Varejo', 'navName' => 'Audios', 'activeButton' => 'laravel'])
+@extends('layouts.app', ['activePage' => 'ivr', 'title' => 'Telbox Varejo', 'navName' => 'Audios', 'activeButton' => 'laravel'])
 
 @section('content')
 
@@ -50,7 +50,7 @@
                                     </select>
                                 </div>
                                 
-                                <ivr-options extendata="{{json_encode($extens)}}" queuedata="{{json_encode($queues)}}"></ivr-options>
+                                <ivr-options extendata="{{json_encode($extens)}}" ivrdata="" queuedata="{{json_encode($queues)}}"></ivr-options>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-default mt-4">{{ __('Salvar') }}</button>
                                 </div>

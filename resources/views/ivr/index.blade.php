@@ -39,12 +39,12 @@
                         <!--        Here you can write extra buttons/actions for the toolbar              -->
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        <table id="audios" class="table table-hover table-striped">
+                        <table id="ivrs" class="table table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th>Nome</th>
-                                    <th>Audio<th>
-                                    <th> Ações </th>
+                                    <th>Audio</th>
+                                    <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,7 +52,12 @@
                                     <tr>
                                         <td> {{ $ivr['name'] }} </td>
                                         <td> {{ $ivr['audio'] }} </td>
-                                        <td> <a v-on:click="remove('{{$audio}}')"><i class="fa fa-trash"></i></a> </td>
+                                        <td> 
+                                            <a href="/ivr/{{$ivr['id']}}/edit"><i class="fa fa-edit"></i></a>
+                                            <a style="color: red;" v-on:click="remove('{{$ivr['id']}}')">
+                                                <i class="fa fa-trash"></i>
+                                            </a> 
+                                        </td>
                                     </tr>    
                                 @endforeach
                             </tbody>
@@ -69,5 +74,5 @@
 @push('js')
 <script type="text/javascript">
 </script>
-<script src="{{ asset('/js/audios.js') }}"></script>
+<script src="{{ asset('/js/ivrs.js') }}"></script>
 @endpush
