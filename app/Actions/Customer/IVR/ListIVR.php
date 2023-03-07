@@ -29,6 +29,7 @@ class ListIVR
             return $ivrs['ivrs'];
         }
 
+        \Log::info(print_r($this->data, true));
         $ivrs = IVR::customerId($this->actionRecord->id);
         if ($this->data['name']) {
             $ivrs->where('name', $this->data['name']);

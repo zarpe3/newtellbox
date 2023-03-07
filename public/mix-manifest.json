@@ -7,5 +7,7 @@
     "/js/users.js": "/js/users.js",
     "/js/queue.js": "/js/queue.js",
     "/js/voicemail.js": "/js/voicemail.js",
+    "/js/audios.js": "/js/audios.js",
+    "/js/ivrs.js": "/js/ivrs.js",
     "/css/app.css": "/css/app.css"
 }

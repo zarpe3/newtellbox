@@ -41,7 +41,7 @@
                                     </label>
                                     <input type="text" name="did" id="input-name" class="form-control{{ $errors->has('did') ? ' is-invalid' : '' }}" placeholder="{{ __('DID') }}" value="" required autofocus>
                                 </div>
-                                <add-inbound extendata="{{json_encode($extens)}}" queuedata="{{json_encode($queues)}}"></add-inbound>
+                                <add-inbound extendata="{{json_encode($extens)}}" ivrdata="{{ json_encode($ivrs) }}" queuedata="{{json_encode($queues)}}"></add-inbound>
                             
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-default mt-4">{{ __('Salvar') }}</button>

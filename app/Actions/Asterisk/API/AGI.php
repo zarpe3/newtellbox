@@ -6,6 +6,7 @@ use App\Actions\ActionBase;
 use App\Actions\Asterisk\Inbound\GetInbound;
 use App\Actions\Asterisk\Queue\GetQueue;
 use App\Actions\CGrates\Connect;
+use App\Actions\Customer\IVR\ListIVR;
 use App\Models\CDR;
 use App\Models\Customer;
 use App\Models\SipRoutes as OutboundRoute;
@@ -179,5 +180,12 @@ class AGI
         return Http::post('http://webdec-dev03.webdec.com.br/trunks/list', [
                 'accountcode' => $accountcode,
         ]);
+    }
+
+    private function getIVR()
+    {
+        $customer = Customer::getAccountCode($this->data['accountcode'])->firstOrFail();
+
+        return (new ListIVR())->execute($customer, ['id' => $this->data['id']]);
     }
 }

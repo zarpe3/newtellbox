@@ -5,6 +5,7 @@
                 <i class="nc-icon nc-map-big"></i>Tipo Destino
             </label>
             <select name="destiny_type" id="destiny_type" v-model="destiny_type" @change="changeType()" class="form-control">
+                <option value="ura">Ura</option>
                 <option value="ramal">Ramal</option>
                 <option value="fila">Fila</option>
             </select>
@@ -21,7 +22,7 @@
 </template>
 <script>
 export default {
-    props: ['extendata', 'inbounddata','queuedata'],
+    props: ['extendata', 'inbounddata','queuedata','ivrdata'],
     data: function () {
         return {
             destiny_type: '',
@@ -30,9 +31,11 @@ export default {
             extens: [],
             inbound: [],
             queues: [],
+            ivrs: [],
         }
     },
     mounted() {
+        this.ivrs = JSON.parse(this.ivrdata);
         this.extens = JSON.parse(this.extendata);
         this.queues = JSON.parse(this.queuedata);
         this.inbound = JSON.parse(this.inbounddata);
@@ -53,6 +56,10 @@ export default {
 
             if (this.destiny_type == 'fila') {
                 this.elements = this.queues.map(queue => ({name: queue.name, value: queue.name}) );
+            }
+
+            if (this.destiny_type == 'ura') {
+                this.elements = this.ivrs.map(ivr => ({name: ivr.name, value: ivr.id}) );
             }
             //console.log(this.elements);
         },

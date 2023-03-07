@@ -44,7 +44,7 @@
                                     <input type="text" name="did" id="input-name" class="form-control{{ $errors->has('did') ? ' is-invalid' : '' }}" placeholder="{{ __('DID') }}" value="{{$inbound[0]->did}}" required autofocus>
                                 </div>
                                 <div class="form-group">
-                                <edit-inbound queuedata="{{json_encode($queues)}}" extendata="{{json_encode($extens)}}" inbounddata="{{ json_encode($inbound[0]) }}"></edit-inbound>
+                                <edit-inbound ivrdata="{{ json_encode($ivrs)}}" queuedata="{{json_encode($queues)}}" extendata="{{json_encode($extens)}}" inbounddata="{{ json_encode($inbound[0]) }}"></edit-inbound>
                                 </div>
                                 <div class="text-left m-1">
                                 <button type="submit" class="btn btn-success">{{ __('Salvar') }}</button>

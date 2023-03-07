@@ -7,6 +7,7 @@ use App\Actions\Asterisk\Inbound\EditInbound;
 use App\Actions\Asterisk\Inbound\GetInbound;
 use App\Actions\Asterisk\Queue\GetQueue;
 use App\Actions\Asterisk\SIP;
+use App\Actions\Customer\IVR\ListIVR;
 use App\Http\Requests\InboundRequest;
 use Auth;
 
@@ -35,10 +36,12 @@ class InboundController extends Controller
         $customer = Auth::user()->customer;
         $extens = (new SIP())->execute($customer, ['request' => 'GET']);
         $queues = (new GetQueue())->execute($customer, []);
+        $ivrs = (new ListIVR())->execute($customer, []);
 
         return view('inbound.add', [
             'extens' => $extens['extens'],
             'queues' => $queues,
+            'ivrs' => $ivrs,
         ]);
     }
 
@@ -68,6 +71,7 @@ class InboundController extends Controller
         $customer = Auth::user()->customer;
         $extens = (new SIP())->execute($customer, ['request' => 'GET']);
         $queues = (new GetQueue())->execute($customer, []);
+        $ivrs = (new ListIVR())->execute($customer, []);
         $inbound = (new GetInbound())->execute($customer, ['id' => $id]);
 
         return view('inbound.edit', [
@@ -75,6 +79,7 @@ class InboundController extends Controller
             'id' => $id,
             'extens' => $extens['extens'],
             'queues' => $queues,
+            'ivrs' => $ivrs,
         ]);
     }
 
