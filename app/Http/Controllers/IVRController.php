@@ -39,7 +39,19 @@ class IVRController extends Controller
         $queues = (new GetQueue())->execute($customer, []);
         $extens = (new SIP())->execute($customer, ['request' => 'GET', 'onlyExtens' => true]);
 
-        return view('ivr.add', ['audios' => $audios, 'queues' => $queues, 'extens' => $extens]);
+        $response['success'] = true;
+        if (count($audios) == 0) {
+            $response['success'] = false;
+            $response['msg'] = 'Você não possui nenhum audio cadastrado';
+        }
+
+        return view('ivr.add', [
+            'audios' => $audios,
+            'queues' => $queues,
+            'extens' => $extens,
+            'success' => $response['success'],
+            'message' => $response['msg'],
+        ]);
     }
 
     /**
