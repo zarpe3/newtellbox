@@ -4,7 +4,6 @@ namespace App\Actions\Asterisk\Queue;
 
 use App\Actions\ModelActionBase;
 use App\Models\Queue;
-use BaseQueue;
 
 class AddQueue extends BaseQueue
 {
