@@ -72,4 +72,13 @@ class AGIController extends Controller
             'name' => $request->name,
         ]);
     }
+
+    public function getIVR(AGI $agi, Request $request)
+    {
+        return $agi->execute([
+            'request' => 'getIVR',
+            'accountcode' => $request->accountcode,
+            'id' => $request->id,
+        ]);
+    }
 }
