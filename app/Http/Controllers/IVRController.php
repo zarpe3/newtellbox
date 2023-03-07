@@ -40,6 +40,7 @@ class IVRController extends Controller
         $extens = (new SIP())->execute($customer, ['request' => 'GET', 'onlyExtens' => true]);
 
         $response['success'] = true;
+        $response['msg'] = '';
         if (count($audios) == 0) {
             $response['success'] = false;
             $response['msg'] = 'Você não possui nenhum audio cadastrado';
