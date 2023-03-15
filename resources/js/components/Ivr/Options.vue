@@ -18,6 +18,21 @@
                 </div>
             </div>
         </fieldset>
+        <div class="row">
+            <div class="col-md-1 label"> Desvio</div>
+            <div class="col-md-2">
+                <select v-model="divert_option" v-on:change="changeDivert()" name="divert_option" class="form-control">
+                    <option value="0">-</option>
+                    <option value="1">Fila</option>
+                    <option value="2">Ramais</option>
+                </select>
+             </div>
+             <div class="col-md-2">
+                <select  v-model="divert_value" id="diver_value" name="divert_value" class="form-control">
+                    <option v-for="element in divert_elements" :key="element" :value="element">{{element}}</option>
+                </select>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -25,6 +40,9 @@ export default {
     props: ['extendata', 'queuedata', 'ivrdata'],
     data: function () {
         return {
+            divert_option: null,
+            divert_value: null,
+            divert_elements: [],
             options : [0,1,2,3,4,5,6,7,8,9],
             option_fields: {
                  option_0: null, 
@@ -71,10 +89,13 @@ export default {
     mounted() {
         this.extens = JSON.parse(this.extendata);
         this.queues = JSON.parse(this.queuedata);
-
+        console.log(this.ivrdata);
         let me = this;
-        if (this.ivrdata != undefined) {
+        if (this.ivrdata != undefined && this.ivrdata != "") {
             let ivr = JSON.parse(this.ivrdata);
+            this.divert_option = ivr.divert_option;
+            this.changeDivert();
+            this.divert_value = ivr.divert_value;
             Object.keys(ivr).forEach(key => {
                 if (me.option_fields.hasOwnProperty(key)) {
                     let number= key.match(/\d+(\.\d+)?/)[0];
@@ -99,6 +120,15 @@ export default {
             //// ramais
             if (this.option_fields['option_'+option] == 2) { 
                 this.elements['element_'+option] = this.extens.map( exten => exten.name.slice(-4));
+            }
+        },
+        changeDivert: function() {
+            if (this.divert_option == 1) { 
+                this.divert_elements = this.queues.map( queue => queue.name);
+            }
+            //// ramais
+            if (this.divert_option == 2) { 
+                this.divert_elements = this.extens.map( exten => exten.name.slice(-4));
             }
         }
     }

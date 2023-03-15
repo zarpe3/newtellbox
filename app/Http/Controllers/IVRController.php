@@ -37,12 +37,11 @@ class IVRController extends Controller
         $customer = Auth::user()->customer;
         $audios = (new ListAudios())->execute($customer, []);
         $queues = (new GetQueue())->execute($customer, []);
-        $extens = (new SIP())->execute($customer, ['request' => 'GET', 'onlyExtens' => true]);
+        $extens = (new SIP())->execute($customer, ['request' => 'GET', 'onlyExtens' => true, 'onlyName' => true]);
 
         $response['success'] = true;
-        $response['msg'] = '';
+        $response['msg'] = null;
         if (count($audios) == 0) {
-            $response['success'] = false;
             $response['msg'] = 'Você não possui nenhum audio cadastrado';
         }
 

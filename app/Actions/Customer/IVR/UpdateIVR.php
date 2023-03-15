@@ -35,6 +35,8 @@ class UpdateIVR
             'value_7' => $data['value_7'] ?? null,
             'value_8' => $data['value_8'] ?? null,
             'value_9' => $data['value_9'] ?? null,
+            'divert_option' => $data['divert_option'] ?? null,
+            'divert_value' => $data['divert_value'] ?? null,
         ];
     }
 

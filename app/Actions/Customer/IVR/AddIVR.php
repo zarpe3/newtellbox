@@ -12,7 +12,7 @@ class AddIVR
     public function setParameters(array $data): void
     {
         $this->data = [
-            'name' => $data['name'] ?? false,
+            'name' => $this->clean($data['name']) ?? false,
             'audio' => $data['audio'] ?? false,
             'option_0' => $data['option_0'] ?? null,
             'option_1' => $data['option_1'] ?? null,
@@ -34,6 +34,8 @@ class AddIVR
             'value_7' => $data['value_7'] ?? null,
             'value_8' => $data['value_8'] ?? null,
             'value_9' => $data['value_9'] ?? null,
+            'divert_option' => $data['divert_option'] ?? null,
+            'divert_value' => $data['divert_value'] ?? null,
         ];
     }
 
@@ -46,5 +48,12 @@ class AddIVR
         $this->data['customer_id'] = $this->actionRecord->id;
 
         return IVR::create($this->data);
+    }
+
+    private function clean($string)
+    {
+        $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+
+        return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
     }
 }

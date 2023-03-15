@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class IVR extends Model
@@ -35,6 +34,8 @@ class IVR extends Model
         'value_7',
         'value_8',
         'value_9',
+        'divert_option',
+        'divert_value',
     ];
 
     public function scopeCustomerId($query, $customerId)

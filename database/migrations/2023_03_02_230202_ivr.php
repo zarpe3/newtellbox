@@ -37,6 +37,8 @@ return new class () extends Migration {
             $table->string('value_8')->nullable();
             $table->integer('option_9')->nullable();
             $table->string('value_9')->nullable();
+            $table->integer('divert_option')->nullable();
+            $table->string('divert_value')->nullable();
             $table->timestamp('stamp');
         });
     }

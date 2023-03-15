@@ -13,24 +13,32 @@ class SIP
     {
         $this->data = $data;
         $this->data['onlyExtens'] = $data['onlyExtens'] ?? false;
+        $this->data['onlyName'] = $data['onlyName'] ?? false;
     }
 
     protected function main()
     {
         if ($this->data['request'] == 'GET') {
             if ($this->checkIfThereAreRoutes()) {
+                $sipUsers = SipUsers::accountcode($this->actionRecord->accountcode);
+
+                if ($this->data['onlyName']) {
+                    $extens = $sipUsers->get(['name']);
+                }
+
+                if (!$this->data['onlyName']) {
+                    $extens = $sipUsers->get();
+                }
+
                 if ($this->data['onlyExtens']) {
-                    return SipUsers::accountcode($this->actionRecord->accountcode)
-                    ->get()
-                    ->toArray();
+                    return $extens->toArray();
                 }
 
                 return [
                     'success' => true,
                     'msg' => '',
                     'routes' => (new SIPRoutes())->execute($this->actionRecord, ['request' => 'GET']),
-                    'extens' => SipUsers::accountcode($this->actionRecord->accountcode)
-                        ->get()->toArray(),
+                    'extens' => $extens->toArray(),
                 ];
             }
 
