@@ -71,6 +71,15 @@ return [
             'after_commit' => false,
         ],
 
+        'mailing' => [
+            'driver' => 'mailing',
+            'connection' => 'default',
+            'queue' => env('REDIS_QUEUE', 'default'),
+            'retry_after' => 3000,
+            'block_for' => null,
+            'after_commit' => false,
+        ],
+
     ],
 
     /*

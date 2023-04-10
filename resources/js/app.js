@@ -22,6 +22,8 @@ window.Vue = require('vue').default;
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('trunk', require('./components/Trunk.vue').default);
 Vue.component('exten', require('./components/Exten.vue').default);
+Vue.component('mailing-follow-up', require('./components/Mailing/FollowUp.vue').default);
+Vue.component('mailing-import', require('./components/Mailing/Import.vue').default);
 Vue.component('reception-console', require('./components/ReceptionConsole.vue').default);
 Vue.component('add-route', require('./components/Routes/Add.vue').default);
 Vue.component('edit-route', require('./components/Routes/Edit.vue').default);
@@ -35,5 +37,3 @@ Vue.component('ivr-options', require('./components/Ivr/Options.vue').default);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
-

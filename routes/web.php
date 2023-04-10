@@ -18,7 +18,6 @@ Auth::routes();
 Route::get('/', 'App\Http\Controllers\HomeController@index');
 
 Route::get('/test', 'App\Http\Controllers\HomeController@test');
-
 //// Logout
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('dashboard');
@@ -63,6 +62,12 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::post('/me', 'App\Http\Controllers\UserController@me');
+
+    Route::resource('/mailing', 'App\Http\Controllers\MailingController');
+    Route::post('/mailing/import', 'App\Http\Controllers\MailingController@import');
+    
+    Route::get('/mailing-export-error', 'App\Http\Controllers\MailingController@exportError');
+    Route::get('/mailing-follow-up', 'App\Http\Controllers\MailingController@followUp');
 });
 
 Route::group(['middleware' => 'auth'], function () {

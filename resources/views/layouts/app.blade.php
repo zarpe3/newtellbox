@@ -73,7 +73,12 @@
     <script src="{{ asset('light-bootstrap/js/light-bootstrap-dashboard.js?v=2.0.0') }}" type="text/javascript"></script>
     <!-- Light Bootstrap Dashboard DEMO methods, don't include it in your project! -->
     <script src="{{ asset('light-bootstrap/js/demo.js') }}"></script>
-    <script>window.Laravel = {csrfToken: '{{ csrf_token() }}'}</script>
+    <script>
+    window.Laravel = {
+      baseUrl : "{{ asset('/') }}",
+      csrfToken: '{{ csrf_token() }}'
+    }
+    </script>
     <script src="{{ URL::asset('js/app.js') }}"></script>
     <script>
     const app = new Vue({
