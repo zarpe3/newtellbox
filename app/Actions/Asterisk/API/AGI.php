@@ -48,7 +48,7 @@ class AGI
         }
     }
 
-    private function getRating()
+    private function rating()
     {
         return $response = $this->sendDataToCGRates(['method' => 'APIerSv1.GetCost', 'params' => [[
             'Tenant' => $this->data['accountCode'],
