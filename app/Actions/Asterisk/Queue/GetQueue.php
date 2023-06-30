@@ -25,8 +25,6 @@ class GetQueue
         }
 
         if (isset($this->data['name'])) {
-            \Log::info('estou procurando a fila '.$this->actionRecord->accountcode.'_'.$this->data['name']);
-
             return Queue::where('name', $this->actionRecord->accountcode.'_'.$this->data['name'])->get()[0];
         }
     }

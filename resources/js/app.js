@@ -7,7 +7,11 @@
 require('./bootstrap');
 
 window.Vue = require('vue').default;
-
+import Vue from 'vue';
+import vMultiselectListbox from 'vue-multiselect-listbox'
+import 'vue-multiselect-listbox/dist/vue-multi-select-listbox.css';
+import Vuesax from 'vuesax'
+import 'vuesax/dist/vuesax.css'
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -27,6 +31,10 @@ Vue.component('mailing-import', require('./components/Mailing/Import.vue').defau
 Vue.component('reception-console', require('./components/ReceptionConsole.vue').default);
 Vue.component('add-route', require('./components/Routes/Add.vue').default);
 Vue.component('edit-route', require('./components/Routes/Edit.vue').default);
+Vue.component('calendar', require('./components/calendar/Calendar.vue').default);
+Vue.component('v-multiselect-listbox', vMultiselectListbox)
+Vue.use(Vuesax);
+
 
 Vue.component('add-inbound', require('./components/Inbounds/Add.vue').default);
 Vue.component('edit-inbound', require('./components/Inbounds/Edit.vue').default);

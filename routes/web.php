@@ -63,9 +63,20 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/me', 'App\Http\Controllers\UserController@me');
 
-    Route::resource('/mailing', 'App\Http\Controllers\MailingController');
-    Route::post('/mailing/import', 'App\Http\Controllers\MailingController@import');
-    
+    Route::group(['prefix' => 'mailing'], function () {
+        Route::get('/', ['as' => 'mailing.index', 'uses' => 'App\Http\Controllers\MailingController@index']);
+        Route::get('/create', ['as' => 'mailing.create', 'uses' => 'App\Http\Controllers\MailingController@create']);
+        Route::post('/', ['as' => 'mailing.store', 'uses' => 'App\Http\Controllers\MailingController@store']);
+        Route::get('/{id}', ['as' => 'mailing.show', 'uses' => 'App\Http\Controllers\MailingController@show']);
+        Route::patch('/{id}', ['as' => 'mailing.update', 'uses' => 'App\Http\Controllers\MailingController@update']);
+        Route::delete('/{id}', ['as' => 'mailing.destroy', 'uses' => 'App\Http\Controllers\MailingController@destroy']);
+        Route::get('/{id}/edit', ['as' => 'mailing.edit', 'uses' => 'App\Http\Controllers\MailingController@edit']);
+        Route::post('/import', 'App\Http\Controllers\MailingController@import');
+        Route::post('/start/{id}', 'App\Http\Controllers\MailingController@start');
+        Route::post('/pause/{id}', 'App\Http\Controllers\MailingController@pause');
+        ///Route::resource('/', 'App\Http\Controllers\MailingController');
+    });
+
     Route::get('/mailing-export-error', 'App\Http\Controllers\MailingController@exportError');
     Route::get('/mailing-follow-up', 'App\Http\Controllers\MailingController@followUp');
 });

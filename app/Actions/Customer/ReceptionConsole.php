@@ -68,15 +68,6 @@ class ReceptionConsole
                 uniqid()
             );
 
-            dump($response);
-
-            /*if ($response['Response'] == 'Success') {
-                return response()->json([
-                    'success' => true,
-                    'message' => $response['Message'],
-                ]);
-            }*/
-
             $this->asm->disconnect();
 
             return response()->json([

@@ -120,22 +120,28 @@ Tip 2: you can also add an image using data-image tag
                         <i class="fa fa-upload"></i>
                     </i>
                     <p>
-                        {{ __('Mailings') }}
+                        {{ __('Discador') }}
                         <b class="caret"></b>
                     </p>
                 </a>
                 <div class="collapse @if($activeButton =='mailings') show @endif" id="mailings">
                     <ul class="nav">
-                        <li class="nav-item @if($activePage == 'users') active @endif">
+                        <li class="nav-item @if($activePage == 'mailing-import') active @endif">
                             <a class="nav-link" href="{{route('mailing.create')}}" style="margin-left: 20%;">
                                 <!--<i class="nc-icon nc-circle-09"></i>-->
                                 - {{ __("Importação") }}
                             </a>
                         </li>
-                        <li class="nav-item @if($activePage == 'trunks') active @endif">
+                        <li class="nav-item @if($activePage == 'mailing-followup') active @endif">
                             <a class="nav-link" href="{{route('mailing.index')}}" style="margin-left: 20%;">
                                 <!--<i class="nc-icon nc-circle-09"></i>-->
                                 - {{ __("Acompanhamento") }}
+                            </a>
+                        </li>
+                        <li class="nav-item @if($activePage == 'mailing-report') active @endif">
+                            <a class="nav-link" href="{{route('mailing.index')}}" style="margin-left: 20%;">
+                                <!--<i class="nc-icon nc-circle-09"></i>-->
+                                - {{ __("Relatorios") }}
                             </a>
                         </li>
                     </ul>

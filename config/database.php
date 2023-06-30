@@ -3,7 +3,6 @@
 use Illuminate\Support\Str;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Database Connection Name
@@ -34,7 +33,6 @@ return [
     */
 
     'connections' => [
-
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),
@@ -62,16 +60,16 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
-	'mongodb' => [
-            'driver'   => 'mongodb',
-            'host'     => env('MONGO_HOST'),
-            'port'     => env('MONGO_PORT'),
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'host' => env('MONGO_HOST'),
+            'port' => env('MONGO_PORT'),
             'database' => env('MONGO_DATABASE'),
             'username' => env('MONGO_USERNAME'),
             'password' => env('MONGO_PASSWORD'),
-            'options'  => [
-                'database' => env('MONGO_AUTH_DATABASE')
-            ]
+            'options' => [
+                'database' => env('MONGO_AUTH_DATABASE'),
+            ],
         ],
         'pgsql' => [
             'driver' => 'pgsql',
@@ -102,7 +100,6 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
         ],
-
     ],
 
     /*
@@ -130,7 +127,6 @@ return [
     */
 
     'redis' => [
-
         'client' => env('REDIS_CLIENT', 'predis'),
 
         'options' => [
@@ -155,7 +151,5 @@ return [
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
         ],
-
     ],
-
 ];

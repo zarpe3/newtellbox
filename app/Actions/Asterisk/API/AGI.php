@@ -7,11 +7,15 @@ use App\Actions\Asterisk\Inbound\GetInbound;
 use App\Actions\Asterisk\Queue\GetQueue;
 use App\Actions\CGrates\Connect;
 use App\Actions\Customer\IVR\ListIVR;
+use App\Actions\Customer\Mailing\ScheduleMailing;
 use App\Models\CDR;
 use App\Models\Customer;
+use App\Models\Mailing as Phones;
+use App\Models\MailingFollowUp;
 use App\Models\SipRoutes as OutboundRoute;
 use App\Models\SipUsers;
 use Illuminate\Support\Facades\Http;
+use Storage;
 
 class AGI
 {
@@ -43,7 +47,10 @@ class AGI
         ]);
 
         if (isset($this->data['recording'])) {
-            Storage::disk('local')->makeDirectory('storage/app/'.$this->data['accountCode'], 0777);
+            if (!Storage::disk('local')->exists('storage/app/'.$this->data['accountCode'])) {
+                Storage::disk('local')->makeDirectory('storage/app/'.$this->data['accountCode'], 0777);
+            }
+
             $this->data['recording']->storeAs($this->data['accountCode'], $this->data['uniqueid'].'.wav');
         }
     }
@@ -187,5 +194,79 @@ class AGI
         $customer = Customer::getAccountCode($this->data['accountcode'])->firstOrFail();
 
         return (new ListIVR())->execute($customer, ['id' => $this->data['id']]);
+    }
+
+    private function getTrunkFromDialer()
+    {
+        $mailing = MailingFollowUp::where('_id', $this->data['campaign_id'])->first();
+
+        if (!$mailing) {
+            return ['match' => 0];
+        }
+
+        $customer = Customer::find($mailing->customer_id);
+
+        if (!$customer) {
+            return ['match' => 0];
+        }
+
+        $type = 'fixo';
+        if ($this->data['type'] == 'MOBILE') {
+            $type = 'celular';
+        }
+
+        //\Log::info('Looking for '.$mailing->route.' DDD '.$this->data['ddd'].' and type '.$type);
+        $trunkName = OutboundRoute::accountCode($customer->accountcode)
+            ->name($mailing->route)
+            ->where('ddd', $this->data['ddd'])
+            ->where('type', $type)
+            ->first();
+
+        if (!$trunkName) {
+            return ['match' => 0];
+        }
+
+        $response = $this->getTrunksByAccount($customer->accountcode);
+        $trunk = $response['response'][$trunkName->trunk.'_'.$customer->accountcode];
+
+        return ['match' => 1, 'trunk' => $trunk, 'accountCode' => $customer->accountcode];
+    }
+
+    private function getAmdFromDialer()
+    {
+        $mailing = MailingFollowUp::where('_id', $this->data['campaign_id'])->first();
+
+        if (!$mailing) {
+            return ['success' => false];
+        }
+
+        $customer = Customer::find($mailing->customer_id);
+
+        return ['success' => true, 'amd' => $mailing->amd, 'accountCode' => $customer->accountcode];
+    }
+
+    private function hangup()
+    {
+        $schedule = (new ScheduleMailing())->execute(['dialstatus' => $this->data['dialstatus']]);
+        $mailings = Phones::where('_id', $this->data['customer_id'])->get();
+
+        foreach ($mailings as $m) {
+            $id = $m->_id;
+            $phones = $m->phones;
+
+            foreach ($phones as &$phone) {
+                if ($phone['phone'] === $this->data['phone']) {
+                    $phone['status'] = $schedule['status'];
+                    $phone['schedule'] = $schedule['schedule'];
+                }
+            }
+
+            Phones::where('_id', $this->data['customer_id'])
+                //->where('phones.status', '=', 100)
+                ->update([
+                    'phones' => $phones,
+                    'status' => $schedule['status'],
+                ]);
+        }
     }
 }

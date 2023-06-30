@@ -65,7 +65,7 @@
                                         <i class="nc-icon nc-map-big"></i>{{ __(' Tempo Ring Fila') }}
                                     </label>
                                     <input type="hidden" id="agents" name="agentsB64">
-                                    <input type="number" min="0" max="10" name="timeout" id="timeout" class="form-control{{ $errors->has('timeout') ? ' is-invalid' : '' }}" placeholder="{{ __('Tempo ring Agente [0 - 10]') }}" value="" required autofocus>
+                                    <input type="number" min="0" max="90" name="timeout" id="timeout" class="form-control{{ $errors->has('timeout') ? ' is-invalid' : '' }}" placeholder="{{ __('Tempo ring Agente [0 - 10]') }}" value="" required autofocus>
                                 </div>
                                 <fieldset class="form-group">
                                     <label class="form-control-label" for="password">

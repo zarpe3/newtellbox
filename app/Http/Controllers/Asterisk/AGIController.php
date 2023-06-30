@@ -81,4 +81,33 @@ class AGIController extends Controller
             'id' => $request->id,
         ]);
     }
+
+    public function getTrunkFromDialer(AGI $agi, Request $request)
+    {
+        return $agi->execute([
+            'request' => 'getTrunkFromDialer',
+            'customer_id' => $request->customer_id,
+            'campaign_id' => $request->campaign_id,
+            'ddd' => $request->ddd,
+            'type' => $request->type,
+        ]);
+    }
+
+    public function getAmdFromDialer(AGI $agi, Request $request)
+    {
+        return $agi->execute([
+            'request' => 'getAmdFromDialer',
+            'campaign_id' => $request->campaign_id,
+        ]);
+    }
+
+    public function hangup(AGI $agi, Request $request)
+    {
+        return $agi->execute([
+            'request' => 'hangup',
+            'customer_id' => $request->customer_id,
+            'phone' => $request->phone,
+            'dialstatus' => $request->dialstatus,
+        ]);
+    }
 }

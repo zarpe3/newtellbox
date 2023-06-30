@@ -89,6 +89,9 @@ class GetCDR
             case 'CHANUNAVAIL':
                 return 'Tronco Indisponivel';
                 break;
+            case 'DROP':
+                return 'Abandonada';
+                break;
         }
     }
 }

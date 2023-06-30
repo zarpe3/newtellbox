@@ -1,160 +1,319 @@
 <template>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card data-tables">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h3 class="mb-0">Adicionar Campanha</h3>
-                                <p class="text-sm mb-0">
-                                </p>
-                            </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card data-tables">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0" v-text="(edit == '1') ? 'Editar Campanha' : 'Adicionar Campanha'"></h3>
+                            <p class="text-sm mb-0">
+                            </p>
                         </div>
                     </div>
-                    <div class="col-12 mt-2">
-                    </div>
-                    <div class="toolbar">
-                        <!--Here you can write extra buttons/actions for the toolbar-->
-                    </div>
-                    <div class="card-body table-full-width table-responsive">
-                        <form method="post" autocomplete="off">
-                            <div class="pl-lg-4">
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-name">
-                                                Campanha
+                </div>
+                <div class="col-12 mt-2">
+                </div>
+                <div class="toolbar">
+                    <!--Here you can write extra buttons/actions for the toolbar-->
+                </div>
+                <div class="card-body table-full-width table-responsive">
+                    <form method="post" autocomplete="off">
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-name">
+                                            Campanha
+                                        </label>
+                                        <input v-model="campaign_name" type="text" class="form-control" placeholder="Nome da Campanha">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" style="display: flex; align-items: end;">
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <label class="form-check-label d-flex align-items-center">
+                                                <input v-model="valid_cpf" class="form-check-input" type="checkbox" name="remember" id="remember">
+                                                <span class="form-check-sign"></span>
+                                                Validar CPFs
                                             </label>
-                                            <input v-model="campaign_name" type="text" class="form-control" placeholder="Nome da Campanha">
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6" style="display: flex; align-items: end;">
-                                        <div class="form-group">
-                                            <div class="form-check">
-                                                <label class="form-check-label d-flex align-items-center">
-                                                    <input v-model="valid_cpf" class="form-check-input" type="checkbox" name="remember" id="remember">
-                                                    <span class="form-check-sign"></span>
-                                                    Validar CPFs
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>           
-                                
-                                <div class="example-full">
-                                    <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
-                                        <h3>Solte os arquivos para upload</h3>
-                                    </div>
-                                    <div class="upload" v-show="!isOption">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>Nome</th>
-                                                        <th v-if="isImage">Largura</th>
-                                                        <th v-if="isImage">Altura</th>
-                                                        <th>Tamanho</th>
-                                                        <th>Estado</th>
-                                                        <th>Ação</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr v-if="!files.length">
-                                                        <td colspan="9" style="display: revert; !important;">
-                                                            <div class="text-center p-5">
-                                                                <h4>Solte os arquivos em qualquer lugar para fazer upload
-                                                                    <br> ou
-                                                                </h4>
-                                                                <label :for="name" class="btn btn-lg btn-primary">Selecionar
-                                                                    arquivos</label>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr v-for="(file, index) in files" :key="file.id">
-                                                        <td>
-                                                            <img class="td-image-thumb" v-if="file.thumb"
-                                                                :src="file.thumb" />
-                                                            <span v-else>Arquivo</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="filename">
-                                                                {{ file.name }}
-                                                            </div>
-                                                            <div class="progress"
-                                                                v-if="file.active || file.progress !== '0.00'">
-                                                                <div :class="{ 'progress-bar': true, 'progress-bar-striped': true, 'bg-danger': file.error, 'progress-bar-animated': file.active }"
-                                                                    role="progressbar"
-                                                                    :style="{ width: file.progress + '%' }">{{ file.progress
-                                                                    }}%</div>
-                                                            </div>
-                                                        </td>
-                                                        <td v-if="isImage">{{ file.width || 0 }}</td>
-                                                        <td v-if="isImage">{{ file.height || 0 }}</td>
-                                                        <td>{{ formatSize(file.size) }}</td>
-
-                                                        <td v-if="file.error">{{ messageError(file.error) }}</td>
-                                                        <td v-else-if="file.success">Arquivo enviado</td>
-                                                        <td v-else-if="file.active">Enviando arquivo</td>
-                                                        <td v-else></td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <a class="dropdown-item" href="#"
-                                                                    @click.prevent="$refs.upload.remove(file)">Remove</a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="example-foorer">
-                                            <div class="btn-group">
-                                                <file-upload class="btn btn-primary" :post-action="postAction"
-                                                    :extensions="extensions" :accept="accept" :multiple="multiple"
-                                                    :directory="directory" :create-directory="createDirectory"
-                                                    :size="size || 0" :thread="thread < 1 ? 1 : (thread > 5 ? 5 : thread)"
-                                                    :headers="headers" :data="{
-                                                        campaign_name : this.campaign_name,
-                                                        valid_cpf : this.valid_cpf ? '1' : '0',
-                                                    }" :drop="drop"
-                                                    :drop-directory="dropDirectory" :add-index="addIndex" v-model="files"
-                                                    @input-filter="inputFilter" @input-file="inputFile" ref="upload">
-                                                    <i class="fa fa-plus"></i>
-                                                    Selecionar
-                                                </file-upload>
-                                            </div>
-                                            <button type="button" class="btn btn-success"
-                                                v-if="!$refs.upload || !$refs.upload.active"
-                                                @click.prevent="$refs.upload.active = true">
-                                                <i class="fa fa-arrow-up" aria-hidden="true"></i>
-                                                Iniciar o Envio
-                                            </button>
-                                            <button type="button" class="btn btn-danger" v-else
-                                                @click.prevent="$refs.upload.active = false">
-                                                <i class="fa fa-stop" aria-hidden="true"></i>
-                                                Parar o Envio
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                            <div class="row">
+                                <div class="col-3 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="max_attempts">
+                                            Tentativas
+                                        </label>
+                                        <input v-model="max_attempts" type="number" class="form-control" placeholder="Quantidade de tentativas por numero">
+                                    </div>
+                                </div>
+                                <div class="col-3 col-md-3" style="">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="max_attempts">
+                                            Agressividade
+                                        </label>
+                                        <select v-model="strength" class="form-control">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="max_attempts">
+                                            Tempo Max Fila (s)
+                                        </label>
+                                        <input v-model="timeout" type="number" class="form-control" placeholder="Tempo de espera para atendimento">
+                                    </div>
+                                </div>
+                                <div class="col-3 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="max_attempts">
+                                            Pausa Pós atendimento (s)
+                                        </label>
+                                        <input v-model="wrapuptime" type="number" class="form-control" placeholder="Tempo após finalizar contato">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-bina">
+                                            Bina
+                                        </label>
+                                        <input v-model="bina" type="text" class="form-control" placeholder="Numero da Bina">
+                                    </div>
+                                </div>
+                                <div class="col-3 col-md-3" style="">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="max_attempts">
+                                                AMD
+                                            </label>
+                                            <select v-model="amd" class="form-control">
+                                                <option value="0">Nenhum</option>
+                                                <option value="1">Interno</option>
+                                                <option value="2">MsVox</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3 col-md-3" style="">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="max_attempts">
+                                                Rota
+                                            </label>
+                                            <select v-model="route" class="form-control">
+                                                <option v-for="route in routes" :value="route.name">{{ route.name }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                               <div class="col-7 col-md-7" style="">
+                                    <calendar :calendar="calendar"></calendar>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-12" style="">
+                                    <v-multiselect-listbox v-model="selectedAgents" :options="this.agents" search-options-placeholder="Procurar" selected-options-placeholder="Procurar selecionados">
+                                        ></v-multiselect-listbox>
+                                </div>
+                            </div>
+                            <div v-show="edit != '1'" class="example-full">
+                                <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
+                                    <h3>Solte os arquivos para upload</h3>
+                                </div>
+                                <div class="upload" v-show="!isOption">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Nome</th>
+                                                    <th v-if="isImage">Largura</th>
+                                                    <th v-if="isImage">Altura</th>
+                                                    <th>Tamanho</th>
+                                                    <th>Estado</th>
+                                                    <th>Ação</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-if="!files.length">
+                                                    <td colspan="9" style="display: revert; !important;">
+                                                        <div class="text-center p-5">
+                                                            <h4>Solte os arquivos em qualquer lugar para fazer upload
+                                                                <br> ou
+                                                            </h4>
+                                                            <label :for="name" class="btn btn-lg btn-primary">Selecionar
+                                                                arquivos</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr v-for="(file, index) in files" :key="file.id">
+                                                    <td>
+                                                        <img class="td-image-thumb" v-if="file.thumb" :src="file.thumb" />
+                                                        <span v-else>Arquivo</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="filename">
+                                                            {{ file.name }}
+                                                        </div>
+                                                        <div class="progress" v-if="file.active || file.progress !== '0.00'">
+                                                            <div :class="{ 'progress-bar': true, 'progress-bar-striped': true, 'bg-danger': file.error, 'progress-bar-animated': file.active }" role="progressbar" :style="{ width: file.progress + '%' }">{{ file.progress
+                                                                    }}%</div>
+                                                        </div>
+                                                    </td>
+                                                    <td v-if="isImage">{{ file.width || 0 }}</td>
+                                                    <td v-if="isImage">{{ file.height || 0 }}</td>
+                                                    <td>{{ formatSize(file.size) }}</td>
+
+                                                    <td v-if="file.error">{{ messageError(file.error) }}</td>
+                                                    <td v-else-if="file.success">Arquivo enviado</td>
+                                                    <td v-else-if="file.active">Enviando arquivo</td>
+                                                    <td v-else></td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <a class="dropdown-item" href="#" @click.prevent="$refs.upload.remove(file)">Remove</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="example-foorer">
+                                        <div class="btn-group">
+                                            <file-upload class="btn btn-primary" :post-action="postAction" :extensions="extensions" :accept="accept" :multiple="multiple" :directory="directory" :create-directory="createDirectory" :size="size || 0" :thread="thread < 1 ? 1 : (thread > 5 ? 5 : thread)" :headers="headers" :data="{
+                                                        campaign_name : this.campaign_name,
+                                                        amd: this.amd,
+                                                        agents: this.selectedAgents,
+                                                        bina: this.bina,
+                                                        wrapuptime: this.wrapuptime,
+                                                        timeout: this.timeout,
+                                                        max_attempts: this.max_attempts,
+                                                        strength: this.strength,
+                                                        valid_cpf : this.valid_cpf ? '1' : '0',
+                                                        route: this.route,
+                                                        calendar: JSON.stringify(this.calendar),
+                                                    }" :drop="drop" :drop-directory="dropDirectory" :add-index="addIndex" v-model="files" @input-filter="inputFilter" @input-file="inputFile" ref="upload">
+                                                <i class="fa fa-plus"></i>
+                                                Selecionar
+                                            </file-upload>
+                                        </div>
+                                        <button type="button" class="btn btn-success" v-if="!$refs.upload || !$refs.upload.active" @click.prevent="$refs.upload.active = true">
+                                            <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                                            Iniciar o Envio
+                                        </button>
+                                        <button type="button" class="btn btn-danger" v-else @click.prevent="$refs.upload.active = false">
+                                            <i class="fa fa-stop" aria-hidden="true"></i>
+                                            Parar o Envio
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="edit == '1'" class="row">
+                                <button type="button" class="btn btn-success" @click="save()">
+                                    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                                    Salvar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </template>
+
 <script>
 import ImageCompressor from '@xkeshi/image-compressor'
 import FileUpload from 'vue-upload-component'
 export default {
-    components: { FileUpload },
+    components: {
+        FileUpload
+    },
+    props: ['extens', 'edit', 'mailing', 'id', 'routesdata'],
+    mounted() {
+
+        if (this.edit == '1') {
+            this.$vs.loading()
+            setTimeout(() => {
+                let data = JSON.parse(this.mailing);
+                console.log(data);
+                if (data) {
+                    this.bina = data.bina;
+                    this.campaign_name = data.campaign_name;
+                    this.strength = data.strength;
+                    this.timeout = data.timeout;
+                    this.valid_cpf = data.valid_cpf;
+                    this.wrapuptime = data.wrapuptime;
+                    this.selectedAgents = data.agents;
+                    this.max_attempts = data.max_attempts;
+                    this.route = data.route;
+                    this.amd = data.amd;
+
+                    if (data.calendar) {
+                        this.calendar = data.calendar;
+                    }
+                }
+                this.$vs.loading.close()
+            }, 2000);
+        }
+
+        if (this.extens) {
+            let agentsObj = JSON.parse(this.extens);
+            if (agentsObj) {
+                this.agents = agentsObj.map((agent) => {
+                    return agent.name.slice(-4);
+                });
+            }
+        }
+
+        if (this.routesdata) {
+            JSON.parse(this.routesdata).map((route) => {
+                this.routes.push(route);
+            });
+        }
+    },
     data() {
         return {
+            calendar: [
+                ["00:00", "00:00"],
+                ["00:00", "00:00"],
+                ["00:00", "00:00"],
+                ["00:00", "00:00"],
+                ["00:00", "00:00"],
+                ["00:00", "00:00"],
+                ["00:00", "00:00"]
+            ],
             status: "",
             campaign_name: "",
+            strength: null,
+            max_attempts: null,
+            agents: [],
+            selectedAgents: [],
+            amd: null,
+            bina: null,
+            routes: [],
+            route: null,
+            timeout: null,
+            wrapuptime: null,
             valid_cpf: "1",
             send: false,
             files: [],
@@ -191,19 +350,44 @@ export default {
                 name: '',
             },
             customMessage: '',
-            required: [
-                {
-                    value : this.campaign_name,
-                    message: 'Informe o nome da campanha',
-                    data : {
-                        campaign_name : this.campaign_name
-                    }
+            required: [{
+                value: this.campaign_name,
+                message: 'Informe o nome da campanha',
+                data: {
+                    campaign_name: this.campaign_name
                 }
-            ],
+            }],
         }
     },
     methods: {
-        sendStatus(){
+        save() {
+            this.$vs.loading()
+            const url = window.location.href;
+            const id = url.split("/").slice(-1)[0];
+            let data = {
+                campaign_name: this.campaign_name,
+                amd: this.amd,
+                agents: this.selectedAgents,
+                bina: this.bina,
+                wrapuptime: this.wrapuptime,
+                timeout: this.timeout,
+                max_attempts: this.max_attempts,
+                strength: this.strength,
+                route: this.route,
+                'calendar': this.calendar,
+                valid_cpf: this.valid_cpf ? '1' : '0',
+            }
+            axios.patch('/mailing/'+id, data).then((res) => {
+                this.$vs.loading.close();
+                this.$vs.notify({
+                    color: 'primary',
+                    position: 'top-right',
+                    title: 'Atualizada!',
+                    text: 'Parabéns! Sua campanha foi atualizada com sucesso'
+                });
+            });          
+        },
+        sendStatus() {
             this.send = this.campaign_name !== "" ? true : false;
             return this.send
         },
@@ -269,17 +453,22 @@ export default {
                     })
                     imageCompressor.compress(newFile.file)
                         .then((file) => {
-                            this.$refs.upload.update(newFile, { error: '', file, size: file.size, type: file.type })
+                            this.$refs.upload.update(newFile, {
+                                error: '',
+                                file,
+                                size: file.size,
+                                type: file.type
+                            })
                         })
                         .catch((err) => {
-                            this.$refs.upload.update(newFile, { error: err.message || 'compress' })
+                            this.$refs.upload.update(newFile, {
+                                error: err.message || 'compress'
+                            })
                         })
                 }
             }
 
-
             if (newFile && newFile.error === "" && newFile.file && (!oldFile || newFile.file !== oldFile.file)) {
-                console.log(newFile)
                 newFile.blob = ''
                 let URL = (window.URL || window.webkitURL)
                 if (URL) {
@@ -296,10 +485,16 @@ export default {
                 newFile.error = 'image parsing'
                 let img = new Image();
                 img.onload = () => {
-                    this.$refs.upload.update(newFile, { error: '', height: img.height, width: img.width })
+                    this.$refs.upload.update(newFile, {
+                        error: '',
+                        height: img.height,
+                        width: img.width
+                    })
                 }
                 img.οnerrοr = (e) => {
-                    this.$refs.upload.update(newFile, { error: 'parsing image size' })
+                    this.$refs.upload.update(newFile, {
+                        error: 'parsing image size'
+                    })
                 }
                 img.src = newFile.blob
             }
@@ -324,12 +519,16 @@ export default {
                                 }
                             });
                             this.customMessage = messageError
-                            this.$refs.upload.update(newFile, { error: 'custom' })
+                            this.$refs.upload.update(newFile, {
+                                error: 'custom'
+                            })
                         }
                     }
                     // min size
                     if (newFile.size >= 0 && this.minSize > 0 && newFile.size < this.minSize && newFile.type !== "text/directory") {
-                        this.$refs.upload.update(newFile, { error: 'size' })
+                        this.$refs.upload.update(newFile, {
+                            error: 'size'
+                        })
                     }
                 }
 
@@ -342,7 +541,6 @@ export default {
                 }
 
                 if (newFile.success && !oldFile.success) {
-                    console.log(newFile.response)
                     // success
                 }
             }
@@ -358,7 +556,16 @@ export default {
     }
 }
 </script>
+
 <style>
+label {
+    color: #767676 !important;
+}
+
+.msl-searchable-list {
+    min-width: 370px !important;
+}
+
 .example-full .btn-group .dropdown-menu {
     display: block;
     visibility: hidden;
@@ -395,7 +602,6 @@ export default {
     border-top: 1px solid #e9ecef;
     border-bottom: 1px solid #e9ecef;
 }
-
 
 .example-full .edit-image img {
     max-width: 100%;

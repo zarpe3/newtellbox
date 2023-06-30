@@ -2,32 +2,34 @@
 
 namespace App\Jobs;
 
-use App\Actions\Customer\Mailing\Import;
-use App\Models\Customer;
+use App\Actions\Customer\Mailing\OnGoingMailing as OnGoing;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class MailingImport implements ShouldQueue
+class OnGoingMailing implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
 
-    private $mailing;
+    private $campaignId;
+    private $phones;
+    private $id;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(array $mailing)
+    public function __construct($campaignId, $phones, $id)
     {
-        $this->mailing = $mailing;
-        //$this->queue = 'mailing';
+        $this->campaignId = $campaignId;
+        $this->phones = $phones;
+        $this->id = $id;
     }
 
     /**
@@ -37,10 +39,10 @@ class MailingImport implements ShouldQueue
      */
     public function handle()
     {
-        ini_set('memory_limit', '4095M');
-        set_time_limit(0);
-        $customer = Customer::findOrFail($this->mailing['customer_id']);
-
-        (new Import())->execute($customer, $this->mailing);
+        (new OnGoing())->execute([
+            'campaign_id' => $this->campaignId,
+            'phones' => $this->phones,
+            'id' => $this->id,
+        ]);
     }
 }

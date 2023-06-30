@@ -462,6 +462,21 @@ body>.navbar-collapse .nav li .nav-link:hover {
     opacity: 1;
 }
 
+.nav-item .collapse {
+    display: none !important;
+}
+.nav-item .collapse.show {
+    display: block !important;
+}
+
+.table tbody tr.collapse.show {
+    display: table-row !important;
+}
+
+.table tbody tr.collapse {
+    display: none !important
+}
+
 .sidebar .nav li .nav-link p,
 body>.navbar-collapse .nav li .nav-link p {
     margin: 0;
