@@ -25,7 +25,7 @@
                     </div>
 
                     <div class="col-12 mt-2">
-                        <form id="contact-form" role="form" method="POST" action="/report/cdr/search">
+                        <form id="contact-form" role="form" method="POST" action="cdr/search">
                             @csrf
                             <div class="controls">
                                 <div class="row">

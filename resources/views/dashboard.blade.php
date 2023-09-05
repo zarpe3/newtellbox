@@ -1,8 +1,17 @@
 @extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Tellbox Varejo', 'navName' => 'Dashboard', 'activeButton' => 'laravel'])
-
 @section('content')
+<link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css"/>
     <div class="content" id="app">
         <div class="container-fluid">
+            @if (!$user->notAdmin())
+            <div class="row">
+                <div class="col-md-12">
+                    <customer-table></customer-table>
+                </div>
+            </div>
+            <hr />
+            @endif
+            
             <div class="row">
                 <div class="col-md-4">
                     <div class="card ">

@@ -2,14 +2,13 @@ const inbounds = new Vue({
     el: '#inbounds',
     data: function () {
         return {
-            extens: extensData,
             destiny_type: '',
             destiny_value: '',
             elements: [],
         }
     },
     mounted() {
-        console.log(this.extens);
+        //console.log(this.extens);
     },
     methods: {
         changeType: function() {
@@ -24,10 +23,9 @@ const inbounds = new Vue({
         },
         remove: function (b64) {
             console.log(b64);
-            return;
-            axios.delete('/inbounds/' + b64)
+            axios.delete('inbound/' + b64)
             .then(function () {
-                window.location = '/inbounds'
+                location.reload()
             });
             ;
         },

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Asterisk\SIP;
+use App\Models\Customer;
 use Illuminate\Http\Request;
-use Auth;
 
 class ExtensController extends Controller
 {
@@ -13,9 +13,8 @@ class ExtensController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Customer $customer)
     {
-        $customer = Auth::user()->customer;
         $response = (new SIP())->execute($customer, ['request' => 'GET']);
 
         return view('extens.index', [
@@ -29,17 +28,13 @@ class ExtensController extends Controller
     /**
      * Add a new extens.
      */
-    public function store(Request $request)
+    public function store(Customer $customer, Request $request)
     {
-        $customer = Auth::user()->customer;
-
         return (new SIP())->execute($customer, ['request' => 'ADD', 'data' => $request->all()]);
     }
 
-    public function destroy($name)
+    public function destroy(Customer $customer, $name)
     {
-        $customer = Auth::user()->customer;
-
         return (new SIP())->execute($customer, ['request' => 'DEL', 'name' => $name]);
     }
 }

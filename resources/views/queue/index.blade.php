@@ -26,7 +26,7 @@
                                 </p>
                             </div>
                             <div class="col-4 text-right">
-                                <a href="/queue/create" class="btn btn-sm btn-default">Adicionar Fila</a>
+                                <a href="/{{$customer}}/queue/create" class="btn btn-sm btn-default">Adicionar Fila</a>
                             </div>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                                     <td>{{ $queue['created_at'] }}</td>
                                     <td class="d-flex">
 
-                                        <a href="/queue/{{$queue['id']}}/edit"><i class="fa fa-edit"></i></a>
+                                        <a href="/{{$customer}}/queue/{{$queue['id']}}/edit"><i class="fa fa-edit"></i></a>
                                         <a style="color: red;" v-on:click="modalRemove('{{base64_encode(json_encode(['name' => $queue['name'], 'id' => $queue['id']]))}}')"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>

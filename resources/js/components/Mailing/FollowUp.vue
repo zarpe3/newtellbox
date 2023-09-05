@@ -44,7 +44,7 @@
                         <tbody>
                             <tr v-for="item in data" :key="item.id">
                                 <td>
-                                    <a :href="'/mailing/'+item._id">
+                                    <a :href="'/'+accountCode+'/mailing/'+item._id">
                                         {{item.campaign_name}}
                                     </a>
                                 </td>
@@ -104,6 +104,7 @@ export default {
     data() {
         return {
             data: [],
+            accountCode: null,
             url: `${window.Laravel.baseUrl}mailing-export-error`,
             showNoRegister: false,
             next_page_url: 1,
@@ -112,25 +113,28 @@ export default {
             prevClass: this.prev_page_url == null ? 'page-item disabled' : 'page-item'
         }
     },
+    created() {
+        this.accountCode = this.$root.$data.accountCode;
+    },
     mounted() {
-        let t = this
-        axios.get(`${window.Laravel.baseUrl}mailing-follow-up`)
+        
+        axios.get('mailing-follow-up')
             .then(res => {
-                t.showNoRegister = (res.data.data.length === 0)
-                t.next_page_url = res.data.next_page_url !== undefined ? res.data.next_page_url : null
-                t.prev_page_url = res.data.prev_page_url !== undefined ? res.data.prev_page_url : null
-                t.nextClass = res.data.next_page_url == null ? 'page-item disabled' : 'page-item'
-                t.prevClass = res.data.prev_page_url == null ? 'page-item disabled' : 'page-item'
-                t.data = res.data.data
+                this.showNoRegister = (res.data.data.length === 0)
+                this.next_page_url = res.data.next_page_url !== undefined ? res.data.next_page_url : null
+                this.prev_page_url = res.data.prev_page_url !== undefined ? res.data.prev_page_url : null
+                this.nextClass = res.data.next_page_url == null ? 'page-item disabled' : 'page-item'
+                this.prevClass = res.data.prev_page_url == null ? 'page-item disabled' : 'page-item'
+                this.data = res.data.data
             }).catch(err => {
-                t.showNoRegister = true
+                this.showNoRegister = true
                 console.log(err)
             });
     },
     methods: {
         pause(id) {
             this.$vs.loading();
-            axios.post('/mailing/pause/' + id)
+            axios.post('/'+this.$root.$data.accountCode+'/mailing/pause/' + id)
                 .then(res => {
                     this.$vs.loading.close()
                     this.updateStatus(id, 'pausado');
@@ -152,7 +156,7 @@ export default {
         },
         start(id) {
             this.$vs.loading();
-            axios.post('/mailing/start/' + id)
+            axios.post('/'+this.$root.$data.accountCode+'/mailing/start/' + id)
                 .then(res => {
                     this.$vs.loading.close()
                     this.updateStatus(id, 'iniciada');
@@ -205,7 +209,7 @@ export default {
         },
         drop(id) {
             this.$vs.loading();
-            axios.delete('/mailing/' + id).then((res) => {
+            axios.delete('/'+this.$root.$data.accountCode+'/mailing/' + id).then((res) => {
                 //// removes the mailing from data
                 this.data = this.data.filter((mailing) => {
                     if (mailing._id != id) {

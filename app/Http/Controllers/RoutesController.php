@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Asterisk\SIPRoutes as ActionRouting;
-use Auth;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -16,12 +16,11 @@ class RoutesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Customer $customer)
     {
-        $customer = Auth::user()->customer;
         $routes = (new ActionRouting())->execute($customer, ['request' => 'GET']);
 
-        $response = Http::post('http://webdec-dev03.webdec.com.br/trunks/list', [
+        $response = Http::post('https://webdec-dev03.webdec.com.br/trunks/list', [
             'accountcode' => $customer->accountcode,
         ])->json();
 
@@ -41,11 +40,10 @@ class RoutesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Customer $customer)
     {
-        $user = Auth::user();
-        $response = Http::post('http://webdec-dev03.webdec.com.br/trunks/list', [
-          'accountcode' => $user->customer->accountcode,
+        $response = Http::post('https://webdec-dev03.webdec.com.br/trunks/list', [
+          'accountcode' => $customer->accountcode,
         ]);
         $trunks = $response->json();
         //var_dump($trunks);
@@ -57,16 +55,15 @@ class RoutesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Customer $customer, Request $request)
     {
-        $customer = Auth::user()->customer;
         (new ActionRouting())->execute($customer, [
             'request' => 'ADD',
             'infos' => $request->infos,
             'name' => $request->name,
         ]);
 
-        return redirect('/routes');
+        return redirect()->route('routes.index', [$customer->accountcode]);
     }
 
     /**
@@ -76,11 +73,10 @@ class RoutesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($base64)
+    public function show(Customer $customer, $base64)
     {
         $request = json_decode(base64_decode($base64));
-        $customer = Auth::user()->customer;
-        $response = Http::post('http://webdec-dev03.webdec.com.br/trunks/list', [
+        $response = Http::post('https://webdec-dev03.webdec.com.br/trunks/list', [
           'accountcode' => $request->accountCode,
         ]);
         $trunks = $response->json();
@@ -107,17 +103,15 @@ class RoutesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Customer $customer, Request $request, $id)
     {
-        //$json = json_decode(base64_decode($id));
-        $customer = Auth::user()->customer;
         (new ActionRouting())->execute($customer, [
             'request' => 'UPDATE',
             'infos' => $request->infos,
             'name' => $request->name,
         ]);
 
-        return redirect('/routes');
+        return redirect()->route('routes.index', [$customer->accountcode]);
     }
 
     /**
@@ -127,10 +121,9 @@ class RoutesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Customer $customer, $id)
     {
         $json = json_decode(base64_decode($id));
-        $customer = Auth::user()->customer;
         (new ActionRouting())->execute($customer, [
             'request' => 'DELETE',
             'name' => $json->name,

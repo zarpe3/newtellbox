@@ -70,4 +70,13 @@ class User extends Authenticatable
     {
         //switch($this->customer->plan())
     }
+
+    public function notAdmin()
+    {
+        if ($this->user_type != 'admin') {
+            return true;
+        }
+
+        return false;
+    }
 }

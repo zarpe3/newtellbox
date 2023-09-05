@@ -11,7 +11,7 @@ class MergeErrors
     public function setParameters(array $data): void
     {
         $this->data = [
-            'importError' => $data['importError'],
+            'importError' => $data['importError'] ?? '',
         ];
     }
 
@@ -21,7 +21,7 @@ class MergeErrors
 
         $column = $message = $valueString = '';
 
-        foreach (array_filter($importError) as $key => $value) {
+        foreach (array_filter($this->data['importError']) as $key => $value) {
             $column .= "{$value['column']},";
             $message .= "{$value['message']},";
             $valueString .= "{$value['value']},";

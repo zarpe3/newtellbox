@@ -1,6 +1,9 @@
 @extends('layouts.app', ['activePage' => 'users', 'title' => 'Telbox Varejo', 'navName' => 'Usuarios', 'activeButton' => 'laravel'])
 
 @section('content')
+@if(isset($message))
+@include('alerts.error_response')
+@endif
 <div id="app" class="content">
     <div class="container-fluid">
         <div class="row">
@@ -25,7 +28,7 @@
                         <!--        Here you can write extra buttons/actions for the toolbar              -->
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        <form method="post" action="{{ route('users.store') }}" autocomplete="off">
+                         <form method="post" action="{{ route('users.store', $customer) }}" autocomplete="off"> 
                             @csrf
                             <h6 class="heading-small text-muted mb-4">{{ __('Criação de Usuario') }}</h6>
                             <div class="pl-lg-4">

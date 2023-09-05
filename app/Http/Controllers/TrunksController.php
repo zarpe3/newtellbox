@@ -6,7 +6,7 @@ use App\Actions\Asterisk\DeleteTrunks;
 use App\Actions\Asterisk\GetTrunks;
 use App\Actions\Asterisk\UpdateTrunks;
 use App\Http\Requests\TrunksRequest;
-use Auth;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class TrunksController extends Controller
@@ -25,9 +25,8 @@ class TrunksController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Customer $customer)
     {
-        $customer = Auth::user()->customer;
         $trunks = (new GetTrunks())->execute($customer, []);
 
         return view('trunks.index', ['trunks' => $trunks]);
@@ -38,10 +37,8 @@ class TrunksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Customer $customer)
     {
-        $customer = Auth::user()->customer;
-
         return view('trunks.add', []);
     }
 
@@ -50,17 +47,15 @@ class TrunksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(TrunksRequest $request)
+    public function store(Customer $customer, TrunksRequest $request)
     {
         //$validated = $request->validated();
-
-        $customer = Auth::user()->customer;
         (new UpdateTrunks())->execute($customer, [
             'request' => 'GET',
             'trunk' => $request->all(),
         ]);
 
-        return redirect('/trunks');
+        return redirect()->route('trunks.index', [$customer->accountcode]);
     }
 
     /**
@@ -70,10 +65,9 @@ class TrunksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($base64)
+    public function show(Customer $customer, $base64)
     {
         $request = base64_decode($base64);
-        $customer = Auth::user()->customer;
         $trunks = (new GetTrunks())->execute($customer, []);
 
         return view('trunks.edit', ['id' => $base64, 'trunk' => $trunks['response'][$request]]);
@@ -97,16 +91,14 @@ class TrunksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Customer $customer, Request $request, $id)
     {
-        \Log::info($request->all());
-        $customer = Auth::user()->customer;
-        (new UpdateTrunks())->execute($customer, [
+        $response = (new UpdateTrunks())->execute($customer, [
             'request' => 'GET',
             'trunk' => $request->all(),
         ]);
 
-        return redirect('/trunks');
+        return redirect()->route('trunks.index', [$customer->accountcode]);
     }
 
     /**
@@ -116,11 +108,10 @@ class TrunksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($b64)
+    public function destroy(Customer $customer, $b64)
     {
         //dd($b64);
         $name = base64_decode($b64);
-        $customer = Auth::user()->customer;
         $response = (new DeleteTrunks())->execute($customer, [
             'trunkName' => $name,
         ]);

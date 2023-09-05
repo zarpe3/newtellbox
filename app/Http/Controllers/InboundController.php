@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Asterisk\Inbound\AddInbound;
+use App\Actions\Asterisk\Inbound\DeleteInbound;
 use App\Actions\Asterisk\Inbound\EditInbound;
 use App\Actions\Asterisk\Inbound\GetInbound;
 use App\Actions\Asterisk\Queue\GetQueue;
 use App\Actions\Asterisk\SIP;
 use App\Actions\Customer\IVR\ListIVR;
 use App\Http\Requests\InboundRequest;
-use Auth;
+use App\Models\Customer;
 
 class InboundController extends Controller
 {
@@ -18,9 +19,8 @@ class InboundController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Customer $customer)
     {
-        $customer = Auth::user()->customer;
         $inbounds = (new GetInbound())->execute($customer, []);
 
         return view('inbound.index', ['inbounds' => $inbounds]);
@@ -31,9 +31,8 @@ class InboundController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Customer $customer)
     {
-        $customer = Auth::user()->customer;
         $extens = (new SIP())->execute($customer, ['request' => 'GET']);
         $queues = (new GetQueue())->execute($customer, []);
         $ivrs = (new ListIVR())->execute($customer, []);
@@ -50,12 +49,19 @@ class InboundController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(InboundRequest $request)
+    public function store(Customer $customer, InboundRequest $request)
     {
-        $customer = Auth::user()->customer;
-        (new AddInbound())->execute($customer, $request->all());
+        try {
+            (new AddInbound())->execute($customer, $request->all());
 
-        return redirect('/inbound');
+            return redirect()->route('inbound.index', [$customer->accountcode]);
+        } catch (\Exception $e) {
+            $inbounds = (new GetInbound())->execute($customer, []);
+
+            return view('inbound.index', ['inbounds' => $inbounds])
+                ->with('success', false)
+                ->with('message', $e->getMessage());
+        }
     }
 
     /**
@@ -65,10 +71,8 @@ class InboundController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Customer $customer, $id)
     {
-        \Log::info('entrei no show');
-        $customer = Auth::user()->customer;
         $extens = (new SIP())->execute($customer, ['request' => 'GET']);
         $queues = (new GetQueue())->execute($customer, []);
         $ivrs = (new ListIVR())->execute($customer, []);
@@ -102,23 +106,23 @@ class InboundController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(InboundRequest $request, $id)
+    public function update(Customer $customer, InboundRequest $request, $id)
     {
-        $customer = Auth::user()->customer;
         $params = array_merge($request->all(), ['id' => $id]);
         (new EditInbound())->execute($customer, $params);
 
-        return redirect('/inbound')->with('success', true)->with('message', 'Rota atualizada com sucesso');
+        return redirect()->route('inbound.index', [$customer->accountcode])->with('success', true)->with('message', 'Rota atualizada com sucesso');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param string $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Customer $customer, $id)
     {
+        return (new DeleteInbound())->execute($customer, ['b64' => $id]);
     }
 }

@@ -18,7 +18,7 @@ class DeleteTrunks
 
     protected function main()
     {
-        return Http::post('http://webdec-dev03.webdec.com.br/trunks/delete', [
+        return Http::post('https://webdec-dev03.webdec.com.br/trunks/delete', [
             'trunkName' => $this->data['trunkName'],
             'accountcode' => $this->actionRecord->accountcode,
         ]);

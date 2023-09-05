@@ -16,8 +16,8 @@ var routes = new Vue({
   },
   methods: {
     remove: function remove(b64) {
-      axios["delete"]('/users/' + b64).then(function () {
-        window.location = '/users';
+      axios["delete"]('users/' + b64).then(function () {
+        window.location = 'users';
       });
       ;
     },

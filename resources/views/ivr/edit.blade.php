@@ -29,7 +29,7 @@
                         <!--        Here you can write extra buttons/actions for the toolbar              -->
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        {{ Form::open(array('route' => ['ivr.update', $ivr['id']], 'method' => 'put')) }}
+                        {{ Form::open(array('route' => ['ivr.update', $customer, $ivr['id']], 'method' => 'put')) }}
                             @csrf
                             <h6 class="heading-small text-muted mb-4">{{ __('Edição de URA') }}</h6>
                             <div class="pl-lg-4">
@@ -55,8 +55,24 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                
+                                <calendar calendar="{{ $ivr['calendar'] }}"></calendar>
                                 <ivr-options extendata="{{json_encode($extens)}}" ivrdata="{{json_encode($ivr)}}" queuedata="{{json_encode($queues)}}"></ivr-options>
+                                <div class="form-group{{ $errors->has('audio-divert') ? ' has-danger' : '' }}">
+                                    <label class="form-control-label" for="audio">
+                                        <i class="nc-icon nc-map-big"></i>{{ __(' Audio Desvio') }}
+                                    </label>
+                                    <select class="form-control" name="audio-divert" id="audio-divert">
+                                        @foreach ($audios as $audiodivert)
+                                        @php
+                                        $selected = '';
+                                        if ($audiodivert == $ivr['audiodivert']) {
+                                            $selected = 'selected="selected"';
+                                        }
+                                        @endphp
+                                            <option {{$selected}} value="{{$audiodivert}}">{{$audiodivert}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-default mt-4">{{ __('Salvar') }}</button>
                                 </div>

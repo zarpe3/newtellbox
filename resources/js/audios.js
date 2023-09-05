@@ -6,13 +6,13 @@ const audios = new Vue({
         }
     },
     mounted() {
-        ///console.log("to aqui no routes");
     },
     methods: {
         remove: function (fileName) {
-            axios.delete('/audios/' + fileName)
+            console.log(fileName);
+            axios.delete('/'+app.accountCode+'/audios/' + fileName)
             .then(function () {
-                window.location = '/audios'
+                window.location = '/'+app.accountCode+'/audios/'
             });
         }
     }

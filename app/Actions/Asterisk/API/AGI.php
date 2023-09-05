@@ -15,7 +15,7 @@ use App\Models\MailingFollowUp;
 use App\Models\SipRoutes as OutboundRoute;
 use App\Models\SipUsers;
 use Illuminate\Support\Facades\Http;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 
 class AGI
 {
@@ -184,7 +184,7 @@ class AGI
 
     private function getTrunksByAccount($accountcode)
     {
-        return Http::post('http://webdec-dev03.webdec.com.br/trunks/list', [
+        return Http::post('https://webdec-dev03.webdec.com.br/trunks/list', [
                 'accountcode' => $accountcode,
         ]);
     }
@@ -242,7 +242,7 @@ class AGI
 
         $customer = Customer::find($mailing->customer_id);
 
-        return ['success' => true, 'amd' => $mailing->amd, 'accountCode' => $customer->accountcode];
+        return ['success' => true, 'amd' => $mailing->amd, 'accountCode' => $customer->accountcode, 'timeout' => $mailing->timeout];
     }
 
     private function hangup()

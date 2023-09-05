@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Actions\Customer\Audios\DeleteAudio;
 use App\Actions\Customer\Audios\ListAudios;
 use App\Actions\Customer\Audios\SaveAudio;
+use App\Models\Customer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AudiosController extends Controller
 {
@@ -15,9 +15,8 @@ class AudiosController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Customer $customer)
     {
-        $customer = Auth::user()->customer;
         $audios = (new ListAudios())->execute($customer, []);
 
         return view('audios.index', ['audios' => $audios]);
@@ -31,9 +30,8 @@ class AudiosController extends Controller
     /**
      * Add a new audios.
      */
-    public function store(Request $request)
+    public function store(Customer $customer, Request $request)
     {
-        $customer = Auth::user()->customer;
         ((new SaveAudio())->execute($customer, [
             'name' => $request->name,
             'file' => $request->file('file'),
@@ -50,10 +48,8 @@ class AudiosController extends Controller
     {
     }
 
-    public function destroy($fileName)
+    public function destroy(Customer $customer, $fileName)
     {
-        $customer = Auth::user()->customer;
-
         return (new DeleteAudio())->execute($customer, ['fileName' => $fileName]);
     }
 }

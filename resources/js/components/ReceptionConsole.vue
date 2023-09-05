@@ -55,13 +55,13 @@
                                 style="margin: 0px; width: 100%; text-align: center; display: flex; justify-content: center;">
                                 <button v-on:click="hangup(exten.channel)" type="button" style="background: white;"
                                     class="p-1 btn btn-secondary btn-sm"><img alt="hangup" height="15" width="18"
-                                        src="img/call.png" /></button>
+                                        src="/img/call.png" /></button>
                                 <button v-on:click="transfer(exten.channel)" type="button" style="background: white;"
                                     class="p-1 btn btn-secondary btn-sm"><img alt="transfer" height="15" width="18"
-                                        src="img/outgoing-call.png" /></button>
+                                        src="/img/outgoing-call.png" /></button>
                                 <button v-on:click="spy(exten.channel, exten.name)" type="button" style="background: white;"
                                     class="p-1 btn btn-secondary btn-sm"><img alt="spy" height="15" width="18"
-                                        src="img/headset.png" /></button>
+                                        src="/img/headset.png" /></button>
                             </div>
                         </div>
                     </div>
@@ -139,7 +139,7 @@ export default {
 
         });
 
-        axios.post('http://webdec-dev03.webdec.com.br/hints', { accountcode: this.$root.$data.accountCode })
+        axios.post('https://webdec-dev03.webdec.com.br/hints', { accountcode: this.$root.$data.accountCode })
             .then(function (hintsResponse) {
                 hintsResponse.data.forEach((value) => {
                     me.extens.forEach((exten, key) => {
@@ -179,14 +179,14 @@ export default {
         confirm: function() {
 
             if (this.action == 'transfer') {
-                axios.post('/reception/transfer/' + this.actionExten , { 'channel': this.actionChannel })
+                axios.post('reception/transfer/' + this.actionExten , { 'channel': this.actionChannel })
                 .then(function (response) {
                     $('#dialog').modal('hide');
                 });
             }
 
             if (this.action == 'spy') {
-                axios.post('/reception/spy/' + this.actionExten, { 'channel': this.actionChannel })
+                axios.post('reception/spy/' + this.actionExten, { 'channel': this.actionChannel })
                 .then(function (response) {
                     $('#dialog').modal('hide');
                 });
@@ -200,7 +200,7 @@ export default {
         },
         hangup: function (channel) {
             console.log("Trying to hangup channel " + channel);
-            axios.post('/reception/hangup', { 'channel': channel })
+            axios.post('reception/hangup', { 'channel': channel })
                 .then(function (response) {
                     console.log(response);
                 });

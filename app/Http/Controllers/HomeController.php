@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\CGrates\Connect;
 use App\Actions\Customer\ShowDashboard;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -35,16 +36,32 @@ class HomeController extends Controller
         if ($user->customer->plan == null) {
             $this->middleware('guest');
 
-            return view('auth.register-product');
+            return view('auth.register-product', ['customer' => $user->customer->accountcode]);
         }
 
-        if ($request->route()->uri == 'home') {
+        /*if ($request->route()->as == 'dashboard') {
             $dashboard = (new ShowDashboard())->execute($user->customer, []);
 
             return view('dashboard', ['dashboard' => $dashboard]);
-        }
+        }*/
 
-        return view('welcome');
+        return redirect($user->customer->accountcode.'/home');
+
+        //return view('welcome', ['customer' => $user->customer]);
+    }
+
+    public function showDashboard(Customer $customer, Request $request)
+    {
+        $dashboard = (new ShowDashboard())->execute($customer, []);
+
+        return view('dashboard', ['dashboard' => $dashboard]);
+    }
+
+    public function getCustomers(Customer $customer, Request $request)
+    {
+        $customers = Customer::where('id', '>', 1)->paginate($request->per_page);
+
+        return response()->json($customers);
     }
 
     public function test()

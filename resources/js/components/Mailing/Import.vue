@@ -126,7 +126,7 @@
                             </div>
                             <div class="row">
                                <div class="col-7 col-md-7" style="">
-                                    <calendar :calendar="calendar"></calendar>
+                                    <calendar v-model="calendar" :calendar="calendar"></calendar>
                                 </div>
                             </div>
                             <div class="row">
@@ -250,7 +250,6 @@ export default {
     },
     props: ['extens', 'edit', 'mailing', 'id', 'routesdata'],
     mounted() {
-
         if (this.edit == '1') {
             this.$vs.loading()
             setTimeout(() => {
@@ -331,7 +330,7 @@ export default {
             addIndex: false,
             thread: 3,
             name: 'file',
-            postAction: `${window.Laravel.baseUrl}mailing/import`,
+            postAction: '/'+this.$root.$data.accountCode+'/mailing/import',
             headers: {
                 'X-Csrf-Token': window.Laravel.csrfToken,
             },
@@ -377,7 +376,7 @@ export default {
                 'calendar': this.calendar,
                 valid_cpf: this.valid_cpf ? '1' : '0',
             }
-            axios.patch('/mailing/'+id, data).then((res) => {
+            axios.patch('/'+this.$root.$data.accountCode+'/mailing/'+id, data).then((res) => {
                 this.$vs.loading.close();
                 this.$vs.notify({
                     color: 'primary',

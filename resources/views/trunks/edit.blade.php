@@ -9,7 +9,7 @@
                     <h4 class="card-title">Editar Tronco modo básico</h4>
                 </div>
                 <div class="card-body">
-                    {{ Form::open(array('route' => ['trunks.update', $id], 'method' => 'put')) }}
+                    {{ Form::open(array('route' => ['trunks.update', $customer, $id], 'method' => 'put')) }}
                     <div class="container">
                     </div>
                     <div class="row">

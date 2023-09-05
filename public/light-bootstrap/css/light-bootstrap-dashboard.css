@@ -481,7 +481,7 @@ body>.navbar-collapse .nav li .nav-link:hover {
 body>.navbar-collapse .nav li .nav-link p {
     margin: 0;
     line-height: 31px;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
     display: inline-flex;
@@ -554,7 +554,7 @@ body>.navbar-collapse .nav .nav-link {
     border-radius: 4px;
     text-transform: uppercase;
     line-height: 30px;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
 }
 
@@ -1496,7 +1496,7 @@ fieldset[disabled] .btn-neutral.active {
 }
 
 .btn-sm {
-    font-size: 12px;
+    font-size: 10px;
     border-radius: 3px;
     padding: 5px 10px;
 }
@@ -1510,7 +1510,7 @@ fieldset[disabled] .btn-neutral.active {
 }
 
 .btn-xs {
-    font-size: 12px;
+    font-size: 10px;
     border-radius: 3px;
     padding: 1px 5px;
 }
@@ -1858,7 +1858,7 @@ fieldset[disabled] .form-control {
 
 .table>thead>tr>th {
     border-bottom-width: 1px;
-    font-size: 12px;
+    font-size: 10px;
     text-transform: uppercase;
     color: #9A9A9A;
     font-weight: 400;
@@ -2147,7 +2147,7 @@ fieldset[disabled] .form-control {
     min-width: 18px;
     padding: 0 5px;
     height: 18px;
-    font-size: 12px;
+    font-size: 10px;
     color: #FFFFFF;
     font-weight: bold;
     line-height: 18px;
@@ -2985,7 +2985,7 @@ Copyright (c) 2015 Daniel Eden
 }
 
 .card .author {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
 }
@@ -2995,7 +2995,7 @@ Copyright (c) 2015 Daniel Eden
 }
 
 .card h6 {
-    font-size: 12px;
+    font-size: 10px;
     margin: 0;
 }
 
@@ -4720,7 +4720,7 @@ Copyright (c) 2015 Daniel Eden
 .bootstrap-switch .bootstrap-switch-handle-on i,
 .bootstrap-switch .bootstrap-switch-handle-off i,
 .bootstrap-switch .bootstrap-switch-label i {
-    font-size: 12px;
+    font-size: 10px;
     line-height: 14px;
 }
 

@@ -6,11 +6,11 @@ use App\Actions\Asterisk\SIP;
 use App\Actions\Customer\Mailing\AddMailing;
 use App\Actions\Customer\Mailing\DeleteMailing;
 use App\Actions\Customer\Mailing\GetMailing;
+use App\Actions\Customer\Mailing\OnGoingMailing as OnGoing;
 use App\Actions\Customer\Mailing\StartMailing;
 use App\Actions\Customer\Mailing\StopMailing;
 use App\Actions\Customer\Mailing\UpdateMailing;
-use App\Actions\Customer\Mailing\OnGoingMailing as OnGoing;
-use Auth;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class MailingController extends Controller
@@ -30,9 +30,8 @@ class MailingController extends Controller
      *
      * @return void
      */
-    public function create()
+    public function create(Customer $customer)
     {
-        $customer = Auth::user()->customer;
         $response = (new SIP())->execute($customer, ['request' => 'GET', 'onlyName' => false]);
 
         if (!$response['success']) {
@@ -53,10 +52,9 @@ class MailingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function import(Request $request)
+    public function import(Customer $customer, Request $request)
     {
-        $customer = Auth::user();
-        $response = (new AddMailing())->execute($customer->customer, [
+        $response = (new AddMailing())->execute($customer, [
             'action' => 'import',
             'user_id' => $customer->id,
             'amd' => $request->amd,
@@ -66,7 +64,7 @@ class MailingController extends Controller
             'timeout' => $request->timeout,
             'max_attempts' => $request->max_attempts,
             'strength' => $request->strength,
-            'customer_id' => $customer->customer->id,
+            'customer_id' => $customer->id,
             'mailing' => $request->file('file'),
             'valid_cpf' => $request->valid_cpf ?? '1',
             'route' => $request->route,
@@ -84,15 +82,14 @@ class MailingController extends Controller
      *
      * @return void
      */
-    public function exportError(Request $request)
+    public function exportError(Customer $customer, Request $request)
     {
         return response()->download(base64_decode($request->file_path_error));
     }
 
-    public function followUp(Request $request)
+    public function followUp(Customer $customer, Request $request)
     {
-        $customer = Auth::user();
-        $response = (new GetMailing())->execute($customer->customer, []);
+        $response = (new GetMailing())->execute($customer, []);
 
         return $response;
     }
@@ -104,9 +101,8 @@ class MailingController extends Controller
      *
      * @return void
      */
-    public function show($id)
+    public function show(Customer $customer, $id)
     {
-        $customer = Auth::user()->customer;
         $extens = (new SIP())->execute($customer, ['request' => 'GET', 'onlyName' => false]);
         $mailing = (new GetMailing())->execute($customer, ['id' => $id]);
 
@@ -117,9 +113,8 @@ class MailingController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Customer $customer, Request $request, $id)
     {
-        $customer = Auth::user()->customer;
         $data = array_merge(['id' => $id], $request->all());
 
         return (new UpdateMailing())->execute($customer, $data);
@@ -132,9 +127,9 @@ class MailingController extends Controller
      *
      * @return void
      */
-    public function destroy($id)
+    public function destroy(Customer $customer, $id)
     {
-        return (new DeleteMailing())->execute(Auth::user()->customer, ['id' => $id]);
+        return (new DeleteMailing())->execute($customer, ['id' => $id]);
     }
 
     /**
@@ -144,10 +139,8 @@ class MailingController extends Controller
      *
      * @return void
      */
-    public function start($id)
+    public function start(Customer $customer, $id)
     {
-        $customer = Auth::user()->customer;
-
         return (new StartMailing())->execute($customer, [
             'id' => $id,
         ]);
@@ -160,10 +153,8 @@ class MailingController extends Controller
      *
      * @return void
      */
-    public function pause($id)
+    public function pause(Customer $customer, $id)
     {
-        $customer = Auth::user()->customer;
-
         return (new StopMailing())->execute($customer, [
             'id' => $id,
         ]);
@@ -178,8 +169,6 @@ class MailingController extends Controller
      */
     public function ongoing(Request $request)
     {
-        \Log::info(print_r($request->all(), true));
-        //OnGoingMailing::dispatch($request->campaign_id, $request->phones);
         (new OnGoing())->execute([
             'campaign_id' => $request->campaign_id,
             'phones' => $request->phones,

@@ -25,7 +25,7 @@ class ListAudios
             return str_replace(
                 'recording/'.$this->actionRecord->accountcode.'/',
                 '',
-                json_decode(Http::post('http://webdec-dev03.webdec.com.br/listAudio', [
+                json_decode(Http::post('https://webdec-dev03.webdec.com.br/listAudio', [
                     'accountcode' => $this->actionRecord->accountcode,
                 ]), true)
             );

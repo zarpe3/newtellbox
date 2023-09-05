@@ -17,7 +17,7 @@
                                 </p>
                             </div>
                             <div class="col-4 text-right">
-                                <a href="/trunks/create" class="btn btn-sm btn-default">Adicionar Tronco</a>
+                                <a href="/{{$customer}}/trunks/create" class="btn btn-sm btn-default">Adicionar Tronco</a>
                             </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                                         <td>{{$prop['trunkName']}}</td>
                                         <td>{{$prop['host']}}</td>
                                         <td>
-                                            <a href="/trunks/{{ base64_encode($name) }}"><i class="fa fa-edit"></i>
+                                            <a href="trunks/{{ base64_encode($name) }}"><i class="fa fa-edit"></i>
                                             </a>
                                             <a style="color: red;" v-on:click="modalDelete('{{ base64_encode($name) }}')">
                                                 <i class="fa fa-trash"></i>

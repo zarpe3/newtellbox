@@ -7,8 +7,8 @@ use App\Actions\Asterisk\Queue\EditQueue;
 use App\Actions\Asterisk\Queue\GetQueue;
 use App\Actions\Asterisk\SIP;
 use App\Http\Requests\QueueRequest as QueueRequest;
+use App\Models\Customer;
 use App\Models\Queue;
-use Auth;
 
 class QueueController extends Controller
 {
@@ -17,9 +17,8 @@ class QueueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Customer $customer)
     {
-        $customer = Auth::user()->customer;
         $queues = (new GetQueue())->execute($customer, []);
         $response = (new SIP())->execute($customer, ['request' => 'GET']);
 
@@ -41,9 +40,8 @@ class QueueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Customer $customer)
     {
-        $customer = Auth::user()->customer;
         $response = (new SIP())->execute($customer, ['request' => 'GET']);
 
         if (!$response['success']) {
@@ -63,11 +61,11 @@ class QueueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(QueueRequest $request, AddQueue $queue)
+    public function store(Customer $customer, QueueRequest $request, AddQueue $queue)
     {
-        $queue->execute(Auth::user()->customer, $request->all());
+        $queue->execute($customer, $request->all());
 
-        return redirect('/queue');
+        return redirect($customer->accountcode.'/queue');
     }
 
     /**
@@ -89,9 +87,8 @@ class QueueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Customer $customer, $id)
     {
-        $customer = Auth::user()->customer;
         $queue = (new GetQueue())->execute($customer, ['id' => $id]);
         $response = (new SIP())->execute($customer, ['request' => 'GET']);
 
@@ -116,14 +113,14 @@ class QueueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(QueueRequest $request, EditQueue $queue, $id)
+    public function update(Customer $customer, QueueRequest $request, EditQueue $queue, $id)
     {
         $params = $request->all();
         $params['id'] = $id;
 
-        $queue->execute(Auth::user()->customer, $params);
+        $queue->execute($customer, $params);
 
-        return redirect('/queue');
+        return redirect($customer->accountcode.'/queue');
     }
 
     /**
@@ -135,7 +132,6 @@ class QueueController extends Controller
      */
     public function destroy($id)
     {
-        //dump($id);
-        Queue::find($id)->delete();
+        return Queue::where('id', $id)->delete();
     }
 }

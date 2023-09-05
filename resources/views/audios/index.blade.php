@@ -27,7 +27,7 @@
                                 </p>
                             </div>
                             <div class="col-4 text-right">
-                                <a href="/audios/create" class="btn btn-sm btn-default">Adicionar Audio</a>
+                                <a href="/{{$customer}}/audios/create" class="btn btn-sm btn-default">Adicionar Audio</a>
                             </div>
                         </div>
                     </div>

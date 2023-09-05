@@ -7,14 +7,13 @@ use App\Actions\Customer\Voicemail\GetEmail;
 use App\Actions\Customer\Voicemail\GetVoicemails;
 use App\Actions\Customer\Voicemail\UpdateVoicemail;
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class VoiceMailController extends Controller
 {
-    public function show()
+    public function show(Customer $customer)
     {
-        $customer = Auth::user()->customer;
         $email = (new GetEmail())->execute($customer, []);
         $voicemails = (new GetVoicemails())->execute($customer, []);
 
@@ -30,14 +29,13 @@ class VoiceMailController extends Controller
         (new CreateVoicemail())->execute(['plaintext' => $request->getContent()]);
     }
 
-    public function update(Request $request)
+    public function update(Customer $customer, Request $request)
     {
-        $customer = Auth::user()->customer;
         (new UpdateVoicemail())->execute($customer, [
             'email' => $request->email,
             'notify_voicemail' => $request->notify_voicemail,
         ]);
 
-        return redirect('/voicemail');
+        return redirect()->route('voicemail.index', [$customer->accountcode]);
     }
 }

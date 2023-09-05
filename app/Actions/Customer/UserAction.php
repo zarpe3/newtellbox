@@ -18,13 +18,17 @@ class UserAction
     protected function main()
     {
         if ($this->data['action'] == 'ADD') {
-            $user = new User();
-            $user->name = $this->data['name'];
-            $user->email = $this->data['email'];
-            $user->password = Hash::make($this->data['password']);
-            $user->customer_id = $this->actionRecord->id;
+            try {
+                $user = new User();
+                $user->name = $this->data['name'];
+                $user->email = $this->data['email'];
+                $user->password = Hash::make($this->data['password']);
+                $user->customer_id = $this->actionRecord->id;
 
-            return $user->save();
+                return $user->save();
+            } catch (\Exception $e) {
+                return 0;
+            }
         }
 
         if ($this->data['action'] == 'GET_ID') {

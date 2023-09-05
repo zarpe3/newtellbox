@@ -27,7 +27,7 @@
                                 </p>
                             </div>
                             <div class="col-4 text-right">
-                                <a href="/routes/create" class="btn btn-sm btn-default">Adicionar Rota</a>
+                                <a href="/{{$customer}}/routes/create" class="btn btn-sm btn-default">Adicionar Rota</a>
                             </div>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                                     <tr>
                                         <td> {{ $route['name'] }} </td>
                                         <td class="d-flex">
-                                            <a href="/routes/{{ base64_encode(json_encode($route)) }}>">
+                                            <a href="/{{$customer}}/routes/{{ base64_encode(json_encode($route)) }}>">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                             <a v-on:click="remove('{{ base64_encode(json_encode($route)) }} ')">

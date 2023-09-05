@@ -12,9 +12,9 @@ const trunks = new Vue({
     },
     methods: {
         remove: function (b64) {
-            axios.delete('/trunks/' + b64)
+            axios.delete('trunks/' + b64)
             .then(function () {
-                window.location = '/trunks'
+                window.location = 'trunks'
             });
             ;
         },

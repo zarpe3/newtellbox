@@ -6,3 +6,216 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+
+.table-filter-select * {
+    text-transform: capitalize;
+  }
+  
+  .table-margin {
+    margin-top: 20px;
+  }
+  
+  .vuetable {
+    width: 100%;
+    background: $arena_white;
+  
+    thead tr th {
+      font-weight: 600;
+      vertical-align: middle;
+      white-space: nowrap;
+      background-color: $header_top_bg_colour;
+      color: #8392ab !important;
+      .sort-icon {
+        float: inherit !important;
+      }
+    }
+  
+    tfoot tr th {
+      font-weight: 600;
+    }
+  
+    thead,
+    tbody,
+    tfoot {
+      tr {
+        td,
+        th {
+          vertical-align: middle;
+          border-right: inherit !important;
+          border-left: inherit !important;
+          height: 32px;
+  
+          &:first-of-type {
+            padding-left: 15px;
+          }
+  
+          &:last-of-type {
+            padding-right: 15px;
+          }
+        }
+  
+        .with-ellipsis {
+          max-width: 0;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+    }
+  
+    tbody {
+      tr:hover {
+        background: #f7f6fa !important;
+      }
+  
+      tr.detail-row > td {
+        border-top: 2px solid $arena_border_color !important;
+        border-bottom: 2px solid $arena_border_color !important;
+      }
+    }
+  
+    .sortable {
+      color: $arena_blue;
+      cursor: pointer;
+  
+      &:hover {
+        color: $arena_blue;
+      }
+    }
+  
+    .inline-edit {
+      min-width: 1190px;
+    }
+  
+    input[type="checkbox"] {
+      
+    }
+  
+    /* Special column must have width set */
+    th[class^='vuetable-th-checkbox'] {
+      width: 1%;
+    }
+  }
+  
+  .vuetable.no-fixed {
+    table-layout: initial;
+  }
+  
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: $table_odd_color;
+  }
+  
+  .table-striped tbody tr:nth-of-type(even) {
+    background-color: $table_even_color;
+  }
+  
+  .odd {
+    background-color: $table_odd_color !important;
+  }
+  
+  .even {
+    background-color: $table_even_color !important;
+  }
+  
+  .pagination {
+    cursor: pointer;
+  
+    .btn {
+      height: 30px;
+    }
+  
+    .disabled {
+      background: $arena_light_grey;
+      cursor: auto;
+    }
+  
+    .active {
+      background: $arena_heavy_blue;
+      color: $arena_white !important;
+      cursor: auto;
+    }
+  
+    .link-class {
+      padding: 0.65rem 0.7rem;
+  
+      &:hover {
+        color: $arena_white !important;
+      }
+    }
+  
+    .page-class {
+      padding: 0.65rem 1rem;
+  
+      &:hover {
+        color: $arena_white !important;
+      }
+    }
+  }
+  
+  .pagination-size {
+    width: 65px !important;
+  
+    .btn.dropdown-toggle {
+      background: whitesmoke !important;
+      height: 2.25rem;
+      padding: 0.45rem 1rem;
+    }
+  }
+  
+  /* Begin fixed table rules */
+  
+  .table-body-scroll {
+    margin-top: 30px !important;
+  }
+  
+  .tbody-fixed {
+    display: block;
+    overflow: auto;
+  }
+  
+  .fixed-table-container {
+    width: 100%;
+    min-height: 400px;/* Initial size, will be handled by JS */
+    position: relative;
+  
+    .link {
+      color: $arena_blue;
+      cursor: pointer;
+    }
+  
+    .fixed-table-container-inner {
+      padding-bottom: 30px;
+    }
+  
+    .fixed-table-header {
+      background-color: $header_top_bg_colour;
+      height: 30px; /* height of header */
+      position: relative;
+      top: 0;
+      right: 0;
+      left: 0;
+      box-shadow: 0 1px 15px 1px rgba(81, 77, 92, 0.2);
+    }
+  
+    .fixed-table-header-body {
+      width: 100%;
+  
+      th {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        height: 0 !important;
+        line-height: 0 !important;
+      }
+    }
+  
+    .th-inner {
+      position: absolute;
+      top: 0;
+      line-height: 30px; /* height of header */
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      //max-width: 60px;
+    }
+  }

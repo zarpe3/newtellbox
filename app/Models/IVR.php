@@ -36,6 +36,8 @@ class IVR extends Model
         'value_9',
         'divert_option',
         'divert_value',
+        'calendar',
+        'audiodivert',
     ];
 
     public function scopeCustomerId($query, $customerId)

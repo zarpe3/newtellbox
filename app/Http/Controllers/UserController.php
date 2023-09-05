@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Customer\UserAction;
-use Auth;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -13,9 +13,8 @@ class UserController extends Controller
         return view('users.add');
     }
 
-    public function store(Request $request)
+    public function store(Customer $customer, Request $request)
     {
-        $customer = Auth::user()->customer;
         $response = (new UserAction())->execute($customer, [
             'action' => 'ADD',
             'name' => $request->name,
@@ -24,13 +23,14 @@ class UserController extends Controller
         ]);
 
         if ($response) {
-            return redirect('/users');
+            return redirect()->route('users.index', [$customer->accountcode]);
         }
+
+        return view('users.add')->with('message', 'Houve um problema ao criar o usuario');
     }
 
-    public function index()
+    public function index(Customer $customer)
     {
-        $customer = Auth::user()->customer;
         $users = (new UserAction())->execute($customer, [
             'action' => 'GET',
         ]);
@@ -40,23 +40,22 @@ class UserController extends Controller
 
     public function me(Request $request)
     {
-        if (Auth::user()) {
+        if (\Auth::user()) {
             return response()->json([
                 'response' => true,
-                'user_id' => Auth::user()->id,
-                'name' => Auth::user()->name,
-                'accountcode' => Auth::user()->customer->accountcode,
+                'user_id' => \Auth::user()->id,
+                'name' => \Auth::user()->name,
+                'accountcode' => \Auth::user()->customer->accountcode,
             ]);
         }
 
         return response()->json(['response' => false]);
     }
 
-    public function edit($id)
+    public function edit(Customer $customer, $id)
     {
         $success = true;
 
-        $customer = Auth::user()->customer;
         $user = (new UserAction())->execute($customer, [
             'action' => 'GET_ID',
             'id' => $id,
@@ -71,16 +70,13 @@ class UserController extends Controller
         return view('users.edit', ['success' => $success, 'responseUser' => $user]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Customer $customer, Request $request, $id)
     {
         $validated = $request->validate([
             'name' => 'required',
             'password' => 'required',
         ]);
 
-        $success = true;
-
-        $customer = Auth::user()->customer;
         $response = (new UserAction())->execute($customer, [
             'action' => 'UPDATE',
             'id' => $id,
@@ -99,10 +95,10 @@ class UserController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(Customer $customer, $id)
     {
         $b64 = json_decode(base64_decode($id));
-        $customer = Auth::user()->customer;
+        //$customer = Auth::user()->customer;
         (new UserAction())->execute($customer, [
             'action' => 'DELETE',
             'id' => $b64->id,

@@ -25,7 +25,7 @@
                         <!--        Here you can write extra buttons/actions for the toolbar              -->
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        <form id="inbounds" method="post" action="{{ route('inbound.store') }}" autocomplete="off">
+                        <form id="inbounds" method="post" action="{{ route('inbound.store', $customer) }}" autocomplete="off">
                             @csrf
                             <h6 class="heading-small text-muted mb-4">{{ __('Criação de Rota de Entrada') }}</h6>
                             <div class="pl-lg-4">

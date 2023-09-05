@@ -10,7 +10,7 @@
                     <h4 class="card-title">Adicionar Tronco modo básico</h4>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="{{ route('trunks.store') }}" autocomplete="off">
+                    <form method="post" action="{{ route('trunks.store', $customer) }}" autocomplete="off">
                     @csrf
                     <div class="container">
                     </div>

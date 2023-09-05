@@ -31,7 +31,7 @@ class SendAudioToAS
             $base64 = base64_encode($storage->get($file));
             $fileName = basename(storage_path('app/'.$file));
 
-            return Http::post('http://webdec-dev03.webdec.com.br/saveAudio', [
+            return Http::post('https://webdec-dev03.webdec.com.br/saveAudio', [
                 'base64' => $base64,
                 'fileName' => $fileName,
                 'accountcode' => $this->actionRecord->accountcode,

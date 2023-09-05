@@ -37,6 +37,7 @@ Vue.use(Vuesax);
 
 
 Vue.component('add-inbound', require('./components/Inbounds/Add.vue').default);
+Vue.component('customer-table', require('./components/customers/Table.vue').default);
 Vue.component('edit-inbound', require('./components/Inbounds/Edit.vue').default);
 
 Vue.component('ivr-options', require('./components/Ivr/Options.vue').default);

@@ -25,7 +25,7 @@
                                 </p>
                             </div>
                             <div class="col-4 text-right">
-                                <a href="/users/create" class="btn btn-sm btn-default">Adicionar Usuario</a>
+                                <a href="/{{$customer}}/users/create" class="btn btn-sm btn-default">Adicionar Usuario</a>
                             </div>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                                     <td>{{ $user['created_at'] }}</td>
                                     <td class="d-flex">
 
-                                        <a href="/users/{{$user['id']}}/edit"><i class="fa fa-edit"></i></a>
+                                        <a href="users/{{$user['id']}}/edit"><i class="fa fa-edit"></i></a>
                                         <a style="color: red;" v-on:click="modalRemove('{{ base64_encode(json_encode(['name' => $user['name'], 'id' => $user['id']]))}}')"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>

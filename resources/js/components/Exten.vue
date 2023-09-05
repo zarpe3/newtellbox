@@ -1,8 +1,7 @@
 <template>
     <div>
-
-        <div class="modal fade modal-large modal-primary" id="confirmation" tabindex="-1" role="dialog"
-            aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    
+        <div class="modal fade modal-large modal-primary" id="confirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header justify-content-center">
@@ -20,14 +19,14 @@
                 </div>
             </div>
         </div>
-
-
-
+    
+    
+    
         <div v-show="list" class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card data-tables">
-
+    
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col-8">
@@ -41,10 +40,10 @@
                                 </div>
                             </div>
                         </div>
-
+    
                         <div class="col-12 mt-2">
                         </div>
-
+    
                         <div class="toolbar">
                             <!--        Here you can write extra buttons/actions for the toolbar              -->
                         </div>
@@ -75,46 +74,46 @@
                 </div>
             </div>
         </div>
-
+    
         <!--<div v-show="edit" class="container-fluid">
-            <div class="row">
-                
-                <div class="card data-tables">
-                    <div class="card-body table-full-width table-responsive">
-                        <div class="container">
-                            <button v-on:click="back()" class="btn btn-warning">Voltar</button> - 
-                            <button v-on:click="save()" class="btn btn-success">Salvar</button>
+                        <div class="row">
+                            
+                            <div class="card data-tables">
+                                <div class="card-body table-full-width table-responsive">
+                                    <div class="container">
+                                        <button v-on:click="back()" class="btn btn-warning">Voltar</button> - 
+                                        <button v-on:click="save()" class="btn btn-success">Salvar</button>
+                                    </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr><th>Label</th>
+                                                <th>Field</th>
+                                                <th>Desc</th>
+                                            </tr></thead>
+                                        <tbody>
+                                            <tr v-for="field in fields">
+                                                <td>{{ field.name }}</td>
+                                                <td>
+                                                    <input v-if="field.type == 'string'" type="text"  v-model="exten[field.name]"  class="form-control" placeholder="" value="" required="">
+                                                    <input v-if="field.type == 'password'" type="password"  v-model="exten[field.name]"  class="form-control" placeholder="" value="" required="">
+                                                    <input v-if="field.type == 'number'" type="number" :max="field.max" :min="field.min" :step="field.step" v-model="exten[field.name]"  class="form-control" placeholder="" value="" required="">
+                                                    <select v-if="Array.isArray(field.type)" v-model="exten[field.name]" id="field.name" class="form-control">
+                                                        <option v-for="t in field.type">{{ t }}</option>
+                                                    </select> 
+                                                </td>
+                                                <td style="font-size: 8px; color: #666;">
+                                                    {{ field.description }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="container">
+                                        <button v-on:click="save()" class="btn btn-success">Salvar</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr><th>Label</th>
-                                    <th>Field</th>
-                                    <th>Desc</th>
-                                </tr></thead>
-                            <tbody>
-                                <tr v-for="field in fields">
-                                    <td>{{ field.name }}</td>
-                                    <td>
-                                        <input v-if="field.type == 'string'" type="text"  v-model="exten[field.name]"  class="form-control" placeholder="" value="" required="">
-                                        <input v-if="field.type == 'password'" type="password"  v-model="exten[field.name]"  class="form-control" placeholder="" value="" required="">
-                                        <input v-if="field.type == 'number'" type="number" :max="field.max" :min="field.min" :step="field.step" v-model="exten[field.name]"  class="form-control" placeholder="" value="" required="">
-                                        <select v-if="Array.isArray(field.type)" v-model="exten[field.name]" id="field.name" class="form-control">
-                                            <option v-for="t in field.type">{{ t }}</option>
-                                        </select> 
-                                    </td>
-                                    <td style="font-size: 8px; color: #666;">
-                                        {{ field.description }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="container">
-                            <button v-on:click="save()" class="btn btn-success">Salvar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>-->
+                    </div>-->
         <div v-show="edit" class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -131,8 +130,7 @@
                                 <div class="col-md-5 pr-1">
                                     <div class="form-group">
                                         <label>Ramal</label>
-                                        <input type="number" min="1000" required="required" max="9999" v-model="exten.name" class="form-control"
-                                            placeholder="Ramal">
+                                        <input type="number" min="1000" required="required" max="9999" v-model="exten.name" class="form-control" placeholder="Ramal">
                                     </div>
                                 </div>
                                 <div class="col-md-5 pr-1">
@@ -149,8 +147,7 @@
                                 <div class="col-md-3 px-1">
                                     <div class="form-group">
                                         <label>Senha</label>
-                                        <input type="password" v-model="exten.secret" class="form-control"
-                                            placeholder="Password">
+                                        <input type="password" v-model="exten.secret" class="form-control" placeholder="Password">
                                     </div>
                                 </div>
                                 <div class="col-md-4 pl-1">
@@ -180,65 +177,76 @@
                             <div class="row">
                                 <div class="col-md-6 pr-1">
                                     <div class="form-group">
-                                        <label>DTLSPRIVATEKEY</label>
-                                        <input type="text" class="form-control" placeholder="/path/to/file" value="">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 pl-1">
-                                    <div class="form-group">
-                                        <label>DTLSCERTFILE</label>
-                                        <input type="text" class="form-control" placeholder="/path/to/file" value="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4 pr-1">
-                                    <div class="form-group">
-                                        <label>DTLSENABLE</label>
-                                        <select class="form-control" v-model="exten.dtlsenable">
+                                        <label>WebRtc</label>
+                                        <select class="form-control" v-model="exten.webrtc">
                                             <option value='yes'>Sim</option>
                                             <option value='no'>Não</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4 px-1">
-                                    <div class="form-group">
-                                        <label>DTLSVERIFY</label>
-                                        <input type="text" class="form-control" v-model="exten.dtlsverify"
-                                            placeholder="">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 pl-1">
-                                    <div class="form-group">
-                                        <label>DTLSSETUP</label>
-                                        <input type="text" v-model="exten.dtlssetup" class="form-control"
-                                            placeholder="">
-                                    </div>
-                                </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-4 pr-1">
-                                    <div class="form-group">
-                                        <label>RTCP_MUX</label>
-                                        <input type="text" v-model="exten.rtcp_mux" class="form-control" placeholder="">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 px-1">
-                                    <div class="form-group">
-                                        <label>ICESUPPORT</label>
-                                        <select class="form-control" v-model="exten.icesupport">
-                                            <option value='yes'>Sim</option>
-                                            <option value='no'>Não</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 pl-1">
-                                    <div class="form-group">
-                                        <label>AVPF</label>
-                                        <input type="text" v-model="exten.avpf" class="form-control" placeholder="">
-                                    </div>
-                                </div>
-                            </div>
+                            <!--<div class="row">
+                                            <div class="col-md-6 pr-1">
+                                                <div class="form-group">
+                                                    <label>DTLSPRIVATEKEY</label>
+                                                    <input type="text" class="form-control" placeholder="/path/to/file" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 pl-1">
+                                                <div class="form-group">
+                                                    <label>DTLSCERTFILE</label>
+                                                    <input type="text" class="form-control" placeholder="/path/to/file" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 pr-1">
+                                                <div class="form-group">
+                                                    <label>DTLSENABLE</label>
+                                                    <select class="form-control" v-model="exten.dtlsenable">
+                                                        <option value='yes'>Sim</option>
+                                                        <option value='no'>Não</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 px-1">
+                                                <div class="form-group">
+                                                    <label>DTLSVERIFY</label>
+                                                    <input type="text" class="form-control" v-model="exten.dtlsverify"
+                                                        placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 pl-1">
+                                                <div class="form-group">
+                                                    <label>DTLSSETUP</label>
+                                                    <input type="text" v-model="exten.dtlssetup" class="form-control"
+                                                        placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 pr-1">
+                                                <div class="form-group">
+                                                    <label>RTCP_MUX</label>
+                                                    <input type="text" v-model="exten.rtcp_mux" class="form-control" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 px-1">
+                                                <div class="form-group">
+                                                    <label>ICESUPPORT</label>
+                                                    <select class="form-control" v-model="exten.icesupport">
+                                                        <option value='yes'>Sim</option>
+                                                        <option value='no'>Não</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 pl-1">
+                                                <div class="form-group">
+                                                    <label>AVPF</label>
+                                                    <input type="text" v-model="exten.avpf" class="form-control" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>-->
                             <button v-on:click="save()" :disabled="isDisabled" class="btn btn-success pull-right">Salvar</button>
                             <div clas="clearfix"></div>
                         </div>
@@ -262,8 +270,7 @@
                                 <div class="col-md-5 pr-1">
                                     <div class="form-group">
                                         <label>Ramal</label>
-                                        <input type="text" v-model="exten.name" class="form-control"
-                                            placeholder="Ramal">
+                                        <input type="text" v-model="exten.name" class="form-control" placeholder="Ramal">
                                     </div>
                                 </div>
                                 <div class="col-md-5 pr-1">
@@ -279,8 +286,7 @@
                                 <div class="col-md-3 px-1">
                                     <div class="form-group">
                                         <label>Senha</label>
-                                        <input type="password" v-model="exten.secret" class="form-control"
-                                            placeholder="Password">
+                                        <input type="password" v-model="exten.secret" class="form-control" placeholder="Password">
                                     </div>
                                 </div>
                                 <div class="col-md-4 pl-1">
@@ -301,65 +307,76 @@
                             <div class="row">
                                 <div class="col-md-6 pr-1">
                                     <div class="form-group">
-                                        <label>DTLSPRIVATEKEY</label>
-                                        <input type="text" class="form-control" placeholder="/path/to/file" value="">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 pl-1">
-                                    <div class="form-group">
-                                        <label>DTLSCERTFILE</label>
-                                        <input type="text" class="form-control" placeholder="/path/to/file" value="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4 pr-1">
-                                    <div class="form-group">
-                                        <label>DTLSENABLE</label>
-                                        <select class="form-control" v-model="exten.dtlsenable">
+                                        <label>WebRtc</label>
+                                        <select class="form-control" v-model="exten.webrtc">
                                             <option value='yes'>Sim</option>
                                             <option value='no'>Não</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4 px-1">
-                                    <div class="form-group">
-                                        <label>DTLSVERIFY</label>
-                                        <input type="text" class="form-control" v-model="exten.dtlsverify"
-                                            placeholder="">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 pl-1">
-                                    <div class="form-group">
-                                        <label>DTLSSETUP</label>
-                                        <input type="text" v-model="exten.dtlssetup" class="form-control"
-                                            placeholder="">
-                                    </div>
-                                </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-4 pr-1">
-                                    <div class="form-group">
-                                        <label>RTCP_MUX</label>
-                                        <input type="text" v-model="exten.rtcp_mux" class="form-control" placeholder="">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 px-1">
-                                    <div class="form-group">
-                                        <label>ICESUPPORT</label>
-                                        <select class="form-control" v-model="exten.icesupport">
-                                            <option value='yes'>Sim</option>
-                                            <option value='no'>Não</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 pl-1">
-                                    <div class="form-group">
-                                        <label>AVPF</label>
-                                        <input type="text" v-model="exten.avpf" class="form-control" placeholder="">
-                                    </div>
-                                </div>
-                            </div>
+                            <!--<div class="row">
+                                            <div class="col-md-6 pr-1">
+                                                <div class="form-group">
+                                                    <label>DTLSPRIVATEKEY</label>
+                                                    <input type="text" class="form-control" placeholder="/path/to/file" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 pl-1">
+                                                <div class="form-group">
+                                                    <label>DTLSCERTFILE</label>
+                                                    <input type="text" class="form-control" placeholder="/path/to/file" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 pr-1">
+                                                <div class="form-group">
+                                                    <label>DTLSENABLE</label>
+                                                    <select class="form-control" v-model="exten.dtlsenable">
+                                                        <option value='yes'>Sim</option>
+                                                        <option value='no'>Não</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 px-1">
+                                                <div class="form-group">
+                                                    <label>DTLSVERIFY</label>
+                                                    <input type="text" class="form-control" v-model="exten.dtlsverify"
+                                                        placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 pl-1">
+                                                <div class="form-group">
+                                                    <label>DTLSSETUP</label>
+                                                    <input type="text" v-model="exten.dtlssetup" class="form-control"
+                                                        placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 pr-1">
+                                                <div class="form-group">
+                                                    <label>RTCP_MUX</label>
+                                                    <input type="text" v-model="exten.rtcp_mux" class="form-control" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 px-1">
+                                                <div class="form-group">
+                                                    <label>ICESUPPORT</label>
+                                                    <select class="form-control" v-model="exten.icesupport">
+                                                        <option value='yes'>Sim</option>
+                                                        <option value='no'>Não</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 pl-1">
+                                                <div class="form-group">
+                                                    <label>AVPF</label>
+                                                    <input type="text" v-model="exten.avpf" class="form-control" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>-->
                             <button v-on:click="save()" :disabled="isDisabled" class="btn btn-success pull-right">Salvar</button>
                             <div clas="clearfix"></div>
                         </div>
@@ -372,6 +389,7 @@
         </div>
     </div>
 </template>
+
 <script>
 export default {
     props: ['extradata', 'extraroutes'],
@@ -438,6 +456,7 @@ export default {
                 avpf: '',
                 context_to: '',
                 record: '',
+                webrtc: '',
             },
             fields: [
                 { 'name': 'name', 'type': 'number', 'description': '', min: 1000, max: 9999, step: 1, 'add': true, readonly: true },
@@ -506,68 +525,67 @@ export default {
 
     },
     computed: {
-      isDisabled() {
-        
-        if (isNaN(parseInt(this.exten.name))) {
-            return true;
-        }
-       
-        if (parseInt(this.exten.name) < 1000) {
-            return true;
-        }
+        isDisabled() {
 
-        if (parseInt(this.exten.name) > 9999) {
-            return true;
-        }
+            if (isNaN(parseInt(this.exten.name))) {
+                return true;
+            }
 
-        return false;
-      },
+            if (parseInt(this.exten.name) < 1000) {
+                return true;
+            }
+
+            if (parseInt(this.exten.name) > 9999) {
+                return true;
+            }
+
+            return false;
+        },
     },
     methods: {
         confirmRemove: function() {
-            axios.delete('/extens/' + this.deleteMe)
-            .then(function () {
-                window.location = '/extens'
-            });
-            ;
+            axios.delete('extens/' + this.deleteMe)
+                .then(function() {
+                    window.location = 'extens'
+                });;
 
         },
-        dismiss: function () {
+        dismiss: function() {
             this.deleteMe = null;
             $('#confirmation').modal('hide');
         },
-        remove: function (name) {
+        remove: function(name) {
             this.deleteMe = name
             $('#confirmation').modal('show');
         },
-        addShow: function () {
+        addShow: function() {
             this.resetExten();
             this.list = false;
             this.edit = false;
             this.add = true;
         },
-        listShow: function () {
+        listShow: function() {
             this.list = true;
             this.edit = false;
             this.add = false;
         },
-        editShow: function () {
+        editShow: function() {
             this.list = false;
             this.add = false;
             this.edit = true;
         },
-        editExten: function (name) {
+        editExten: function(name) {
             this.resetExten();
             this.list = false;
             this.edit = true;
             this.setExten(name);
         },
-        resetExten: function () {
+        resetExten: function() {
             Object.keys(this.exten).forEach((key) => {
                 this.exten[key] = '';
             });
         },
-        setExten: function (e) {
+        setExten: function(e) {
             this.resetExten();
             this.extens.forEach((ext, index) => {
                 if (ext.name == e) {
@@ -576,6 +594,12 @@ export default {
                     this.exten.defaultuser = this.exten.name.substr(this.exten.accountcode.length, 4);
                     this.exten.callerid = this.exten.name.substr(this.exten.accountcode.length, 4);
                     this.exten.name = this.exten.name.substr(this.exten.accountcode.length, 4);
+                    if (this.exten.icesupport === 'yes') {
+                        this.exten.webrtc = 'yes';
+                    } else {
+                        this.exten.webrtc = 'no';
+                    }
+
                 }
             });
             if (this.exten.name != '') {
@@ -587,7 +611,7 @@ export default {
             if (isNaN(parseInt(this.exten.name))) {
                 return true;
             }
-       
+
             if (parseInt(this.exten.name) < 1000) {
                 return true;
             }
@@ -595,17 +619,17 @@ export default {
             if (parseInt(this.exten.name) > 9999) {
                 return true;
             }
-        
+
             let me = this;
-            axios.post('/extens', this.exten)
-                .then(function (response) {
-                    location.reload();
+            axios.post('extens', this.exten)
+                .then(function(response) {
+                    window.location = 'extens';
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     console.log(error);
                 });
         },
-        back: function () {
+        back: function() {
             location.reload();
         }
 

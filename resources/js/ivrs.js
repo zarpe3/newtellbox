@@ -7,9 +7,9 @@ const audios = new Vue({
     },
     methods: {
         remove: function (id) {
-            axios.delete('/ivr/' + id)
+            axios.delete('ivr/' + id)
             .then(function () {
-                window.location = '/ivr'
+                window.location = 'ivr'
             });
         }
     }

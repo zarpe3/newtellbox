@@ -11,8 +11,8 @@ var audios = new Vue({
   mounted: function mounted() {},
   methods: {
     remove: function remove(id) {
-      axios["delete"]('/ivr/' + id).then(function () {
-        window.location = '/ivr';
+      axios["delete"]('ivr/' + id).then(function () {
+        window.location = 'ivr';
       });
     }
   }

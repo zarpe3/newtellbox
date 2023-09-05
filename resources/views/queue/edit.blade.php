@@ -29,7 +29,7 @@
                         <!--        Here you can write extra buttons/actions for the toolbar              -->
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        {{ Form::open(array('route' => ['queue.update', $queue['id']], 'method' => 'put')) }}
+                        {{ Form::open(array('route' => ['queue.update', $customer, $queue['id']], 'method' => 'put')) }}
                             <h6 class="heading-small text-muted mb-4">{{ __('Edição de Fila') }}</h6>
                             <div class="pl-lg-4">
                                 <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">

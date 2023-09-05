@@ -37,7 +37,7 @@
                         <!--        Here you can write extra buttons/actions for the toolbar              -->
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        <form method="post" action="{{ route('voicemail.update') }}" autocomplete="off">
+                        <form method="post" action="{{ route('voicemail.update', $customer) }}" autocomplete="off">
                             @csrf
                             <div class="pl-lg-4">
                                 <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">

@@ -29,7 +29,7 @@ class DeleteAudio
                 throw new Exception('File name is mandatory', 1);
             }
 
-            Http::post('http://webdec-dev03.webdec.com.br/deleteAudio', [
+            Http::post('https://webdec-dev03.webdec.com.br/deleteAudio', [
                     'accountcode' => $this->actionRecord->accountcode,
                     'fileName' => $this->data['fileName'],
             ]);

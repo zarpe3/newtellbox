@@ -25,11 +25,9 @@
                         <!--        Here you can write extra buttons/actions for the toolbar              -->
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        {{ Form::open(array('route' => ['routes.update', $id], 'method' => 'put')) }}
-                        <!--<form  action="{{ route('routes.update', $id) }}" autocomplete="off">-->
+                        {{ Form::open(array('route' => ['routes.update', $customer, $id], 'method' => 'put')) }}
                             {!! method_field('PUT') !!}
                             @csrf
-                            <h6 class="heading-small text-muted mb-4">{{ __('Criação de Rota') }}</h6>
                             <div class="pl-lg-4">
                                 <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-name">

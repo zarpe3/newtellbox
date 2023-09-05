@@ -25,7 +25,7 @@
                         <!--        Here you can write extra buttons/actions for the toolbar              -->
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        <form method="post" action="{{ route('queue.store') }}" autocomplete="off">
+                        <form method="post" action="{{ route('queue.store', $customer) }}" autocomplete="off">
                             @csrf
                             <h6 class="heading-small text-muted mb-4">{{ __('Criação de Fila') }}</h6>
                             <div class="pl-lg-4">

@@ -16,8 +16,8 @@ var trunks = new Vue({
   },
   methods: {
     remove: function remove(b64) {
-      axios["delete"]('/trunks/' + b64).then(function () {
-        window.location = '/trunks';
+      axios["delete"]('trunks/' + b64).then(function () {
+        window.location = 'trunks';
       });
       ;
     },

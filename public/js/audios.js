@@ -10,12 +10,12 @@ var audios = new Vue({
       isActive: false
     };
   },
-  mounted: function mounted() {///console.log("to aqui no routes");
-  },
+  mounted: function mounted() {},
   methods: {
     remove: function remove(fileName) {
-      axios["delete"]('/audios/' + fileName).then(function () {
-        window.location = '/audios';
+      console.log(fileName);
+      axios["delete"]('/' + app.accountCode + '/audios/' + fileName).then(function () {
+        window.location = '/' + app.accountCode + '/audios/';
       });
     }
   }

@@ -7,7 +7,7 @@
 @include('alerts.success_response')
 <script>
     setTimeout(function(){
-        window.location ='/audios';
+        window.location ='/{{$customer}}/audios';
     }, 5000);
 </script>
 @endif
@@ -34,7 +34,7 @@
                         <!--        Here you can write extra buttons/actions for the toolbar              -->
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        <form method="post" action="{{ route('audios.store') }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('audios.store', $customer) }}" enctype="multipart/form-data">
                             @csrf
                             <h6 class="heading-small text-muted mb-4">{{ __('Criação de Audio') }}</h6>
                             <div class="pl-lg-4">

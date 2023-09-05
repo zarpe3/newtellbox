@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Customer;
+use App\Models\Scopes\CustomerScope;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -26,7 +28,15 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        parent::boot();
         $this->configureRateLimiting();
+        Route::bind('customer', function (string $value) {
+            $customerInstance = new Customer();
+            $customerInstance::addGlobalScope(new CustomerScope());
+            $customer = $customerInstance->getAccountCode($value)->firstOrFail();
+
+            return $customer;
+        });
 
         $this->routes(function () {
             Route::prefix('api')

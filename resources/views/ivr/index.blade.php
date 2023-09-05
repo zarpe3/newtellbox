@@ -27,7 +27,7 @@
                                 </p>
                             </div>
                             <div class="col-4 text-right">
-                                <a href="/ivr/create" class="btn btn-sm btn-default">Adicionar Ura</a>
+                                <a href="/{{$customer}}/ivr/create" class="btn btn-sm btn-default">Adicionar Ura</a>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                                         <td> {{ $ivr['name'] }} </td>
                                         <td> {{ $ivr['audio'] }} </td>
                                         <td> 
-                                            <a href="/ivr/{{$ivr['id']}}/edit"><i class="fa fa-edit"></i></a>
+                                            <a href="/{{$customer}}/ivr/{{$ivr['id']}}/edit"><i class="fa fa-edit"></i></a>
                                             <a style="color: red;" v-on:click="remove('{{$ivr['id']}}')">
                                                 <i class="fa fa-trash"></i>
                                             </a> 

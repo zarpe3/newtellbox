@@ -4,9 +4,12 @@
 @section('content')
 <div id="app"></div>
 <div class="content">
+    @if(isset($success) && $success === false)
+        @include('alerts.error_response')
+    @endif
 
-    @if(session('message'))
-        @include('alerts.success_response_session')
+    @if(isset($success) && $success && $message != "")
+        @include('alerts.success_response')
     @endif
 
     <div class="container-fluid">
@@ -23,7 +26,7 @@
                                 </p>
                             </div>
                             <div class="col-4 text-right">
-                                <a href="/inbound/create" class="btn btn-sm btn-default">Adicionar Rota de Entrada</a>
+                                <a href="/{{$customer}}/inbound/create" class="btn btn-sm btn-default">Adicionar Rota de Entrada</a>
                             </div>
                         </div>
                     </div>
@@ -47,7 +50,7 @@
                                     <tr>
                                         <td> {{ $inbound['name'] }} </td>
                                         <td class="d-flex">
-                                            <a href="/inbound/{{ $inbound['id'] }}">
+                                            <a href="/{{$customer}}/inbound/{{ $inbound['id'] }}">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                             <a v-on:click="remove('{{ base64_encode(json_encode($inbound)) }} ')">
@@ -70,5 +73,5 @@
 @push('js')
 <script type="text/javascript">
 </script>
-<script src="{{ asset('/js/inbound.js') }}"></script>
+<script src="{{ asset('/js/inbounds.js') }}"></script>
 @endpush

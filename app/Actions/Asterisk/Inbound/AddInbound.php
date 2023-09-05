@@ -26,7 +26,7 @@ class AddInbound
         $voicemail = VoicemailUsers::where('mailbox', $this->data['did']);
 
         if ($voicemail->exists()) {
-            throw new Exception('Error DID ja existente', 1);
+            throw new \Exception('Error DID ja existente', 1);
         }
 
         VoicemailUsers::create([

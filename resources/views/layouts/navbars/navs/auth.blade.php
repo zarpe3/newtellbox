@@ -32,7 +32,7 @@
             </ul>-->
             <ul class="navbar-nav d-flex align-items-right" style="margin-right: 90px;">
                 <!--<li class="nav-item">
-                    <a class="nav-link" href=" {{route('profile.edit') }} ">
+                    <a class="nav-link" href=" {{route('profile.edit', $customer) }} ">
                         <span class="no-icon">{{ __('Account') }}</span>
                     </a>
                 </li>-->

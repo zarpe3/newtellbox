@@ -193,7 +193,7 @@
             }
         },
         mounted() {
-            axios.get('http://webdec-dev03.webdec.com.br/trunks/fields')
+            axios.get('https://webdec-dev03.webdec.com.br/trunks/fields')
             .then(res => {
                 this.fields = res.data.response;
                 Object.keys(this.fields).forEach((key) => {
@@ -206,7 +206,7 @@
             }).catch(err => {
                 console.log(err)
             });
-            axios.post('http://webdec-dev03.webdec.com.br/trunks/list', {accountcode: this.$root.$data.accountCode})
+            axios.post('https://webdec-dev03.webdec.com.br/trunks/list', {accountcode: this.$root.$data.accountCode})
             .then(res => {
                 this.trunks = res.data.response;
             }).catch(err => {
@@ -238,7 +238,7 @@
             },
             save() {
                 //console.log(this.trunk);
-                axios.post('http://webdec-dev03.webdec.com.br/trunks/save', {trunk: this.trunk, accountcode: this.$root.$data.accountCode})
+                axios.post('https://webdec-dev03.webdec.com.br/trunks/save', {trunk: this.trunk, accountcode: this.$root.$data.accountCode})
                 .then(function (response) {
                     window.location='/trunks';
                 })

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Actions\Asterisk\SIP;
 use App\Actions\Customer\ReceptionConsole;
-use Auth;
 use Illuminate\Http\Request;
+use App\Models\Customer;
 
 class ReceptionConsoleController extends Controller
 {
@@ -14,9 +14,8 @@ class ReceptionConsoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Customer $customer)
     {
-        $customer = Auth::user()->customer;
         $extens = (new SIP())->execute($customer, ['request' => 'GET']);
 
         return view('reception.index', ['extens' => $extens['extens']]);
@@ -84,20 +83,16 @@ class ReceptionConsoleController extends Controller
     {
     }
 
-    public function hangup(Request $request)
+    public function hangup(Customer $customer, Request $request)
     {
-        $customer = Auth::user()->customer;
-
         return (new ReceptionConsole())->execute($customer, [
             'request' => 'HANGUP',
             'channel' => $request->channel,
         ]);
     }
 
-    public function transfer(Request $request, $exten)
+    public function transfer(Customer $customer, Request $request, $exten)
     {
-        $customer = Auth::user()->customer;
-
         return (new ReceptionConsole())->execute($customer, [
             'request' => 'TRANSFER',
             'channel' => $request->channel,
@@ -105,10 +100,8 @@ class ReceptionConsoleController extends Controller
         ]);
     }
 
-    public function spy(Request $request, $exten)
+    public function spy(Customer $customer, Request $request, $exten)
     {
-        $customer = Auth::user()->customer;
-
         return (new ReceptionConsole())->execute($customer, [
             'request' => 'SPY',
             'channel' => $request->channel,

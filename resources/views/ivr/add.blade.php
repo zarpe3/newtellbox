@@ -29,7 +29,7 @@
                         <!--        Here you can write extra buttons/actions for the toolbar              -->
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        <form method="post" action="{{ route('ivr.store') }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('ivr.store', $customer) }}" enctype="multipart/form-data">
                             @csrf
                             <h6 class="heading-small text-muted mb-4">{{ __('Criação de URA') }}</h6>
                             <div class="pl-lg-4">
@@ -49,8 +49,18 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                
+                                <calendar calendar=""></calendar>
                                 <ivr-options extendata="{{json_encode($extens)}}" ivrdata="" queuedata="{{json_encode($queues)}}"></ivr-options>
+                                <div class="form-group{{ $errors->has('audio') ? ' has-danger' : '' }}">
+                                    <label class="form-control-label" for="audio">
+                                        <i class="nc-icon nc-map-big"></i>{{ __(' Audio Desvio') }}
+                                    </label>
+                                    <select class="form-control" name="audiodivert" id="audiodivert">
+                                        @foreach ($audios as $audio)
+                                            <option value="{{$audio}}">{{$audio}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-default mt-4">{{ __('Salvar') }}</button>
                                 </div>

@@ -13,9 +13,9 @@ const routes = new Vue({
     },
     methods: {
         remove: function (b64) {
-            axios.delete('/users/' + b64)
+            axios.delete('users/' + b64)
             .then(function () {
-                window.location = '/users'
+                window.location = 'users'
             });
             ;
         },

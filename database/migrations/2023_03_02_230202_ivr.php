@@ -39,6 +39,8 @@ return new class () extends Migration {
             $table->string('value_9')->nullable();
             $table->integer('divert_option')->nullable();
             $table->string('divert_value')->nullable();
+            $table->string('audiodivert', 200)->nullable();
+            $table->string('calendar', 255)->nullable();
             $table->timestamp('stamp');
         });
     }

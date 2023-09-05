@@ -41,7 +41,7 @@ class CustomersController extends Controller
         if ($response) {
             $dashboard = (new ShowDashboard())->execute($customer, []);
 
-            return view('dashboard', ['dashboard' => $dashboard]);
+            return view('dashboard', ['customer' => $customer->accountcode, 'dashboard' => $dashboard]);
         }
     }
 }

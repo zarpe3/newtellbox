@@ -11286,3 +11286,193 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.table-filter-select * {
+  text-transform: capitalize;
+}
+
+.table-margin {
+  margin-top: 20px;
+}
+
+.vuetable {
+  width: 100%;
+  background: #fff;
+  /* Special column must have width set */
+}
+.vuetable thead tr th {
+  font-weight: 600;
+  vertical-align: middle;
+  white-space: nowrap;
+  background-color: #f4f3f8;
+  color: #8392ab !important;
+}
+.vuetable thead tr th .sort-icon {
+  float: inherit !important;
+}
+.vuetable tfoot tr th {
+  font-weight: 600;
+}
+.vuetable thead tr td,
+.vuetable thead tr th,
+.vuetable tbody tr td,
+.vuetable tbody tr th,
+.vuetable tfoot tr td,
+.vuetable tfoot tr th {
+  vertical-align: middle;
+  border-right: inherit !important;
+  border-left: inherit !important;
+  height: 32px;
+}
+.vuetable thead tr td:first-of-type,
+.vuetable thead tr th:first-of-type,
+.vuetable tbody tr td:first-of-type,
+.vuetable tbody tr th:first-of-type,
+.vuetable tfoot tr td:first-of-type,
+.vuetable tfoot tr th:first-of-type {
+  padding-left: 15px;
+}
+.vuetable thead tr td:last-of-type,
+.vuetable thead tr th:last-of-type,
+.vuetable tbody tr td:last-of-type,
+.vuetable tbody tr th:last-of-type,
+.vuetable tfoot tr td:last-of-type,
+.vuetable tfoot tr th:last-of-type {
+  padding-right: 15px;
+}
+.vuetable thead tr .with-ellipsis,
+.vuetable tbody tr .with-ellipsis,
+.vuetable tfoot tr .with-ellipsis {
+  max-width: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.vuetable tbody tr:hover {
+  background: #f7f6fa !important;
+}
+.vuetable tbody tr.detail-row > td {
+  border-top: 2px solid #c3c3d5 !important;
+  border-bottom: 2px solid #c3c3d5 !important;
+}
+.vuetable .sortable {
+  color: #0a3a98;
+  cursor: pointer;
+}
+.vuetable .sortable:hover {
+  color: #0a3a98;
+}
+.vuetable .inline-edit {
+  min-width: 1190px;
+}
+.vuetable th[class^=vuetable-th-checkbox] {
+  width: 1%;
+}
+
+.vuetable.no-fixed {
+  table-layout: initial;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #faf9fc;
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+  background-color: #fff;
+}
+
+.odd {
+  background-color: #faf9fc !important;
+}
+
+.even {
+  background-color: #fff !important;
+}
+
+.pagination {
+  cursor: pointer;
+}
+.pagination .btn {
+  height: 30px;
+}
+.pagination .disabled {
+  background: #f6f6f8;
+  cursor: auto;
+}
+.pagination .active {
+  background: #23527c;
+  color: #fff !important;
+  cursor: auto;
+}
+.pagination .link-class {
+  padding: 0.65rem 0.7rem;
+}
+.pagination .link-class:hover {
+  color: #fff !important;
+}
+.pagination .page-class {
+  padding: 0.65rem 1rem;
+}
+.pagination .page-class:hover {
+  color: #fff !important;
+}
+
+.pagination-size {
+  width: 65px !important;
+}
+.pagination-size .btn.dropdown-toggle {
+  background: whitesmoke !important;
+  height: 2.25rem;
+  padding: 0.45rem 1rem;
+}
+
+/* Begin fixed table rules */
+.table-body-scroll {
+  margin-top: 30px !important;
+}
+
+.tbody-fixed {
+  display: block;
+  overflow: auto;
+}
+
+.fixed-table-container {
+  width: 100%;
+  min-height: 400px;
+  /* Initial size, will be handled by JS */
+  position: relative;
+}
+.fixed-table-container .link {
+  color: #0a3a98;
+  cursor: pointer;
+}
+.fixed-table-container .fixed-table-container-inner {
+  padding-bottom: 30px;
+}
+.fixed-table-container .fixed-table-header {
+  background-color: #f4f3f8;
+  height: 30px;
+  /* height of header */
+  position: relative;
+  top: 0;
+  right: 0;
+  left: 0;
+  box-shadow: 0 1px 15px 1px rgba(81, 77, 92, 0.2);
+}
+.fixed-table-container .fixed-table-header-body {
+  width: 100%;
+}
+.fixed-table-container .fixed-table-header-body th {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  height: 0 !important;
+  line-height: 0 !important;
+}
+.fixed-table-container .th-inner {
+  position: absolute;
+  top: 0;
+  line-height: 30px;
+  /* height of header */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

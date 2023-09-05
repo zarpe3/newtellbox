@@ -4,6 +4,7 @@ namespace App\Actions\Asterisk;
 
 use App\Actions\ModelActionBase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class UpdateTrunks
 {
@@ -33,9 +34,9 @@ class UpdateTrunks
 
     protected function main()
     {
-        \Log::info(print_r($this->data, true));
+        Log::info(print_r($this->data, true));
 
-        return Http::post('http://webdec-dev03.webdec.com.br/trunks/save', [
+        return Http::post('https://webdec-dev03.webdec.com.br/trunks/save', [
             'trunk' => $this->data['trunk'],
             'accountcode' => $this->actionRecord->accountcode,
         ]);

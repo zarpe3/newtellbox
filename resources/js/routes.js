@@ -10,9 +10,9 @@ const routes = new Vue({
     },
     methods: {
         remove: function (b64) {
-            axios.delete('/routes/' + b64)
+            axios.delete('routes/' + b64)
             .then(function () {
-                window.location = '/routes'
+                window.location = 'routes/'
             });
             ;
         },

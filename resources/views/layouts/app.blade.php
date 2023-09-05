@@ -83,12 +83,12 @@
     <script>
     const app = new Vue({
         el: '#app',
-    @if (isset($user))
-        data: {
-            userId: {{ $user->id }},
-            accountCode: {{$user->customer->accountcode}}
-        }
-    @endif
+        @if (isset($user))
+            data: {
+                userId: {{ $user->id }},
+                accountCode: {{$customer}}
+            }
+        @endif
     });
     </script>
     <script src="{{ asset('/js/softphone.js') }}"></script>
@@ -96,55 +96,7 @@
     <script>
       $(document).ready(function () {
 
-        $('#facebook').sharrre({
-          share: {
-            facebook: true
-          },
-          enableHover: false,
-          enableTracking: false,
-          enableCounter: false,
-          click: function(api, options) {
-            api.simulateClick();
-            api.openPopup('facebook');
-          },
-          template: '<i class="fab fa-facebook-f"></i> Facebook',
-          url: 'https://light-bootstrap-dashboard-laravel.creative-tim.com/login'
-        });
-
-        $('#google').sharrre({
-          share: {
-            googlePlus: true
-          },
-          enableCounter: false,
-          enableHover: false,
-          enableTracking: true,
-          click: function(api, options) {
-            api.simulateClick();
-            api.openPopup('googlePlus');
-          },
-          template: '<i class="fab fa-google-plus"></i> Google',
-          url: 'https://light-bootstrap-dashboard-laravel.creative-tim.com/login'
-        });
-
-        $('#twitter').sharrre({
-          share: {
-            twitter: true
-          },
-          enableHover: false,
-          enableTracking: false,
-          enableCounter: false,
-          buttons: {
-            twitter: {
-              via: 'CreativeTim'
-            }
-          },
-          click: function(api, options) {
-            api.simulateClick();
-            api.openPopup('twitter');
-          },
-          template: '<i class="fab fa-twitter"></i> Twitter',
-          url: 'https://light-bootstrap-dashboard-laravel.creative-tim.com/login'
-        });
+       
       });
     </script>
 </html>

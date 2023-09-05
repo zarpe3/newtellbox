@@ -13,9 +13,9 @@ const routes = new Vue({
     },
     methods: {
         remove: function (id) {
-            axios.delete('/queue/' + id)
+            axios.delete('queue/' + id)
             .then(function () {
-                window.location = '/queue'
+                window.location = 'queue'
             });
             ;
         },
