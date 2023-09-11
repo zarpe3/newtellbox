@@ -320,7 +320,7 @@ export default {
             isImage: false,
             accept: 'text/csv',
             extensions: 'csv',
-            minSize: 100,
+            minSize: 10,
             size: (1024 * 1024) * 15, //15mb
             multiple: false,
             directory: false,
@@ -384,7 +384,7 @@ export default {
                     title: 'Atualizada!',
                     text: 'Parabéns! Sua campanha foi atualizada com sucesso'
                 });
-            });          
+            });
         },
         sendStatus() {
             this.send = this.campaign_name !== "" ? true : false;
