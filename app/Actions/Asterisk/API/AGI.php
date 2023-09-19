@@ -43,7 +43,7 @@ class AGI
             'status' => $this->data['status'],
             'uniqueid' => $this->data['uniqueid'],
             'billsec' => intval($this->data['billsec']),
-            'rating' => $this->data['rating'],
+            'rating' => 0,
         ]);
 
         if (isset($this->data['recording'])) {
@@ -57,6 +57,8 @@ class AGI
 
     private function rating()
     {
+        return response()->json(['success' => false, 'message' => 'cgrares is out']);
+
         return $response = $this->sendDataToCGRates(['method' => 'APIerSv1.GetCost', 'params' => [[
             'Tenant' => $this->data['accountCode'],
             'Category' => 'call',

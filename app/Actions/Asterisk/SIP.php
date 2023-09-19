@@ -83,6 +83,7 @@ class SIP
         $data['host'] = 'dynamic';
         $data['allow'] = 'all';
         $data['context'] = 'outbound';
+        $data['directmedia'] = 'yes';
         $data['dtlsenable'] = null;
         $data['dtlsverify'] = null;
         $data['dtlsprivatekey'] = null;

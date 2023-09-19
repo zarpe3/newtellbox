@@ -28,7 +28,8 @@ class UpdateTrunks
             'insecure' => 'invite,port',
             'bina' => $data['trunk']['bina'] ?? '',
             'nat' => 'force_rport,comedia',
-            'allow' => 'all',
+            'disallow' => 'all',
+            'allow' => 'ulaw;allaw',
         ];
     }
 

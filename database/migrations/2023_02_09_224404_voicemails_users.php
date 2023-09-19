@@ -14,7 +14,7 @@ return new class () extends Migration {
             $table->id();
             $table->unsignedBigInteger('customer_id');
             $table->string('context')->default('');
-            $table->string('mailbox', 11)->default('');
+            $table->string('mailbox', 50)->default('');
             $table->string('password', 200);
             $table->string('fullname', 150)->default('');
             $table->string('email')->default('suporte@webdec.com.br');
